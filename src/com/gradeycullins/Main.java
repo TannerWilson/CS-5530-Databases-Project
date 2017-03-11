@@ -1,6 +1,5 @@
 package com.gradeycullins;
 
-import java.util.IntSummaryStatistics;
 import java.util.Scanner;
 
 public class Main {
