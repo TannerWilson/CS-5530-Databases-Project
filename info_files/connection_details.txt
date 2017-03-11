@@ -1,0 +1,10 @@
+
+Each team has a separate DB that the team has full access for. Team X will have the following user name and database name combination:
+
+5530uX, and 5530dbX. e.g., when X=01 (Team 01), your user name is 5530u01, and database name is 5530db01. TAs will email you your team's password (for accessing 5530dbX with user id 5530uX, e.g., mysql -h georgia.eng.utah.edu -u 5530uX -p 5530dbX).
+
+The same user name and password combination also allows you access the georgia server as a development and testing server through remote SSH. For example, ssh 5530uX@georgia.eng.utah.edu
+
+db: 5530db58
+u: 5530u58
+p: o3tve4iq
