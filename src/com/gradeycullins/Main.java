@@ -51,7 +51,7 @@ public class Main {
                                 year = Integer.parseInt((String) in);
                                 break;
                             } catch (NumberFormatException e) {
-                                System.out.println("Sorry the year must be a number");
+                                System.out.println("Sorry the year must be a number.");
                             }
                         }
 
@@ -59,15 +59,15 @@ public class Main {
                         TH newTH = new TH(currentUser, name,type,phoneNumber,address, year);
 
                         if(newTH.insert()) {
-                            System.out.print("New property registered to your account");
+                            System.out.println("New property registered to your account.");
                         }else {
-
+                            System.out.println("Something went wrong register.");
                         }
 
                     } else if(input.equals(3)) {
 
                     }else {
-                        System.out.print("Sorry, that's not a valid entry");
+                        System.out.print("Sorry, that's not a valid entry.\n If you're trying to exit please1 try again.");
                     }
 
                 } else { // Log in or Register
@@ -127,6 +127,7 @@ public class Main {
                 }
 
                 // User can exit at any time
+                System.out.println("Press enter to continue or type exit to close application");
                 Object input = scanner.next();
                 if (input.toString().toLowerCase().equals("exit")) {
                     System.out.println("exiting . . .");

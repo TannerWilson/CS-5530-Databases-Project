@@ -18,7 +18,7 @@ public class Connector {
 
     private final String USERNAME = "5530u58";
     private final String PASSWORD = "o3tve4iq";
-    private final String URL = "jdbc:mysql://georgia.eng.utah.edu/5530db58?useSSL=false";
+    private final String URL = "jdbc:mysql://georgia.eng.utah.edu/5530db58?autoReconnect=true&useSSL=false";
 
     public static Connector getInstance()
     {
