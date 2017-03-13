@@ -37,8 +37,7 @@ public class User {
      * Register the User POJO into the database
      * @return success of the register attempt
      */
-    public boolean register(String firstName, String lastName, String middleName, String gender,
-                            String address, String login, String password) {
+    public boolean register() {
 
 //        Connector connector = Connector.getConnector();
 //        if (connector == null)
@@ -53,8 +52,8 @@ public class User {
             //connector.closeConnection(); Closed connection too early
             return true;
         } catch(SQLException e) {
-            System.out.print("Insert failed");
-            System.out.print(e.getMessage());
+            System.out.println("Insert failed");
+            System.out.println(e.getMessage());
             return false;
         }finally {
 //            Connector.getInstance().closeConnection();
@@ -70,8 +69,6 @@ public class User {
 //
 //        if (connector == null)
 //            return false;
-
-        //String query = "select password from User where login='"+login+"';";
 
         String query = "select password from 5530db58.user where login='"+login+"';";
 
@@ -93,6 +90,11 @@ public class User {
              else return false;
 
         } catch(Exception e) {
+            if(e instanceof  NullPointerException) {
+                System.err.println("Unable to establish connection to database");
+                return false;
+            }
+
             System.err.println("Unable to execute query:"+query+"\n");
             System.err.println(e.getMessage());
         }finally {

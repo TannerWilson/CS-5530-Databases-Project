@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Created by Gradey Cullins on 3/10/17.
+ * Created by Gradey Cullins
  *
  *  Object used to connect to our MySQL database
  */
@@ -43,7 +43,6 @@ public class Connector {
         } catch(Exception e) {
             System.err.println("Unable to open mysql jdbc connection. The error is as follows,\n");
             System.err.println(e.getMessage());
-            throw(e);
         }
     }
 

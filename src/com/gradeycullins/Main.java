@@ -14,10 +14,11 @@ public class Main {
         try {
             Scanner scanner = new Scanner(System.in);
             scanner.useDelimiter("\n");
-            System.out.println("Welcome to Uotel\n1) Login, 2) Register, exit) quit application");
             while (true) {
                 // User just logged in
-                if(isAuthenticated && isMenuScreen) {
+                if(isAuthenticated && isMenuScreen)
+                {
+                    // Display input choices
                     afterLoginMenu();
 
                     Object input = scanner.next();
@@ -56,7 +57,12 @@ public class Main {
 
                         // Make new TH object for insertion
                         TH newTH = new TH(currentUser, name,type,phoneNumber,address, year);
-                        newTH.insert();
+
+                        if(newTH.insert()) {
+                            System.out.print("New property registered to your account");
+                        }else {
+
+                        }
 
                     } else if(input.equals(3)) {
 
@@ -64,9 +70,9 @@ public class Main {
                         System.out.print("Sorry, that's not a valid entry");
                     }
 
-
                 } else { // Log in or Register
 
+                    System.out.println("Welcome to Uotel\n1) Login, 2) Register, exit) quit application");
                     Object input = scanner.next();
                     try {
                         input = Integer.parseInt((String) input);
@@ -108,7 +114,7 @@ public class Main {
 
                         User newUser = new User(login, password, firstName, middleName, lastName, gender, address);
 
-                        if (newUser.register(firstName, lastName, middleName, gender, address, login, password)) {
+                        if (newUser.register()) {
                             System.out.println("You have successfully created an account and are now logged in!");
                             isAuthenticated = true;
                             currentUser = login; // Record user that is currently logged in

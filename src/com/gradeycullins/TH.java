@@ -31,21 +31,20 @@ public class TH {
      */
     public boolean insert()
     {
-        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, `type`, `tel_no`, `year_built`) " +
-                "VALUES ('"+name+"', '"+owner+"', '"+type+"', '"+phoneNum+"', '"+yearBuilt+"');";
+        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, `type`, `tel_no`, `address`, `year_built`) " +
+                "VALUES ('"+name+"', '"+owner+"', '"+type+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
 
-        Connector connector = Connector.getConnector();
-
-        if (connector == null)
-            return false;
+//        Connector connector = Connector.getConnector();
+//        if (connector == null)
+//            return false;
 
         try {
-            connector.statement.execute(insert);
-            connector.closeConnection();
+            Connector.getInstance().statement.execute(insert);
+            Connector.getInstance().closeConnection();
             return true;
         } catch(SQLException e) {
-            System.out.print("Insert failed");
-            e.printStackTrace();
+            System.out.println("Insert failed");
+            System.out.println(e.getMessage());
             return false;
         }
     }
