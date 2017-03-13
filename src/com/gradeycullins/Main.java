@@ -77,9 +77,13 @@ public class Main {
                 }
 
                 if (input.equals(1)) { // list temporary housing
+                    System.out.println("enter the id of a property to learn more:");
                     for (Th th : thManager.properties.values()) {
-                        System.out.println(th.name);
+                        System.out.println(th.tid + "\t" + th.name);
                     }
+
+                    // query for the th the user wishes to view TODO
+                    while (true) {}
                 } else if (input.equals(2)) {
                     System.out.println("Lets register you a new property to manage.");
                     System.out.println("Give your house a name.");
