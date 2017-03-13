@@ -1,5 +1,7 @@
 package com.gradeycullins;
 
+import com.sun.tools.corba.se.idl.StringGen;
+
 import java.sql.SQLException;
 
 /**
@@ -17,6 +19,17 @@ public class Th {
     int yearBuilt;
 
 
+    public Th(int tid, String name, String owner, String type, String phoneNum, String address, String url, int yearBuilt) {
+        this.tid = tid;
+        this.name = name;
+        this.owner = owner;
+        this.type = type;
+        this.phoneNum = phoneNum;
+        this.address = address;
+        this.url = url;
+        this.yearBuilt = yearBuilt;
+    }
+
     public Th(String owner, String name, String type, String phoneNum, String address, int yearBuilt) {
         this.name = name;
         this.type = type;
@@ -31,7 +44,7 @@ public class Th {
      */
     public boolean insert()
     {
-        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, `type`, `tel_no`, `address`, `year_built`) " +
+        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, `type`, `phone_num`, `address`, `year_built`) " +
                 "VALUES ('"+name+"', '"+owner+"', '"+type+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
 
 //        Connector connector = Connector.getConnector();

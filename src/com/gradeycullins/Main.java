@@ -66,11 +66,13 @@ public class Main {
             } else { // user is authenticated
                 System.out.println("1) list properties\n2) add property\n3) show my listed properties");
                 Object input = scanner.next();
+
                 try {
                     input = Integer.parseInt((String) input);
                 } catch (NumberFormatException e) {
                     // input was not a number - ignore
                 }
+
                 if (input.equals(1)) {
 
                 } else if (input.equals(2)) {
