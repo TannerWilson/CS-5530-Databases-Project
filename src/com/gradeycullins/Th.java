@@ -10,8 +10,8 @@ import java.sql.SQLException;
 public class Th {
 
     int tid; // Primary key
-    String name;
     String owner;
+    String name;
     String type;
     String phoneNum;
     String address;
@@ -19,7 +19,7 @@ public class Th {
     int yearBuilt;
 
 
-    public Th(int tid, String name, String owner, String type, String phoneNum, String address, String url, int yearBuilt) {
+    public Th(int tid, String owner, String name, String type, String phoneNum, String address, String url, int yearBuilt) {
         this.tid = tid;
         this.name = name;
         this.owner = owner;

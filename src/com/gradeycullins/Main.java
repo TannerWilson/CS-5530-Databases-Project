@@ -76,8 +76,10 @@ public class Main {
                     // input was not a number - ignore
                 }
 
-                if (input.equals(1)) {
-
+                if (input.equals(1)) { // list temporary housing
+                    for (Th th : thManager.properties.values()) {
+                        System.out.println(th.name);
+                    }
                 } else if (input.equals(2)) {
                     System.out.println("Lets register you a new property to manage.");
                     System.out.println("Give your house a name.");
