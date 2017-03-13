@@ -33,7 +33,8 @@ public class ThManager {
                 properties.put(tid, newTh);
             }
         } catch (SQLException e) {
-
+            System.out.println("An error occurred while attempting to retrieve the listing of temporary housings");
+            e.printStackTrace();
         }
     }
 }

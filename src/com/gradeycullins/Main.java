@@ -7,7 +7,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("\n");
+
+        /* application db state */
         User user = new User();
+        ThManager thManager = new ThManager();
 
         while (true) {
             if (!user.isAuthenticated) {
