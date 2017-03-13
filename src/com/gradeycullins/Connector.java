@@ -7,12 +7,12 @@ import java.sql.Statement;
 
 /**
  * Created by Gradey Cullins
- *
- *  Object used to connect to our MySQL database
+ * <p>
+ * Object used to connect to our MySQL database
  */
 public class Connector {
 
-    public  static Connector instance = null;
+    public static Connector instance = null;
     public Connection connection;
     public Statement statement;
 
@@ -20,13 +20,11 @@ public class Connector {
     private final String PASSWORD = "o3tve4iq";
     private final String URL = "jdbc:mysql://georgia.eng.utah.edu/5530db58?autoReconnect=true&useSSL=false";
 
-    public static Connector getInstance()
-    {
-        if(instance == null)
-        {
-            try{
+    public static Connector getInstance() {
+        if (instance == null) {
+            try {
                 instance = new Connector();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 System.err.println("Unable to open mysql jdbc connection. The error is as follows,\n");
                 System.err.println(e.getMessage());
             }
@@ -35,12 +33,12 @@ public class Connector {
         return instance;
     }
 
-    private Connector() throws Exception {
+    private Connector() {
         try {
-            Class.forName ("com.mysql.jdbc.Driver").newInstance ();
-            this.connection = DriverManager.getConnection (URL, USERNAME, PASSWORD);
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             this.statement = connection.createStatement();
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.err.println("Unable to open mysql jdbc connection. The error is as follows,\n");
             System.err.println(e.getMessage());
         }

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 /**
  * Class to represent Temporary Housing objects in the database
  */
-public class TH {
+public class Th {
 
     int tid; // Primary key
     String name;
@@ -17,7 +17,7 @@ public class TH {
     int yearBuilt;
 
 
-    public TH(String owner, String name, String type, String phoneNum, String address, int yearBuilt) {
+    public Th(String owner, String name, String type, String phoneNum, String address, int yearBuilt) {
         this.name = name;
         this.type = type;
         this.phoneNum = phoneNum;
@@ -27,7 +27,7 @@ public class TH {
     }
 
     /**
-     * Add new TH into the database. Save the
+     * Add new Th into the database. Save the
      */
     public boolean insert()
     {

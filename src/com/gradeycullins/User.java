@@ -7,13 +7,21 @@ import java.sql.SQLException;
  * Created by Tanner on 3/11/2017.
  */
 public class User {
-    private String login;
-    private String password;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String gender;
-    private String address;
+
+    /* relational db column mappings */
+    protected String login;
+    protected int uid;
+    protected String password;
+    protected String firstName;
+    protected String middleName;
+    protected String lastName;
+    protected String gender;
+    protected float isTrusted = 0;
+    protected String favorite = null;
+    protected String address;
+    /* end db column mappings */
+
+    protected boolean isAuthenticated = false;
 
     public User() {}
 
@@ -38,25 +46,17 @@ public class User {
      * @return success of the register attempt
      */
     public boolean register() {
-
-//        Connector connector = Connector.getConnector();
-//        if (connector == null)
-//            return false;
-
         String insert = "INSERT INTO `5530db58`.`user` (`login`, `password`, `first_name`, `middle_name`, `last_name`, `gender`, `address`) " +
-                "VALUES ('"+login+"', '"+password+"', '"+firstName+"', '"+middleName+"', '"+lastName+"', '"+gender+"', '" +address+"');";
+                "VALUES ('" + login + "', '" + password + "', '" + firstName + "', '" + middleName + "', '" + lastName + "', '" + gender + "', '" + address + "');";
 
         try {
             Connector.getInstance().statement.execute(insert);
-
-            //connector.closeConnection(); Closed connection too early
+            this.isAuthenticated = true;
             return true;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Insert failed");
             System.out.println(e.getMessage());
             return false;
-        }finally {
-//            Connector.getInstance().closeConnection();
         }
     }
 
@@ -65,44 +65,50 @@ public class User {
      * @return success of the login attempt
      */
     public boolean login(String login, String password) {
-//        Connector connector = Connector.getConnector();
-//
-//        if (connector == null)
-//            return false;
-
-        String query = "select password from 5530db58.user where login='"+login+"';";
-
+        String query = "select * from 5530db58.user where login='" + login + "';";
         ResultSet results;
-        try{
+
+        try {
             results = Connector.getInstance().statement.executeQuery(query);
 
             // Step to result
-             if(results.next())
-             {
-                 String foundPass = results.getString("password");
-                 if(foundPass.equals(password))
-                 {
-//                     Connector.getInstance().closeConnection();
-                     return true;
-                 }
-                 else return  false;
-             }
-             else return false;
-
-        } catch(Exception e) {
-            if(e instanceof  NullPointerException) {
+            if (results.next()) {
+                String foundPass = results.getString("password");
+                if (foundPass.equals(password)) {
+                    populateUser(results);
+                    this.isAuthenticated = true;
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
                 System.err.println("Unable to establish connection to database");
                 return false;
             }
-
-            System.err.println("Unable to execute query:"+query+"\n");
+            System.err.println("Unable to execute query:" + query + "\n");
             System.err.println(e.getMessage());
-        }finally {
-//            Connector.getInstance().closeConnection();
         }
-
         return false;
     }
 
+    private void populateUser(ResultSet resultSet) {
+        try {
+            this.uid = resultSet.getInt("uid");
+            this.firstName = resultSet.getString("first_name");
+            this.middleName = resultSet.getString("middle_name");
+            this.lastName = resultSet.getString("last_name");
+            this.gender = resultSet.getString("gender");
+            this.isTrusted = resultSet.getFloat("is_trusted");
+            this.favorite = resultSet.getString("favorite");
+            this.address = resultSet.getString("address");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
