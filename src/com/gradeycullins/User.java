@@ -10,7 +10,6 @@ public class User {
 
     /* relational db column mappings */
     protected String login;
-    protected int uid;
     protected String password;
     protected String firstName;
     protected String middleName;
@@ -38,6 +37,19 @@ public class User {
         this.middleName = middleName;
         this.lastName = lastName;
         this.gender = gender;
+        this.address = address;
+    }
+
+    public User(String login, String password, String firstName, String middleName,
+                String lastName, String gender, float isTrusted, String favorite, String address) {
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.isTrusted = isTrusted;
+        this.favorite = favorite;
         this.address = address;
     }
 
@@ -97,7 +109,6 @@ public class User {
 
     private void populateUser(ResultSet resultSet) {
         try {
-            this.uid = resultSet.getInt("uid");
             this.firstName = resultSet.getString("first_name");
             this.middleName = resultSet.getString("middle_name");
             this.lastName = resultSet.getString("last_name");
@@ -108,7 +119,16 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Updates this user's trust score in the database
+     * @param increment: whether to increment or drecrement trust score
+     * @return success of the change
+     */
+    public boolean updateTrustValue(boolean increment){
+
+        return false;
     }
 
 }

@@ -1,8 +1,13 @@
 package com.gradeycullins;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    // Used to store user's current un-committed changes
+    ArrayList<Reservation> pendingReservations = new ArrayList<>();
+    ArrayList<Visit> pendingVisits = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -67,7 +72,7 @@ public class Main {
                     }
                 }
             } else { // user is authenticated
-                System.out.println("1) List properties\n2) Add property\n3) Show my listed properties");
+                System.out.println("1) List properties\n2) Add property\n3) Show my listed properties\n4) List users");
                 Object input = scanner.next();
 
                 try {
@@ -96,17 +101,8 @@ public class Main {
                     String address = scanner.next();
 
                     // Loop to account for user error
-                    int year;
-                    while (true) {
-                        System.out.println("What year was it built?");
-                        Object in = scanner.next();
-                        try {
-                            year = Integer.parseInt((String) in);
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Sorry the year must be a number.");
-                        }
-                    }
+                    System.out.println("What year was it built?");
+                    int year = loopForIntInput();
 
                     // Make new Th object for insertion
                     Th newTh = new Th(user.login, name, type, phoneNumber, address, year);
@@ -116,13 +112,71 @@ public class Main {
                     } else {
                         System.out.println("Something went wrong. Unable to register property.");
                     }
-                } else if (input.equals(3)) {
+                } else if (input.equals(3)) { // Show user's properties
 
-                } else {
+                }else if (input.equals(4)){ // List other users
+                    System.out.println("Enter index to rate user.");
+                    System.out.println("Index  |   Login    |          Name             |     Gender      |     Trust Rate      |       Favorite TH");
+                    UserManager userMan = new UserManager();
+                    int index = 0;
+                    for (User use : userMan.users) {
+                        System.out.println( index + "\t  " + use.login + "\t\t\t\t" + use.firstName + " " + use.middleName
+                                + " " + use.lastName + "\t\t\t\t" + use.gender + "\t\t\t\t\t" + use.isTrusted
+                                + "\t\t\t\t\t" + use.favorite);
+                        index++;
+                    }
+
+                    // Loop for user input
+                    while(true) {
+                        int choice = loopForIntInput();
+
+                        // Ensure the number entered is in the range
+                        if (choice >= 0 && choice < index) {
+                            // Get user chosen
+                            User selected = userMan.users.get(choice);
+                            System.out.println("User selected:");
+                            System.out.println(selected.login + "\t\t" + selected.firstName + " " + selected.middleName +
+                                    " " + selected.lastName + "\t\t" + selected.gender + "\t\t" + selected.isTrusted
+                                    + "\t\t" + selected.favorite);
+                            System.out.println("1) Mark as trusted, 2) Mark as un-trusted");
+
+                            int choice2 = loopForIntInput(); // Get entry
+
+                            // Update user as marked
+                            if(choice2 == 1)
+                                selected.updateTrustValue(true);
+                            else
+                                selected.updateTrustValue(true);
+                        } else {
+                            System.out.print("Sorry, that's not a valid entry.");
+                        }
+                    }
+
+                }else {
                     System.out.print("Sorry, that's not a valid entry.");
                 }
             }
         }
+    }
+
+    /**
+     * Loops to ensure the user entered a number.
+     * @return number entered
+     */
+    public static int loopForIntInput(){
+        Scanner scanner = new Scanner(System.in);
+        scanner.useDelimiter("\n");
+        int choice;
+        while (true) {
+            Object in = scanner.next();
+            try {
+                choice = Integer.parseInt((String) in);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Sorry your choice must be a number.");
+            }
+        }
+        return choice;
     }
 
 }
