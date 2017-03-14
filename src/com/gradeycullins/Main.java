@@ -5,9 +5,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    // Used to store user's current un-committed changes
-    ArrayList<Reservation> pendingReservations = new ArrayList<>();
-    ArrayList<Visit> pendingVisits = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -16,6 +13,8 @@ public class Main {
         /* application db state */
         User user = new User();
         ThManager thManager = new ThManager();
+        ArrayList<Reservation> pendingReservations = new ArrayList<>();
+        ArrayList<Visit> pendingVisits = new ArrayList<>();
 
         while (true) {
             if (!user.isAuthenticated) {
