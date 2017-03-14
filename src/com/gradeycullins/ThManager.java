@@ -14,8 +14,6 @@ public class ThManager {
     protected Map<Integer, Th> properties;
 
     public ThManager() {
-        String selectQuery = "SELECT * FROM `5530db58`.`th`";
-        ResultSet resultSet;
         properties = new HashMap<>();
     }
 
