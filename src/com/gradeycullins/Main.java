@@ -67,7 +67,7 @@ public class Main {
                     }
                 }
             } else { // user is authenticated
-                System.out.println("1) list properties\n2) add property\n3) show my listed properties");
+                System.out.println("1) List properties\n2) Add property\n3) Show my listed properties");
                 Object input = scanner.next();
 
                 try {
@@ -77,7 +77,7 @@ public class Main {
                 }
 
                 if (input.equals(1)) { // list temporary housing
-                    System.out.println("enter the id of a property to learn more:");
+                    System.out.println("Enter the id of a property to learn more:");
                     for (Th th : thManager.properties.values()) {
                         System.out.println(th.tid + "\t" + th.name);
                     }
@@ -114,12 +114,12 @@ public class Main {
                     if (newTh.insert()) {
                         System.out.println("New property registered to your account.");
                     } else {
-                        System.out.println("Something went wrong register.");
+                        System.out.println("Something went wrong. Unable to register property.");
                     }
                 } else if (input.equals(3)) {
 
                 } else {
-                    System.out.print("Sorry, that's not a valid entry.\n If you're trying to exit please1 try again.");
+                    System.out.print("Sorry, that's not a valid entry.");
                 }
             }
         }

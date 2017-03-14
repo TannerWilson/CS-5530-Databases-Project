@@ -1,7 +1,5 @@
 package com.gradeycullins;
 
-import com.sun.tools.corba.se.idl.StringGen;
-
 import java.sql.SQLException;
 
 /**
@@ -40,7 +38,8 @@ public class Th {
     }
 
     /**
-     * Add new Th into the database. Save the
+     * Add new Th into the database.
+     * Save the user login as owner.
      */
     public boolean insert()
     {
@@ -61,6 +60,5 @@ public class Th {
             return false;
         }
     }
-
 
 }
