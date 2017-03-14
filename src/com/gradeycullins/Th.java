@@ -61,4 +61,15 @@ public class Th {
         }
     }
 
+    /**
+     * Edits information in regarding the current TH
+     * @param feildName: what column is being changed
+     * @param newValue
+     * @return
+     */
+    public boolean updateField(String feildName, String newValue){
+
+        return false;
+    }
+
 }

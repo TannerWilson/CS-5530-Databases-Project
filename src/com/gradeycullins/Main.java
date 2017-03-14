@@ -1,5 +1,6 @@
 package com.gradeycullins;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -111,6 +112,56 @@ public class Main {
                         System.out.println("Something went wrong. Unable to register property.");
                     }
                 } else if (input.equals(3)) { // Show user's properties
+                    thManager.getUserProperties(user.login);
+                    System.out.println("Enter the number of the property you wish to access.");
+                    System.out.println("Properties you own:");
+
+                    for(Th th : thManager.properties.values()) {
+                        System.out.println(th.tid + "\t" + th.name);
+                    }
+                    int input1 = loopForIntInput();
+                    Th selected = thManager.properties.get(input1);
+                    System.out.println("You selected: " + selected.name);
+                    System.out.println("1) Edit property info\n2) Add available period\n3) View reservations or stays");
+                    int input2 = loopForIntInput();
+
+                    if(input2 == 1){// Edit property info
+                        System.out.println("1) Edit name\n 2) Edit property type\n3) Edit address");
+                        int input3 = loopForIntInput();
+                        if(input3 == 1) {
+                            System.out.println("Enter new property name.");
+                            String newName = scanner.next();
+                            selected.updateField("name", newName);
+                        } else if(input3 == 2){
+                            System.out.println("Enter new property type.");
+                            String newType = scanner.next();
+                            selected.updateField("type", newType);
+                        }
+                        else if(input3 == 3){
+                            System.out.println("Enter new address.");
+                            String newAddress = scanner.next();
+                            selected.updateField("name", newAddress);
+                        }
+                    } else if(input2 == 2){ // Add period
+                        System.out.println("Enter start date. Format: YYYY-MM-DD HH:MM:SS");
+                        SimpleDateFormat from = new SimpleDateFormat(scanner.next());
+                        System.out.println("Enter end date. Format: YYYY-MM-DD HH:MM:SS");
+                        SimpleDateFormat to = new SimpleDateFormat(scanner.next());
+                        System.out.println("Enter price per-night");
+                        int price = scanner.nextInt();
+
+                        Period newPeriod = new Period(selected.tid, from, to, price);
+                    } else if(input2 == 3){ // View reservations and stays
+                        System.out.println("1) Reservations\n 2) Visits");
+                        int input3 = loopForIntInput();
+                        if(input3 == 1){ // Pull reservations to this TH TODO
+
+                        }else if(input3 == 2){ // Pull the visits on TH TODO
+
+                        }
+                    }
+
+
 
                 }else if (input.equals(4)){ // List other users
                     System.out.println("Enter index to rate user.");
@@ -144,7 +195,7 @@ public class Main {
                             if(choice2 == 1)
                                 selected.updateTrustValue(true);
                             else
-                                selected.updateTrustValue(true);
+                                selected.updateTrustValue(false);
                         } else {
                             System.out.print("Sorry, that's not a valid entry.");
                         }
