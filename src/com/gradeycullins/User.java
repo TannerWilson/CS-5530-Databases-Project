@@ -66,8 +66,12 @@ public class User {
             this.isAuthenticated = true;
             return true;
         } catch (SQLException e) {
-            System.out.println("Insert failed");
-            System.out.println(e.getMessage());
+            if (e.getMessage().contains("Duplicate entry")) {
+                System.err.println("Login \'" + this.login + "\' already exists. Please use a different login and try again.");
+            } else {
+                System.out.println("Insert failed");
+                System.out.println(e.getMessage());
+            }
             return false;
         }
     }

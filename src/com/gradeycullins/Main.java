@@ -67,13 +67,12 @@ public class Main {
                     if (newUser.register()) {
                         System.out.println("You have successfully created an account and are now logged in!");
                         user = newUser;
-                    } else {
-                        System.out.println("Something went wrong when trying to create your account. . .");
                     }
                 }
             } else { // user is authenticated
                 System.out.println("1) List properties\n2) Add property\n3) Show my listed properties\n4) List users");
                 Object input = scanner.next();
+
 
                 try {
                     input = Integer.parseInt((String) input);
