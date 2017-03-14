@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Tanner on 3/13/2017.
+ * Object used to pull and manage all users from the database.
  */
 public class UserManager {
     protected ArrayList<User> users;

@@ -18,6 +18,10 @@ public class Feedback {
         this.usefulness = usefulness;
     }
 
+    /**
+     * Inserts this feedback into the database
+     * @return success of insert
+     */
     public boolean insert() {
         String insert = "INSERT INTO `5530db58`.`feedback` (`login`, `score`, `description`, `usefulness`) " +
                 "VALUES ('" + userLogin + "', '" + score + "', '" + description + "', '" + usefulness + "');";

@@ -46,10 +46,6 @@ public class Th {
         String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, category, `phone_num`, `address`, `year_built`) " +
                 "VALUES ('"+name+"', '"+owner+"', '"+category+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
 
-//        Connector connector = Connector.getConnector();
-//        if (connector == null)
-//            return false;
-
         try {
             Connector.getInstance().statement.execute(insert);
             Connector.getInstance().closeConnection();
@@ -67,9 +63,18 @@ public class Th {
      * @param newValue
      * @return
      */
-    public boolean updateField(String feildName, String newValue){
+    public boolean updateField(String feildName, String newValue, int tid){
 
-        return false;
+       String update = "UPDATE `5530db58`.`th` SET `"+ feildName +"`='"+ newValue +"' WHERE `tid`='"+tid+"';";
+
+        try {
+            Connector.getInstance().statement.execute(update);
+            Connector.getInstance().closeConnection();
+            return true;
+        } catch(SQLException e) {
+            System.out.println("Update failed");
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
-
 }

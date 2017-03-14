@@ -44,6 +44,11 @@ public class ThManager {
         }
     }
 
+
+    /**
+     * Pulls all TH's owned by a given user.
+     * @param login
+     */
     public void getUserProperties(String login){
         String query = "SELECT * FROM `5530db58`.`th` where owner='"+login+"';";
 

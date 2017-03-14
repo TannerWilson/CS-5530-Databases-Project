@@ -20,6 +20,10 @@ public class Visit {
         this.pid = pid;
     }
 
+    /**
+     * Inserts this visit into the database
+     * @return success of insert
+     */
     public boolean insert() {
         String insert = "INSERT INTO `5530db58`.`visit` (`login`, `tid`, `pid`, `to`, `from`) " +
                 "VALUES ('" + login + "', '" + tid + "', '" + pid + "', '" + to + "', '"+ from +"');";
