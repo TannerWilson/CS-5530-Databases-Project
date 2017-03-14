@@ -1,0 +1,5 @@
+-User needs to have 'isAdmin' or something similar
+
+Gradey: #9,
+
+Tanner: #2, #4, #5, #8
