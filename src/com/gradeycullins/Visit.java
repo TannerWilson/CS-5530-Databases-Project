@@ -2,6 +2,7 @@ package com.gradeycullins;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Tanner on 3/13/2017.
@@ -10,8 +11,8 @@ public class Visit {
     String login;
     int tid;
     int pid;
-    Date to;
-    Date from;
+    SimpleDateFormat to;
+    SimpleDateFormat from;
 
     public Visit(String login, int tid, int pid) {
         this.login = login;
