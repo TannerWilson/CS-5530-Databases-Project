@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,24 +17,31 @@ public class ThManager {
         String selectQuery = "SELECT * FROM `5530db58`.`th`";
         ResultSet resultSet;
         properties = new HashMap<>();
+    }
 
-        // populate the properties variable preemptively
+    public void getTh(int minPrice, int maxPrice, String _owner, String _name, String city,
+                      String state, List<String> keywords, String _category) {
+        String selectQuery =
+                "SELECT *\n" +
+                "FROM " + Connector.DATABASE + ".th t\n" +
+                "WHERE\n" +
+                "t.name='" + _name + "'";
+
         try {
-            resultSet = Connector.getInstance().statement.executeQuery(selectQuery);
+            ResultSet resultSet = Connector.getInstance().statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 int tid = resultSet.getInt("tid");
                 String owner = resultSet.getString("owner");
                 String name = resultSet.getString("name");
-                String type = resultSet.getString("type");
+                String category = resultSet.getString("category");
                 String phoneNum = resultSet.getString("phone_num");
                 String address = resultSet.getString("address");
                 String url = resultSet.getString("url");
                 int yearBuilt = resultSet.getInt("year_built");
-                Th newTh = new Th(tid, owner, name, type, phoneNum, address, url, yearBuilt);
+                Th newTh = new Th(tid, owner, name, category, phoneNum, address, url, yearBuilt);
                 properties.put(tid, newTh);
             }
         } catch (SQLException e) {
-            System.out.println("An error occurred while attempting to retrieve the listing of temporary housings.");
             e.printStackTrace();
         }
     }

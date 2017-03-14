@@ -43,7 +43,7 @@ public class Th {
      */
     public boolean insert()
     {
-        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, `type`, `phone_num`, `address`, `year_built`) " +
+        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, category, `phone_num`, `address`, `year_built`) " +
                 "VALUES ('"+name+"', '"+owner+"', '"+type+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
 
 //        Connector connector = Connector.getConnector();

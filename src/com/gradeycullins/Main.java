@@ -1,7 +1,6 @@
 package com.gradeycullins;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -69,9 +68,8 @@ public class Main {
                     }
                 }
             } else { // user is authenticated
-                System.out.println("1) List properties\n2) Add property\n3) Show my listed properties\n4) List users");
+                System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users");
                 Object input = scanner.next();
-
 
                 try {
                     input = Integer.parseInt((String) input);
@@ -79,8 +77,29 @@ public class Main {
                     // input was not a number - ignore
                 }
 
-                if (input.equals(1)) { // list temporary housing
-                    System.out.println("Enter the id of a property to learn more:");
+                if (input.equals(1)) { // filter selection of th
+                    System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
+                    System.out.println("minimum price");
+                    int minPrice = Integer.parseInt(scanner.next());
+                    System.out.println("maximum price");
+                    int maxPrice = Integer.parseInt(scanner.next());
+                    System.out.println("owner");
+                    String owner = scanner.next();
+                    System.out.println("name");
+                    String name = scanner.next();
+                    System.out.println("city");
+                    String city = scanner.next();
+                    System.out.println("state");
+                    String state = scanner.next();
+                    System.out.println("enter keywords separated by a space");
+                    List<String> keywords = new LinkedList<>();
+                    String words = scanner.next();
+                    keywords.addAll(Arrays.asList(words.split(" ")));
+                    System.out.println("category");
+                    String category = scanner.next();
+
+                    thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category);
+
                     for (Th th : thManager.properties.values()) {
                         System.out.println(th.tid + "\t" + th.name);
                     }
@@ -150,7 +169,7 @@ public class Main {
                         }
                     }
 
-                }else {
+                } else {
                     System.out.print("Sorry, that's not a valid entry.");
                 }
             }

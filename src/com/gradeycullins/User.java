@@ -111,6 +111,10 @@ public class User {
         return false;
     }
 
+    /**
+     * Populate a user's fields as a newly auth'd profile
+     * @param resultSet
+     */
     private void populateUser(ResultSet resultSet) {
         try {
             this.firstName = resultSet.getString("first_name");
