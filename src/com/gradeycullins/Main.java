@@ -81,9 +81,11 @@ public class Main {
                 if (input.equals(1)) { // filter selection of th
                     System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
                     System.out.println("minimum price");
-                    int minPrice = Integer.parseInt(scanner.next());
+                    String minP = scanner.next();
+                    int minPrice = ((minP.isEmpty()) ? -1 : Integer.parseInt(minP));
                     System.out.println("maximum price");
-                    int maxPrice = Integer.parseInt(scanner.next());
+                    String maxP = scanner.next();
+                    int maxPrice = ((maxP.isEmpty()) ? -1 : Integer.parseInt(maxP));
                     System.out.println("owner");
                     String owner = scanner.next();
                     System.out.println("name");
