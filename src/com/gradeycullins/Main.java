@@ -1,8 +1,7 @@
 package com.gradeycullins;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -171,6 +170,7 @@ public class Main {
                         int price = scanner.nextInt();
 
                         Period newPeriod = new Period(selected.tid, from, to, price);
+                        newPeriod.insert();
                     } else if(input2 == 3){ // View reservations and stays
                         System.out.println("1) Reservations\n 2) Visits");
                         int input3 = loopForIntInput();
@@ -247,5 +247,7 @@ public class Main {
         }
         return choice;
     }
+
+    //public get
 
 }

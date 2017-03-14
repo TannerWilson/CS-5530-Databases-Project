@@ -10,27 +10,27 @@ public class Th {
     int tid; // Primary key
     String owner;
     String name;
-    String type;
+    String category;
     String phoneNum;
     String address;
     String url;
     int yearBuilt;
 
 
-    public Th(int tid, String owner, String name, String type, String phoneNum, String address, String url, int yearBuilt) {
+    public Th(int tid, String owner, String name, String category, String phoneNum, String address, String url, int yearBuilt) {
         this.tid = tid;
         this.name = name;
         this.owner = owner;
-        this.type = type;
+        this.category = category;
         this.phoneNum = phoneNum;
         this.address = address;
         this.url = url;
         this.yearBuilt = yearBuilt;
     }
 
-    public Th(String owner, String name, String type, String phoneNum, String address, int yearBuilt) {
+    public Th(String owner, String name, String category, String phoneNum, String address, int yearBuilt) {
         this.name = name;
-        this.type = type;
+        this.category = category;
         this.phoneNum = phoneNum;
         this.address = address;
         this.yearBuilt = yearBuilt;
@@ -44,7 +44,7 @@ public class Th {
     public boolean insert()
     {
         String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, category, `phone_num`, `address`, `year_built`) " +
-                "VALUES ('"+name+"', '"+owner+"', '"+type+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
+                "VALUES ('"+name+"', '"+owner+"', '"+category+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
 
 //        Connector connector = Connector.getConnector();
 //        if (connector == null)
