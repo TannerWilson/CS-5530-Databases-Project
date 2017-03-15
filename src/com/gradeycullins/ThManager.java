@@ -20,7 +20,7 @@ public class ThManager {
     public void getTh(int minPrice, int maxPrice, String _owner, String _name, String city,
                       String state, List<String> keywords, String _category) {
 
-        String whereStatement = "t.tid=p.tid";
+        String whereStatement = "WHERE 1=1";
         if (minPrice != -1)
             whereStatement += " AND p.price >= " + minPrice;
         if (maxPrice != -1)
@@ -34,13 +34,16 @@ public class ThManager {
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
         // TODO keyword matching
+        if  (!keywords.isEmpty())
+
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "'\n";
 
         String selectQuery =
                 "SELECT *\n" +
-                "FROM " + Connector.DATABASE + ".th t, " + Connector.DATABASE + ".period p "  +
-                "WHERE " + whereStatement;
+                "FROM " + Connector.DATABASE + ".th t LEFT OUTER JOIN " + Connector.DATABASE + ".period p " +
+                "ON t.tid=p.tid " +
+                whereStatement;
 
         try {
             ResultSet resultSet = Connector.getInstance().statement.executeQuery(selectQuery);
