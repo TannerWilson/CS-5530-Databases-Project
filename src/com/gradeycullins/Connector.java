@@ -26,8 +26,8 @@ public class Connector {
             try {
                 instance = new Connector();
             } catch (Exception e) {
-                System.err.println("Unable to open mysql jdbc connection. The error is as follows,\n");
                 System.err.println(e.getMessage());
+                System.exit(0);
             }
         }
 
@@ -40,8 +40,8 @@ public class Connector {
             this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             this.statement = connection.createStatement();
         } catch (Exception e) {
-            System.err.println("Unable to open mysql jdbc connection. The error is as follows,\n");
             System.err.println(e.getMessage());
+            System.exit(0);
         }
     }
 
@@ -61,8 +61,8 @@ public class Connector {
                 connector = new Connector();
                 return connector;
             } catch (Exception e) {
-                System.out.println("attempt to connect to DB failed");
-                return null;
+                System.out.println("attempt to connect to DB failed. Exiting. . .");
+                System.exit(0);
             }
         }
         return null;

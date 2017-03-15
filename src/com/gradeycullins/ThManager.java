@@ -34,15 +34,19 @@ public class ThManager {
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
         // TODO keyword matching
-        if  (!keywords.isEmpty())
-
+//        if  (!keywords.isEmpty())
+//            for (int i = 0; i < keywords.size(); ++i)
+//                whereStatement += " AND k.word='" + keywords.get(i) + "'";
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "'\n";
 
         String selectQuery =
                 "SELECT *\n" +
-                "FROM " + Connector.DATABASE + ".th t LEFT OUTER JOIN " + Connector.DATABASE + ".period p " +
+                "FROM " + Connector.DATABASE + ".th t " +
+                "LEFT OUTER JOIN " + Connector.DATABASE + ".period p " +
                 "ON t.tid=p.tid " +
+                "LEFT OUTER JOIN " + Connector.DATABASE + ".keyword k " +
+                "ON t.tid=k.tid " +
                 whereStatement;
 
         try {
