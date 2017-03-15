@@ -1,7 +1,9 @@
 package com.gradeycullins;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class Main {
 
@@ -97,15 +99,18 @@ public class Main {
                     System.out.println("enter keywords separated by a space");
                     List<String> keywords = new LinkedList<>();
                     String words = scanner.next();
-                    keywords.addAll(Arrays.asList(words.split(" ")));
+                    if (!words.isEmpty())
+                        keywords.addAll(Arrays.asList(words.split(" ")));
                     System.out.println("category");
                     String category = scanner.next();
 
                     thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category);
 
-                    for (Th th : thManager.properties.values()) {
-                        System.out.println(th.tid + "\t" + th.name);
-                    }
+                    if (thManager.properties.isEmpty())
+                        System.out.println("No housing exists that matches your query");
+                    else
+                        for (Th th : thManager.properties.values())
+                            System.out.println(th.tid + "\t" + th.name);
 
                     // query for the th the user wishes to view TODO
                     while (true) {}

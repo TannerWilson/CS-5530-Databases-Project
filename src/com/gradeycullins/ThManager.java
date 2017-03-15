@@ -33,10 +33,9 @@ public class ThManager {
             whereStatement += " AND t.address LIKE '%" + city + "%'";
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
-        // TODO keyword matching
-//        if  (!keywords.isEmpty())
-//            for (int i = 0; i < keywords.size(); ++i)
-//                whereStatement += " AND k.word='" + keywords.get(i) + "'";
+        if  (!keywords.isEmpty())
+            for (int i = 0; i < keywords.size(); ++i)
+                whereStatement += " AND k.word='" + keywords.get(i) + "'";
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "'\n";
 
@@ -65,6 +64,8 @@ public class ThManager {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("exiting . . .");
+            System.exit(0);
         }
     }
 
