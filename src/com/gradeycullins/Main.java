@@ -103,12 +103,34 @@ public class Main {
 
                     thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category);
 
+                    System.out.println("Enter the number next to the property you wish to view.");
                     for (Th th : thManager.properties.values()) {
                         System.out.println(th.tid + "\t" + th.name);
                     }
 
                     // query for the th the user wishes to view TODO
-                    while (true) {}
+                    int thChosen = loopForIntInput();
+                    Th selected = thManager.properties.get(thChosen);
+
+                    /* Loop for the visit/reservation/feedback/favorite menu.
+                       Users can add multiple reservations/visits at once.
+                       Break loop and commit data changes after user confirmation
+                     */
+                    while (true) {
+                        System.out.println("You Selected: " + selected.name);
+                        System.out.println("1) Make reservation\n2) Record visit\n3) Leave Feedback\n4) Mark property as favorite");
+                        int in =loopForIntInput();
+                        if(in == 1){ // Reservation menu
+
+                        }else if(in == 2){ // Visit menu
+
+                        }else if(in == 3){ // Record Feedback
+
+                        }else if(in == 4){ // Make property favorite
+
+                        }
+
+                    }
                 } else if (input.equals(2)) {
                     System.out.println("Lets register you a new property to manage.");
                     System.out.println("Give your house a name.");
@@ -140,6 +162,7 @@ public class Main {
                     for(Th th : thManager.properties.values()) {
                         System.out.println(th.tid + "\t" + th.name);
                     }
+
                     int input1 = loopForIntInput();
                     Th selected = thManager.properties.get(input1);
                     System.out.println("You selected: " + selected.name);
