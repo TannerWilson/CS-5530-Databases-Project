@@ -136,6 +136,40 @@ public class User {
      */
     public boolean updateTrustValue(boolean increment){
 
+        String getTrustValue = "SELECT is_trusted FROM 5530db58.user WHERE login='"+login+"';";
+
+        ResultSet results;
+
+        // Get this user's trust value
+        int trustVal = 0;
+        try {
+            results = Connector.getInstance().statement.executeQuery(getTrustValue);
+
+            if (results.next()) { // Step to result
+                trustVal = results.getInt("is_trusted");
+            }
+
+            if(increment)
+                trustVal++;
+            else
+                trustVal--;
+
+        }catch (SQLException e){
+            System.err.println("Unable to execute query:" + getTrustValue + "\n");
+            System.err.println(e.getMessage());
+        }
+
+
+        String update = "UPDATE `5530db58`.`user` SET `is_trusted`='"+trustVal+"' WHERE `login`='"+login+"';";
+
+        // Insert new value back to database
+        try{
+            int result = Connector.getInstance().statement.executeUpdate(update);
+            return true;
+        }catch (SQLException e){
+            System.err.println("Unable to execute query:" + getTrustValue + "\n");
+            System.err.println(e.getMessage());
+        }
         return false;
     }
 

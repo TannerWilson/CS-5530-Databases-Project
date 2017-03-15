@@ -2,6 +2,7 @@ package com.gradeycullins;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Gradey Cullins on 3/14/17.
@@ -9,11 +10,12 @@ import java.text.SimpleDateFormat;
 public class Period {
     protected int pid;
     protected int tid;
-    protected SimpleDateFormat from;
-    protected SimpleDateFormat to;
+    protected Date from;
+    protected Date to;
     protected int price;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public Period(int pid, int tid, SimpleDateFormat from, SimpleDateFormat to, int price) {
+    public Period(int pid, int tid, Date from, Date to, int price) {
         this.pid = pid;
         this.tid = tid;
         this.to = to;
@@ -21,7 +23,7 @@ public class Period {
         this.price = price;
     }
 
-    public Period(int tid, SimpleDateFormat from, SimpleDateFormat to, int price) {
+    public Period(int tid, Date from, Date to, int price) {
         this.tid = tid;
         this.from = from;
         this.to = to;
@@ -33,8 +35,8 @@ public class Period {
      * @return
      */
     public boolean insert(){
-        String insert = "INSERT INTO `5530db58`.`period` (`tid`, `to`, `from`, `price`) " +
-                "VALUES ('" + tid + "', '" + to + "', '" + from + "', '"+ price +"');";
+        String insert = "INSERT INTO `5530db58`.`period` (`tid`, `from`, `to`, `price`) " +
+                "VALUES ('" + tid + "', '" + formatFrom() + "', '" + formatTo() + "', '"+ price +"');";
 
         try {
             Connector.getInstance().statement.execute(insert);
@@ -44,6 +46,22 @@ public class Period {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Format from to sql datetime format
+     * @return
+     */
+    public String formatFrom() {
+        return from.getYear() + "-" + from.getMonth() + "-" + from.getDay() + " " + from.getHours() + ":00:00";
+    }
+
+    /**
+     * Format to to sql datetime format
+     * @return
+     */
+    public String formatTo() {
+        return to.getYear() + "-" + to.getMonth() + "-" + to.getDay() + " " + to.getHours() + ":00:00";
     }
 
 }

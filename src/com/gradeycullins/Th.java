@@ -10,27 +10,27 @@ public class Th {
     int tid; // Primary key
     String owner;
     String name;
-    String type;
+    String category;
     String phoneNum;
     String address;
     String url;
     int yearBuilt;
 
 
-    public Th(int tid, String owner, String name, String type, String phoneNum, String address, String url, int yearBuilt) {
+    public Th(int tid, String owner, String name, String category, String phoneNum, String address, String url, int yearBuilt) {
         this.tid = tid;
         this.name = name;
         this.owner = owner;
-        this.type = type;
+        this.category = category;
         this.phoneNum = phoneNum;
         this.address = address;
         this.url = url;
         this.yearBuilt = yearBuilt;
     }
 
-    public Th(String owner, String name, String type, String phoneNum, String address, int yearBuilt) {
+    public Th(String owner, String name, String category, String phoneNum, String address, int yearBuilt) {
         this.name = name;
-        this.type = type;
+        this.category = category;
         this.phoneNum = phoneNum;
         this.address = address;
         this.yearBuilt = yearBuilt;
@@ -44,11 +44,7 @@ public class Th {
     public boolean insert()
     {
         String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, category, `phone_num`, `address`, `year_built`) " +
-                "VALUES ('"+name+"', '"+owner+"', '"+type+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
-
-//        Connector connector = Connector.getConnector();
-//        if (connector == null)
-//            return false;
+                "VALUES ('"+name+"', '"+owner+"', '"+category+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
 
         try {
             Connector.getInstance().statement.execute(insert);
@@ -67,9 +63,18 @@ public class Th {
      * @param newValue
      * @return
      */
-    public boolean updateField(String feildName, String newValue){
+    public boolean updateField(String feildName, String newValue, int tid){
 
-        return false;
+       String update = "UPDATE `5530db58`.`th` SET `"+ feildName +"`='"+ newValue +"' WHERE `tid`='"+tid+"';";
+
+        try {
+            Connector.getInstance().statement.execute(update);
+            Connector.getInstance().closeConnection();
+            return true;
+        } catch(SQLException e) {
+            System.out.println("Update failed");
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
-
 }

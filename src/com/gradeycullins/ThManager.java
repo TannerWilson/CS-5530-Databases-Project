@@ -61,6 +61,11 @@ public class ThManager {
         }
     }
 
+
+    /**
+     * Pulls all TH's owned by a given user.
+     * @param login
+     */
     public void getUserProperties(String login){
         String query = "SELECT * FROM `5530db58`.`th` where owner='"+login+"';";
 
@@ -74,12 +79,12 @@ public class ThManager {
                 int tid = resultSet.getInt("tid");
                 String owner = resultSet.getString("owner");
                 String name = resultSet.getString("name");
-                String type = resultSet.getString("type");
+                String category = resultSet.getString("category");
                 String phoneNum = resultSet.getString("phone_num");
                 String address = resultSet.getString("address");
                 String url = resultSet.getString("url");
                 int yearBuilt = resultSet.getInt("year_built");
-                Th newTh = new Th(tid, owner, name, type, phoneNum, address, url, yearBuilt);
+                Th newTh = new Th(tid, owner, name, category, phoneNum, address, url, yearBuilt);
                 properties.put(tid, newTh);
             }
         } catch (SQLException e) {

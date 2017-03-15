@@ -21,6 +21,10 @@ public class Reservation {
         this.pid = pid;
     }
 
+    /**
+     * Inserts this reservation into the database
+     * @return success of insert
+     */
     public boolean insert() {
         String insert = "INSERT INTO `5530db58`.`visit` (`login`, `tid`, `pid`, `to`, `from`, `cost`) " +
                 "VALUES ('" + login + "', '" + tid + "', '" + pid + "', '" + to + "', '"+ from +"', '"+ cost +"');";
