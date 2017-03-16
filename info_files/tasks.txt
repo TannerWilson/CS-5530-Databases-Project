@@ -18,4 +18,6 @@ Gradey: #9,
 
 Tanner: #2, #4, #5, #8, #11
 
-Tasks Finished: #1, #2, #3, #4, #5, #8, #11
+Tasks Finished: #1, #2, #3, #4, #5, #8, #11 (40 points + 20 after #9)
+
+Tasks TODO: #6, #7, #10, #12, #13, #14  (40 points)
