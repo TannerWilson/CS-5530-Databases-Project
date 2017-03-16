@@ -13,19 +13,32 @@ import java.util.*;
  * Created by Gradey Cullins on 3/13/17.
  */
 public class ThManager {
+    // orderings
+    protected final int DESCENDING_PRICE = 1;
+    protected final int ASCENDING_PRICE = 2;
+    protected final int DESCENDING_RATING = 3;
+    protected final int ASCENDING_RATING = 4;
+    protected final int DESCENDING_TRUSTED_RATING = 5;
+    protected final int ASCENDING_TRUSTED_RATING = 6;
+
     protected Map<Integer, Th> properties; // most recently user-queried properties
+    protected LinkedList<Integer> order; // stores the order of th's returned by user ordering
     protected Map<Integer, List<Period>> periods; // th.tid -> list of avail. periods
+    protected Map<Integer, List<Feedback>> feedbacks; // th.tid -> feedback of th
     protected Map<Integer, List<Keyword>> keywords; // th.tid -> list of pertaining keywords
 
     public ThManager() {
         properties = new HashMap<>();
+        order = new LinkedList<>();
+        feedbacks = new HashMap<>();
         periods = new HashMap<>();
         keywords = new HashMap<>();
     }
 
     public void getTh(int minPrice, int maxPrice, String _owner, String _name, String city,
-                      String state, List<String> keywords, String _category) {
+                      String state, List<String> keywords, String _category, int order) {
 
+        // where conditional(s)
         String whereStatement = "WHERE 1=1";
         if (minPrice != -1)
             whereStatement += " AND p.price >= " + minPrice;
@@ -43,7 +56,23 @@ public class ThManager {
             for (int i = 0; i < keywords.size(); ++i)
                 whereStatement += " AND k.word='" + keywords.get(i) + "'";
         if (!_category.isEmpty())
-            whereStatement += "t.category='" + _category + "'\n";
+            whereStatement += "t.category='" + _category + "' ";
+
+        // ordering
+        String orderStatement = "";
+        if (order == ASCENDING_PRICE) {
+            orderStatement = " ORDER BY p.price DESC";
+        } else if (order == DESCENDING_PRICE) {
+            orderStatement = " ORDER BY p.price ASC";
+        } else if (order == DESCENDING_RATING) {
+            orderStatement = " ORDER BY f.score DESC";
+        } else if (order == ASCENDING_RATING) {
+            orderStatement = " ORDER BY ";
+        } else if (order == DESCENDING_TRUSTED_RATING) {
+            orderStatement = " ORDER BY ";
+        } else if (order == ASCENDING_TRUSTED_RATING) {
+            orderStatement = " ORDER BY ";
+        }
 
         String selectQuery =
                 "SELECT * " +
@@ -52,11 +81,14 @@ public class ThManager {
                 "ON t.tid=p.tid " +
                 "LEFT OUTER JOIN " + Connector.DATABASE + ".keyword k " +
                 "ON t.tid=k.tid " +
-                whereStatement;
+                "LEFT OUTER JOIN " + Connector.DATABASE + ".feedback f " +
+                "ON f.tid=t.tid " +
+                whereStatement + orderStatement;
 
         try {
             ResultSet resultSet = Connector.getInstance().statement.executeQuery(selectQuery);
             while (resultSet.next()) {
+                // retrieve th columns for later storage
                 int tid = resultSet.getInt("tid");
                 String owner = resultSet.getString("owner");
                 String name = resultSet.getString("name");
@@ -65,13 +97,22 @@ public class ThManager {
                 String address = resultSet.getString("address");
                 String url = resultSet.getString("url");
                 int yearBuilt = resultSet.getInt("year_built");
+
+                // store the th from query result
                 Th newTh = new Th(tid, owner, name, category, phoneNum, address, url, yearBuilt);
-                properties.put(tid, newTh);
-                periods.put(tid, new LinkedList<>());
+                this.properties.put(tid, newTh);
+
+                // initialized the lists to hold th periods and feedbacks
+                this.periods.put(tid, new LinkedList<>());
+                this.feedbacks.put(tid, new LinkedList<>());
+
+                // store the order of results based on user input in 'order'
+                if (!this.order.contains(tid))
+                    this.order.add(tid);
 
                 // construct a period
                 int pid = resultSet.getInt("pid");
-                if (pid != 0) {
+                if (pid != 0) { // if this period exists . . .
                     String from = resultSet.getString("from");
                     String to = resultSet.getString("to");
                     Date fromDate = Period.sdf.parse(from);
@@ -80,6 +121,18 @@ public class ThManager {
                     Period newPeriod = new Period(pid, tid, fromDate, toDate, price);
                     periods.get(tid).add(newPeriod);
                 }
+
+                // construct a feedback
+                int fid = resultSet.getInt("fid");
+                if (fid != 0) { // if this feedback exists . . .
+                    String login = resultSet.getString("login");
+                    int score = resultSet.getInt("score");
+                    String description = resultSet.getString("description");
+                    float usefulness = resultSet.getFloat("usefulness");
+                    Feedback newFeedback = new Feedback(login, score, description, usefulness, tid);
+                    this.feedbacks.get(tid).add(newFeedback);
+                }
+
 
             }
 

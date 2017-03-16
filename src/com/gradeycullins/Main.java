@@ -1,12 +1,12 @@
 package com.gradeycullins;
 
+import javax.sound.midi.SysexMessage;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
 public class Main {
-
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -85,12 +85,12 @@ public class Main {
                        Break loop and commit data changes after user confirmation
                      */
 
-                    while(true){
+                    while (true) {
                         System.out.println("Property Search:");
                         System.out.println("Press enter to search for a property or type \"check out\" to finish and confirm your reservations.");
                         String userIn = scanner.next();
 
-                        if(!userIn.equals("check out")) { // User wants to search
+                        if (!userIn.equals("check out")) { // User wants to search
                             System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
                             System.out.println("minimum price");
                             String minP = scanner.next();
@@ -114,13 +114,49 @@ public class Main {
                             System.out.println("category");
                             String category = scanner.next();
 
-                            thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category);
+                            System.out.println("choose an order:");
+                            System.out.println("" +
+                                    "1) descending price\n" +
+                                    "2) ascending price\n" +
+                                    "3) descending average feedback rating\n" +
+                                    "4) ascending average feedback rating\n" +
+                                    "5) descending average feedback rating by trusted users\n" +
+                                    "6) ascending average feedback rating by trusted users");
+                            input = scanner.next();
 
-                    if (thManager.properties.isEmpty())
-                        System.out.println("No housing exists that matches your query");
-                    else
-                        for (Th th : thManager.properties.values())
-                            System.out.println(th.tid + "\t" + th.name);
+                            thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category, Integer.valueOf((String) input));
+
+
+                            System.err.format("%s\t|%30s\t|%30s\t|%30s\t|%30s %n", "tid", "name", "owner",
+                                    "lowest price", "address");
+
+                            if (thManager.properties.isEmpty()) {
+                                System.out.println("No housing exists that matches your query");
+                            } else {
+                                for (Integer i: thManager.order) {
+                                    Th currentTh = thManager.properties.get(i);
+                                    LinkedList<Period> currentPeriods = (LinkedList<Period>) thManager.periods.get(i);
+                                    int lowestPrice;
+
+                                    // find the lowest available price for the current th
+                                    if (!currentPeriods.isEmpty()) {
+                                        lowestPrice = currentPeriods.get(0).price;
+                                        for (int j = 1; j < currentPeriods.size(); ++j) {
+                                            int currentPrice = currentPeriods.get(j).price;
+                                            if (currentPrice < lowestPrice)
+                                                lowestPrice = currentPrice;
+                                        }
+                                    } else {
+                                        lowestPrice = -1;
+                                    }
+
+                                    System.out.format("%d\t|%30s\t|%30s\t|%30d\t|%30s\n", currentTh.tid, currentTh.name, currentTh.owner,
+                                            lowestPrice, currentTh.address);
+                                    // print tabular info
+//                                    System.out.println(currentTh.tid + " | " +
+//                                            currentTh.name + " | " + currentTh.owner + " | " + lowestPrice + " | " + currentTh.address);
+                                }
+                            }
 
                             int thChosen = loopForIntInput();
                             Th selected = thManager.properties.get(thChosen);
@@ -160,8 +196,7 @@ public class Main {
                             } else if (in == 3) { // Make property favorite
 
                             }
-                        }
-                        else{ // User is finished making reservations
+                        } else { // User is finished making reservations
                             user.commitReservations();
                         }
 
@@ -194,7 +229,7 @@ public class Main {
                     System.out.println("Enter the number next to the property you wish to access.");
                     System.out.println("Properties you own:");
 
-                    for(Th th : thManager.properties.values()) {
+                    for (Th th : thManager.properties.values()) {
                         System.out.println(th.tid + "\t" + th.name);
                     }
 
@@ -204,24 +239,23 @@ public class Main {
                     System.out.println("1) Edit property info\n2) Add available period\n3) View reservations\n4) View visits");
                     int input2 = loopForIntInput();
 
-                    if(input2 == 1){// Edit property info
+                    if (input2 == 1) {// Edit property info
                         System.out.println("1) Edit name\n2) Edit property type\n3) Edit address");
                         int input3 = loopForIntInput();
-                        if(input3 == 1) {
+                        if (input3 == 1) {
                             System.out.println("Enter new property name.");
                             String newName = scanner.next();
                             selected.updateField("name", newName, selected.tid);
-                        } else if(input3 == 2){
+                        } else if (input3 == 2) {
                             System.out.println("Enter new property type.");
                             String newType = scanner.next();
                             selected.updateField("category", newType, selected.tid);
-                        } else if(input3 == 3){
+                        } else if (input3 == 3) {
                             System.out.println("Enter new address.");
                             String newAddress = scanner.next();
                             selected.updateField("address", newAddress, selected.tid);
                         }
-                    }
-                    else if(input2 == 2){ // Add new period to selected property
+                    } else if (input2 == 2) { // Add new period to selected property
                         System.out.println("Enter start date. Format: YYYY-MM-DD-HH");
                         Date from = getInputDate(scanner.next());
                         System.out.println("Enter end date. Format: YYYY-MM-DD-HH");
@@ -232,7 +266,7 @@ public class Main {
                         Period newPeriod = new Period(selected.tid, from, to, price);
                         newPeriod.insert(); // Insert new period into database
 
-                    } else if(input2 == 3){ // View reservations of selected TH
+                    } else if (input2 == 3) { // View reservations of selected TH
                         // Pull reservations to this TH TODO
 
                     } else if(input2 == 3){ // View Stays of selected TH
