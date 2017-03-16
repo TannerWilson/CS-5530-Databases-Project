@@ -32,6 +32,14 @@ public class Period {
         this.price = price;
     }
 
+    public Period(int pid, int tid, String fromString, String toString, int price) {
+        this.pid = pid;
+        this.tid = tid;
+        this.from = sqlToDate(fromString);
+        this.to = sqlToDate(toString);
+        this.price = price;
+    }
+
     /**
      * Inserts a new period into the database
      * @return
@@ -66,4 +74,14 @@ public class Period {
         return to.getYear() + "-" + to.getMonth() + "-" + to.getDay() + " " + to.getHours() + ":00:00";
     }
 
+    /**
+     * Converts SQL DATETIME to java Date object
+     */
+    public Date sqlToDate(String timeStamp){
+        String[] firstSplit = timeStamp.split(" ");
+        String[] left = firstSplit[0].split("-");
+        //String[] right = firstSplit[1].split(":");
+
+        return new Date(Integer.parseInt(left[0]), Integer.parseInt(left[1]), Integer.parseInt(left[2]));
+    }
 }
