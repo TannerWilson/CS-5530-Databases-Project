@@ -212,6 +212,7 @@ public class User {
                 System.out.println("Your reservations have been confirmed.");
 
                 // Get suggested properties to print
+                // TODO: Sort by popularity
                 ThManager manager = new ThManager();
                 ArrayList<String> suggestedProperties = manager.getSuggestedProperties(pendingReservations, this);
 
