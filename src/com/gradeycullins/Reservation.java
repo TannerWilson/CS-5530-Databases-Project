@@ -38,6 +38,15 @@ public class Reservation {
         cost = computeCost();
     }
 
+    public Reservation(String login, int tid, int pid, Date from, Date to, float cost) {
+        this.login = login;
+        this.tid = tid;
+        this.pid = pid;
+        this.from = from;
+        this.to = to;
+        this.cost = cost;
+    }
+
     /**
      * Inserts this reservation into the database
      * @return success of insert

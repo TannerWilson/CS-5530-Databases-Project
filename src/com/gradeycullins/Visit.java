@@ -21,6 +21,14 @@ public class Visit {
         this.pid = pid;
     }
 
+    public Visit(String login, int tid, int pid, Date to, Date from) {
+        this.login = login;
+        this.tid = tid;
+        this.pid = pid;
+        this.to = to;
+        this.from = from;
+    }
+
     /**
      * Inserts this visit into the database
      * @return success of insert

@@ -32,21 +32,13 @@ public class Period {
         this.price = price;
     }
 
-    public Period(int pid, int tid, String fromString, String toString, int price) {
-        this.pid = pid;
-        this.tid = tid;
-        this.from = sqlToDate(fromString);
-        this.to = sqlToDate(toString);
-        this.price = price;
-    }
-
     /**
      * Inserts a new period into the database
      * @return
      */
     public boolean insert(){
         String insert = "INSERT INTO `5530db58`.`period` (`tid`, `from`, `to`, `price`) " +
-                "VALUES ('" + tid + "', '" + formatFrom() + "', '" + formatTo() + "', '"+ price +"');";
+                "VALUES ('" + tid + "', '" + sdf.format(from) + "', '" + sdf.format(to) + "', '"+ price +"');";
 
         try {
             Connector.getInstance().statement.execute(insert);
@@ -63,7 +55,8 @@ public class Period {
      * @return
      */
     public String formatFrom() {
-        return from.getYear() + "-" + from.getMonth() + "-" + from.getDay() + " " + from.getHours() + ":00:00";
+//        return from.getYear() + "-" + from.getMonth() + "-" + from.getDay() + " " + from.getHours() + ":00:00";
+        return sdf.format(from);
     }
 
     /**
@@ -71,7 +64,8 @@ public class Period {
      * @return
      */
     public String formatTo() {
-        return to.getYear() + "-" + to.getMonth() + "-" + to.getDay() + " " + to.getHours() + ":00:00";
+//        return to.getYear() + "-" + to.getMonth() + "-" + to.getDay() + " " + to.getHours() + ":00:00";
+        return sdf.format(to);
     }
 
     /**
@@ -80,7 +74,7 @@ public class Period {
     public Date sqlToDate(String timeStamp){
         String[] firstSplit = timeStamp.split(" ");
         String[] left = firstSplit[0].split("-");
-        //String[] right = firstSplit[1].split(":");
+        String[] right = firstSplit[1].split(":");
 
         return new Date(Integer.parseInt(left[0]), Integer.parseInt(left[1]), Integer.parseInt(left[2]));
     }
