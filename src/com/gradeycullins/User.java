@@ -2,6 +2,8 @@ package com.gradeycullins;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by Tanner on 3/11/2017.
@@ -21,6 +23,8 @@ public class User {
     /* end db column mappings */
 
     protected boolean isAuthenticated = false;
+    ArrayList<Reservation> pendingReservations = new ArrayList<>();
+    ArrayList<Visit> pendingVisits = new ArrayList<>();
 
     public User() {}
 
@@ -171,6 +175,67 @@ public class User {
             System.err.println(e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Prints out the users current pending reservations
+     * and allows them to confirm or deny the reservations
+     * before committing them to the database.
+     */
+    public void commitReservations() {
+        Scanner scan = new Scanner(System.in);
+
+        // User has no reservations. Return
+        if(pendingReservations.size() == 0){
+            System.out.print("You have no reservations to confirm.");
+            return;
+        }
+
+        System.out.println("Enter the number next to a reservation to remove it from your cart.\n" +
+                "0) to confirm\n");
+
+        while(true) {
+            // Print pending reservations
+            for (int i = 0; i < pendingReservations.size(); i++) {
+                Reservation r = pendingReservations.get(i);
+                System.out.println((i + 1) + "\tProperty: " + r.houseName + ", Check in: " + r.from.toString() +
+                        ", Check out: " + r.to.toString() + ", Total cost: " + r.cost);
+            }
+
+            int choice = loopForIntInput();
+            if (choice == 0) { // Insert all reservations
+                for(Reservation res : pendingReservations)
+                    res.insert();
+                System.out.println("Your reservations have been confirmed");
+                pendingReservations.clear();
+                // TODO: remove all available periods that coinside with these reservations
+                break;
+            }
+            else { // Remove selected reservation and continue loop
+                pendingReservations.remove(choice - 1);
+                System.out.println("Reservation removed. Current reservations:");
+            }
+        }
+    }
+
+    /**
+     * Loops to ensure the user entered a number.
+     * @return number entered
+     */
+    public static int loopForIntInput(){
+        Scanner scanner = new Scanner(System.in);
+        scanner.useDelimiter("\n");
+        int choice;
+        while (true) {
+            Object in = scanner.next();
+            try {
+                choice = Integer.parseInt((String) in);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Sorry your choice must be a number.");
+            }
+        }
+        return choice;
     }
 
 }

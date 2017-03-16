@@ -1,8 +1,8 @@
 package com.gradeycullins;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Tanner on 3/13/2017.
@@ -11,8 +11,9 @@ public class Visit {
     String login;
     int tid;
     int pid;
-    SimpleDateFormat to;
-    SimpleDateFormat from;
+    Date to;
+    Date from;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Visit(String login, int tid, int pid) {
         this.login = login;
@@ -26,7 +27,7 @@ public class Visit {
      */
     public boolean insert() {
         String insert = "INSERT INTO `5530db58`.`visit` (`login`, `tid`, `pid`, `to`, `from`) " +
-                "VALUES ('" + login + "', '" + tid + "', '" + pid + "', '" + to + "', '"+ from +"');";
+                "VALUES ('" + login + "', '" + tid + "', '" + pid + "', '" + sdf.format(to) + "', '"+ sdf.format(from) +"');";
 
         try {
             Connector.getInstance().statement.execute(insert);
@@ -37,5 +38,4 @@ public class Visit {
             return false;
         }
     }
-
 }

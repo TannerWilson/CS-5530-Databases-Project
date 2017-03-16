@@ -13,8 +13,6 @@ public class Main {
         /* application db state */
         User user = new User();
         ThManager thManager = new ThManager();
-        ArrayList<Reservation> pendingReservations = new ArrayList<>();
-        ArrayList<Visit> pendingVisits = new ArrayList<>();
 
         while (true) {
             if (!user.isAuthenticated) {
@@ -79,55 +77,88 @@ public class Main {
                 }
 
                 if (input.equals(1)) { // filter selection of th
-                    System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
-                    System.out.println("minimum price");
-                    String minP = scanner.next();
-                    int minPrice = ((minP.isEmpty()) ? -1 : Integer.parseInt(minP));
-                    System.out.println("maximum price");
-                    String maxP = scanner.next();
-                    int maxPrice = ((maxP.isEmpty()) ? -1 : Integer.parseInt(maxP));
-                    System.out.println("owner");
-                    String owner = scanner.next();
-                    System.out.println("name");
-                    String name = scanner.next();
-                    System.out.println("city");
-                    String city = scanner.next();
-                    System.out.println("state");
-                    String state = scanner.next();
-                    System.out.println("enter keywords separated by a space");
-                    List<String> keywords = new LinkedList<>();
-                    String words = scanner.next();
-                    keywords.addAll(Arrays.asList(words.split(" ")));
-                    System.out.println("category");
-                    String category = scanner.next();
-
-                    thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category);
-
-                    System.out.println("Enter the number next to the property you wish to view.");
-                    for (Th th : thManager.properties.values()) {
-                        System.out.println(th.tid + "\t" + th.name);
-                    }
-
-                    // query for the th the user wishes to view TODO
-                    int thChosen = loopForIntInput();
-                    Th selected = thManager.properties.get(thChosen);
 
                     /* Loop for the visit/reservation/feedback/favorite menu.
                        Users can add multiple reservations/visits at once.
                        Break loop and commit data changes after user confirmation
                      */
-                    while (true) {
-                        System.out.println("You Selected: " + selected.name);
-                        System.out.println("1) Make reservation\n2) Record visit\n3) Leave Feedback\n4) Mark property as favorite");
-                        int in =loopForIntInput();
-                        if(in == 1){ // Reservation menu
 
-                        }else if(in == 2){ // Visit menu
+                    while(true){
+                        System.out.println("Property Search:");
+                        System.out.println("Press enter to search for a property or type \"check out\" to finish and confirm your reservations.");
+                        String userIn = scanner.next();
 
-                        }else if(in == 3){ // Record Feedback
+                        if(!userIn.equals("check out")) { // User wants to search
+                            System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
+                            System.out.println("minimum price");
+                            String minP = scanner.next();
+                            int minPrice = ((minP.isEmpty()) ? -1 : Integer.parseInt(minP));
+                            System.out.println("maximum price");
+                            String maxP = scanner.next();
+                            int maxPrice = ((maxP.isEmpty()) ? -1 : Integer.parseInt(maxP));
+                            System.out.println("owner");
+                            String owner = scanner.next();
+                            System.out.println("name");
+                            String name = scanner.next();
+                            System.out.println("city");
+                            String city = scanner.next();
+                            System.out.println("state");
+                            String state = scanner.next();
+                            System.out.println("enter keywords separated by a space");
+                            List<String> keywords = new LinkedList<>();
+                            String words = scanner.next();
+                            keywords.addAll(Arrays.asList(words.split(" ")));
+                            System.out.println("category");
+                            String category = scanner.next();
 
-                        }else if(in == 4){ // Make property favorite
+                            thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category);
 
+                            System.out.println("Enter the number next to the property you wish to view.");
+                            for (Th th : thManager.properties.values()) {
+                                System.out.println(th.tid + "\t" + th.name);
+                            }
+
+                            int thChosen = loopForIntInput();
+                            Th selected = thManager.properties.get(thChosen);
+
+                            System.out.println("You Selected: " + selected.name);
+                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Mark property as favorite");
+                            int in = loopForIntInput();
+                            if (in == 1) { // Reservation menu
+                                System.out.println("Enter the number next to the period you wish to make a reservation for.");
+                                System.out.println("Enter 0 to go back to property search\n");
+                                System.out.println("Here are the available periods for this property:");
+                                selected.getAvailPeriods();
+
+                                for (int i = 0; i < selected.periods.size(); i++) {
+                                    Period p = selected.periods.get(i);
+                                    System.out.println((i + 1) + " Arrive: " + p.formatFrom() + ", Depart: " + p.formatTo() +
+                                            ", Price per night: $" + p.price);
+                                }
+                                int periodChoice = loopForIntInput();
+
+                                if (periodChoice == 0) // Go back to search menu
+                                    break;
+
+                                // Make reservation from selected period
+                                Period selectedPeriod = selected.periods.get(periodChoice - 1);
+//                            System.out.println("Time Window: ");
+                                // TODO: Let user select dates within window of period or take whole period
+                                Reservation res = new Reservation(user.login, selected.tid, selectedPeriod.pid,
+                                        selectedPeriod.from, selectedPeriod.to, selectedPeriod.price, selected.name);
+                                user.pendingReservations.add(res); // Add to cart
+                                System.out.println("A reservation for this available period has been created and added to you cart.\n" +
+                                        "Continue browsing if you wish to record more reservations or visits.\n");
+
+                            } else if (in == 2) { // Record Feedback
+                                // Get visits reservations this user has for this TH
+
+                            } else if (in == 3) { // Make property favorite
+
+                            }
+                        }
+                        else{ // User is finished making reservations
+                            user.commitReservations();
                         }
 
                     }
@@ -187,9 +218,9 @@ public class Main {
                         }
                     }
                     else if(input2 == 2){ // Add new period to selected property
-                        System.out.println("Enter start date. Format: YYYY MM DD HH");
+                        System.out.println("Enter start date. Format: YYYY-MM-DD-HH");
                         Date from = getInputDate(scanner.next());
-                        System.out.println("Enter end date. Format: YYYY MM DD HH");
+                        System.out.println("Enter end date. Format: YYYY-MM-DD-HH");
                         Date to = getInputDate(scanner.next());
                         System.out.println("Enter price per-night.");
                         int price = scanner.nextInt();
@@ -270,7 +301,7 @@ public class Main {
      * Formats the user stirng into desired format and returns a date
      */
     public static Date getInputDate(String input){
-        String[] entries = input.split(" ");
+        String[] entries = input.split("-");
         int year = Integer.parseInt(entries[0]);
         int month = Integer.parseInt(entries[1]);
         int day = Integer.parseInt(entries[2]);

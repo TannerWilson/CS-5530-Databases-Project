@@ -1,6 +1,10 @@
 package com.gradeycullins;
 
+import com.sun.org.apache.bcel.internal.generic.Select;
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 /**
  * Class to represent Temporary Housing objects in the database
@@ -15,6 +19,8 @@ public class Th {
     String address;
     String url;
     int yearBuilt;
+
+    LinkedList<Period> periods = new LinkedList<>();
 
 
     public Th(int tid, String owner, String name, String category, String phoneNum, String address, String url, int yearBuilt) {
@@ -75,6 +81,33 @@ public class Th {
             System.out.println("Update failed");
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Get all the periods associated with this th
+     * @return
+     */
+    public void getAvailPeriods() {
+        String query = "SELECT * FROM `5530db58`.`period` WHERE tid="+tid+";";
+
+        ResultSet resultSet;
+
+        try {
+            resultSet = Connector.getInstance().statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int pid = resultSet.getInt("pid");
+                int tid = resultSet.getInt("tid");
+                String from = resultSet.getDate("from").toString();
+                String to = resultSet.getDate("to").toString();
+                int price = resultSet.getInt("price");
+
+                Period p = new Period(pid, tid, from, to, price);
+                periods.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println("Could not retrieve available periods.");
         }
     }
 }

@@ -1,5 +1,13 @@
 -User needs to have 'isAdmin' or something similar
--Recording visits, feedback, reservations, add favorite, etc all at same menu "level" --> After TH browsing
+-Recording feedback, reservations, add favorite, etc all at same menu "level" --> After TH browsing
+- Edit to above --> Visit is accesable through the user menu
+-As of now I have that a user can add a reservation to match the entire period they select. I know this isnt
+ the desired way it should work but can change that later if we have the time
+
+- IDEA: We could greatly cut down on the clutter for the Main method if we moved each menu into its own method and then
+had loops for each sub level that simply called that method. The way it's set up right now already lends itself to that
+and this could allow for the "going back" feature. Just break the look when a user enters the exit value or whatever.
+Probably more work than its worth right now, but if we have the time in the end, could be a nice thing.
 
 Gradey: #9,
 
