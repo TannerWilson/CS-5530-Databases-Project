@@ -190,7 +190,7 @@ public class User {
 
         // User has no reservations. Return
         if(pendingReservations.size() == 0){
-            System.out.print("You have no reservations to confirm.");
+            System.out.println("You have no reservations to confirm.");
             return;
         }
 
@@ -230,7 +230,7 @@ public class User {
 
         // User has no reservations. Return
         if(pendingVisits.size() == 0){
-            System.out.print("You have no visits to confirm.");
+            System.out.println("You have no visits to confirm.");
             return;
         }
 
@@ -321,10 +321,23 @@ public class User {
                 if(resultSet.next()){
                     r.houseName = resultSet.getString("name");
                 }
-            }catch(SQLException e){
-
-            }
+            }catch(SQLException e){}
         }
     }
 
+    /**
+     * Update this user's favorite
+     */
+    public void setFavorite(Th th){
+        String update = "UPDATE `5530db58`.`user` SET `favorite`='"+th.name+"' WHERE `login`='"+login+"';";
+
+        try{
+            int result = Connector.getInstance().statement.executeUpdate(update);
+
+        }catch (SQLException e){
+            System.err.println("Unable to execute update");
+            System.err.println(e.getMessage());
+        }
+
+    }
 }

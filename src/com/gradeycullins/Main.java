@@ -159,13 +159,14 @@ public class Main {
                                 // Get visits reservations this user has for this TH
 
                             } else if (in == 3) { // Make property favorite
-
+                                user.setFavorite(selected);
+                                System.out.println(selected.name + " is now your favorite!");
+                                System.out.println("You will be taken back to the property search screen.");
                             }
                         }
                         else{ // User is finished making reservations
                             user.commitReservations();
                         }
-
                     }
                 } else if (input.equals(2)) {
                     System.out.println("Lets register you a new property to manage.");
