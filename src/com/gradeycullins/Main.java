@@ -249,7 +249,7 @@ public class Main {
 
 
     /**
-     * Formats the user stirng into desired format and returns a date
+     * Formats the user string into desired format and returns a date
      */
     public static Date getInputDate(String input){
         String[] entries = input.split(" ");
