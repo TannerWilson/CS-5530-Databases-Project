@@ -202,7 +202,7 @@ public class User {
             for (int i = 0; i < pendingReservations.size(); i++) {
                 Reservation r = pendingReservations.get(i);
                 System.out.println((i + 1) + "\tProperty: " + r.houseName + ", Check in: " + r.from.toString() +
-                        ", Check out: " + r.to.toString() + ", Total cost: " + r.cost);
+                        ", Check out: " + r.to.toString() + ", Total cost: $" + r.cost);
             }
 
             int choice = loopForIntInput();
@@ -210,6 +210,16 @@ public class User {
                 for(Reservation res : pendingReservations)
                     res.insert();
                 System.out.println("Your reservations have been confirmed.");
+
+                // Get suggested properties to print
+                ThManager manager = new ThManager();
+                ArrayList<String> suggestedProperties = manager.getSuggestedProperties(pendingReservations, this);
+
+                System.out.println("You may also enjoy a stay at the folowing properties:");
+                for(String property : suggestedProperties)
+                    System.out.println("--  "+property);
+                System.out.println("Try searching for these to get more information!");
+
                 pendingReservations.clear();
                 // TODO: remove all available periods that coinside with these reservations
                 break;

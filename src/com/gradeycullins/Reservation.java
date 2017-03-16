@@ -66,10 +66,13 @@ public class Reservation {
         }
     }
 
+    /**
+     * Coputes the total cost of the reservation
+     */
     public float computeCost(){
         long diff = getDateDiff(from, to, TimeUnit.DAYS);
-        long days = TimeUnit.MILLISECONDS.toDays(diff);
-        return days * pricePerNight;
+//        long days = TimeUnit.MILLISECONDS.toDays(diff);
+        return diff * pricePerNight;
     }
 
     /**

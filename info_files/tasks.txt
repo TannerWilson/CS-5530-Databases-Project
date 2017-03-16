@@ -16,6 +16,6 @@ Probably more work than its worth right now, but if we have the time in the end,
 
 Gradey: #9,
 
-Tanner: #2, #4, #5, #8
+Tanner: #2, #4, #5, #8, #11
 
-Tasks Finished: #1, #2, #3, #4, #5, #8
+Tasks Finished: #1, #2, #3, #4, #5, #8, #11
