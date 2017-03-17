@@ -126,8 +126,7 @@ public class Main {
 
                             thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category, Integer.valueOf((String) input));
 
-
-                            System.err.format("%s\t|%30s\t|%30s\t|%30s\t|%30s %n", "tid", "name", "owner",
+                            System.out.format("%s\t|%30s\t|%30s\t|%30s\t|%30s %n", "tid", "name", "owner",
                                     "lowest price", "address");
 
                             if (thManager.properties.isEmpty()) {
@@ -135,26 +134,10 @@ public class Main {
                             } else {
                                 for (Integer i: thManager.order) {
                                     Th currentTh = thManager.properties.get(i);
-                                    LinkedList<Period> currentPeriods = (LinkedList<Period>) thManager.periods.get(i);
-                                    int lowestPrice;
-
-                                    // find the lowest available price for the current th
-                                    if (!currentPeriods.isEmpty()) {
-                                        lowestPrice = currentPeriods.get(0).price;
-                                        for (int j = 1; j < currentPeriods.size(); ++j) {
-                                            int currentPrice = currentPeriods.get(j).price;
-                                            if (currentPrice < lowestPrice)
-                                                lowestPrice = currentPrice;
-                                        }
-                                    } else {
-                                        lowestPrice = -1;
-                                    }
+                                    int lowestPrice = currentTh.lowestPrice;
 
                                     System.out.format("%d\t|%30s\t|%30s\t|%30d\t|%30s\n", currentTh.tid, currentTh.name, currentTh.owner,
                                             lowestPrice, currentTh.address);
-                                    // print tabular info
-//                                    System.out.println(currentTh.tid + " | " +
-//                                            currentTh.name + " | " + currentTh.owner + " | " + lowestPrice + " | " + currentTh.address);
                                 }
                             }
 
@@ -211,13 +194,15 @@ public class Main {
                     String phoneNumber = scanner.next();
                     System.out.println("Enter the property's address.");
                     String address = scanner.next();
+                    System.out.println("Enter the property's URL.");
+                    String url = scanner.next();
 
                     // Loop to account for user error
                     System.out.println("What year was it built?");
                     int year = loopForIntInput();
 
                     // Make new Th object for insertion
-                    Th newTh = new Th(user.login, name, type, phoneNumber, address, year);
+                    Th newTh = new Th(user.login, name, type, phoneNumber, address, url, year);
 
                     if (newTh.insert()) {
                         System.out.println("New property registered to your account.");
@@ -277,12 +262,14 @@ public class Main {
 
                 }else if (input.equals(4)){ // List other users
                     System.out.println("Enter index to rate user.");
-                    System.out.println("Index , Login , First Name , Middle Name , Last Name , Gender , Trust Rating , Favorite TH");
+                    System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
+                            "uid", "login", "first name", "middle name", "last name", "gender", "favorite th");
+
                     UserManager userMan = new UserManager();
                     int index = 0;
                     for (User use : userMan.users) {
-                        System.out.println( index +" , "+use.login+" , "+use.firstName+" , "+use.middleName +
-                                " , "+use.lastName+" , " +use.gender+" , "+ use.isTrusted+" , "+ use.favorite);
+                        System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
+                                index, use.login, use.firstName, use.middleName, use.lastName, use.gender, use.favorite);
                         index++;
                     }
                     int choice = loopForIntInput();
@@ -292,17 +279,14 @@ public class Main {
                         // Get user chosen
                         User selected = userMan.users.get(choice);
                         System.out.println("User selected:");
-                        System.out.println(selected.login + " , " + selected.firstName + " , " + selected.middleName +
-                                " ," + selected.lastName + " , " + selected.gender + " , " + selected.isTrusted + " , " + selected.favorite);
-                        System.out.println("1) Mark as trusted, 2) Mark as un-trusted");
+                        System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
+                                index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
+                        System.out.println("0) Mark as un-trusted\n1) Mark as trusted");
 
                         int choice2 = loopForIntInput(); // Get entry
 
-                        // Update user as marked
-                        if (choice2 == 1)
-                            selected.updateTrustValue(true);
-                        else
-                            selected.updateTrustValue(false);
+                        // insert a new trust relationship
+                        Trust.addTrustRelationship(user, selected, choice2);
                     } else {
                         System.out.print("Sorry, that's not a valid entry.");
                     }

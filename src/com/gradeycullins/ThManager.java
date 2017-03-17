@@ -23,16 +23,10 @@ public class ThManager {
 
     protected Map<Integer, Th> properties; // most recently user-queried properties
     protected LinkedList<Integer> order; // stores the order of th's returned by user ordering
-    protected Map<Integer, List<Period>> periods; // th.tid -> list of avail. periods
-    protected Map<Integer, List<Feedback>> feedbacks; // th.tid -> feedback of th
-    protected Map<Integer, List<Keyword>> keywords; // th.tid -> list of pertaining keywords
 
     public ThManager() {
         properties = new HashMap<>();
         order = new LinkedList<>();
-        feedbacks = new HashMap<>();
-        periods = new HashMap<>();
-        keywords = new HashMap<>();
     }
 
     public void getTh(int minPrice, int maxPrice, String _owner, String _name, String city,
@@ -61,9 +55,9 @@ public class ThManager {
         // ordering
         String orderStatement = "";
         if (order == ASCENDING_PRICE) {
-            orderStatement = " ORDER BY p.price DESC";
+            orderStatement = " ORDER BY min_price DESC";
         } else if (order == DESCENDING_PRICE) {
-            orderStatement = " ORDER BY p.price ASC";
+            orderStatement = " ORDER BY min_price ASC";
         } else if (order == DESCENDING_RATING) {
             orderStatement = " ORDER BY f.score DESC";
         } else if (order == ASCENDING_RATING) {
@@ -75,7 +69,8 @@ public class ThManager {
         }
 
         String selectQuery =
-                "SELECT * " +
+                "SELECT DISTINCT t.tid, t.owner, t.name, t.category, t.phone_num, t.address, t.url, t.year_built, " +
+                        "MIN(p.price) as min_price, AVG(f.score) as avg_score " +
                 "FROM " + Connector.DATABASE + ".th t " +
                 "LEFT OUTER JOIN " + Connector.DATABASE + ".period p " +
                 "ON t.tid=p.tid " +
@@ -83,7 +78,7 @@ public class ThManager {
                 "ON t.tid=k.tid " +
                 "LEFT OUTER JOIN " + Connector.DATABASE + ".feedback f " +
                 "ON f.tid=t.tid " +
-                whereStatement + orderStatement;
+                whereStatement + " GROUP BY t.tid " + orderStatement;
 
         try {
             ResultSet resultSet = Connector.getInstance().statement.executeQuery(selectQuery);
@@ -98,50 +93,28 @@ public class ThManager {
                 String url = resultSet.getString("url");
                 int yearBuilt = resultSet.getInt("year_built");
 
+                // joined columns
+                int lowestPrice = resultSet.getInt("min_price");
+                int averageScore = resultSet.getInt("avg_score");
+
                 // store the th from query result
                 Th newTh = new Th(tid, owner, name, category, phoneNum, address, url, yearBuilt);
-                this.properties.put(tid, newTh);
 
-                // initialized the lists to hold th periods and feedbacks
-                this.periods.put(tid, new LinkedList<>());
-                this.feedbacks.put(tid, new LinkedList<>());
+                newTh.lowestPrice = lowestPrice;
+                newTh.averageScore = averageScore;
+
+                // store the order in which THs were returned
+                this.properties.put(tid, newTh);
 
                 // store the order of results based on user input in 'order'
                 if (!this.order.contains(tid))
                     this.order.add(tid);
-
-                // construct a period
-                int pid = resultSet.getInt("pid");
-                if (pid != 0) { // if this period exists . . .
-                    String from = resultSet.getString("from");
-                    String to = resultSet.getString("to");
-                    Date fromDate = Period.sdf.parse(from);
-                    Date toDate = Period.sdf.parse(to);
-                    int price = resultSet.getInt("price");
-                    Period newPeriod = new Period(pid, tid, fromDate, toDate, price);
-                    periods.get(tid).add(newPeriod);
-                }
-
-                // construct a feedback
-                int fid = resultSet.getInt("fid");
-                if (fid != 0) { // if this feedback exists . . .
-                    String login = resultSet.getString("login");
-                    int score = resultSet.getInt("score");
-                    String description = resultSet.getString("description");
-                    float usefulness = resultSet.getFloat("usefulness");
-                    Feedback newFeedback = new Feedback(login, score, description, usefulness, tid);
-                    this.feedbacks.get(tid).add(newFeedback);
-                }
-
-
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("exiting . . .");
             System.exit(0);
-        } catch (ParseException e) {
-            System.out.println("Date could not be parsed. Exiting . . .");
         }
     }
 

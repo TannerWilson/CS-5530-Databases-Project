@@ -21,10 +21,23 @@ public class Th {
     int yearBuilt;
 
     LinkedList<Period> periods = new LinkedList<>();
+    protected int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing
+    protected int averageScore = -1; // average feedback score. -1 means no recording score
 
+    public Th(int tid, String owner, String name, String category, String phoneNum,
+              String address, String url, int yearBuilt) {
 
-    public Th(int tid, String owner, String name, String category, String phoneNum, String address, String url, int yearBuilt) {
         this.tid = tid;
+        this.owner = owner;
+        this.name = name;
+        this.category = category;
+        this.phoneNum = phoneNum;
+        this.address = address;
+        this.url = url;
+        this.yearBuilt = yearBuilt;
+    }
+
+    public Th(String owner, String name, String category, String phoneNum, String address, String url, int yearBuilt) {
         this.name = name;
         this.owner = owner;
         this.category = category;
