@@ -87,42 +87,54 @@ public class Main {
 
                     while (true) {
                         System.out.println("Property Search:");
-                        System.out.println("Press enter to search for a property or type \"check out\" to finish and confirm your reservations.");
+                        System.out.println("Enter a blank line to search for a property or enter \"check out\" to finish and confirm your reservations.");
                         String userIn = scanner.next();
 
                         if (!userIn.equals("check out")) { // User wants to search
-                            System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
-                            System.out.println("minimum price");
-                            String minP = scanner.next();
-                            int minPrice = ((minP.isEmpty()) ? -1 : Integer.parseInt(minP));
-                            System.out.println("maximum price");
-                            String maxP = scanner.next();
-                            int maxPrice = ((maxP.isEmpty()) ? -1 : Integer.parseInt(maxP));
-                            System.out.println("owner");
-                            String owner = scanner.next();
-                            System.out.println("name");
-                            String name = scanner.next();
-                            System.out.println("city");
-                            String city = scanner.next();
-                            System.out.println("state");
-                            String state = scanner.next();
-                            System.out.println("enter keywords separated by a space");
-                            List<String> keywords = new LinkedList<>();
-                            String words = scanner.next();
-                            if (!words.isEmpty())
-                                keywords.addAll(Arrays.asList(words.split(" ")));
-                            System.out.println("category");
-                            String category = scanner.next();
+                            System.out.println("Enter a blank line for no filters. Enter \"filter\" to apply filters.");
+                            String filterChoice = scanner.next();
+                            int minPrice, maxPrice;
+                            String owner, name, city, state, category;
+                            List<String> keywords;
+                            if (filterChoice.toLowerCase().equals("filter")) {
+                                System.out.println("Enter filtering values. Skip the filter by entering a blank line.");
+                                System.out.println("minimum price");
+                                String minP = scanner.next();
+                                minPrice = ((minP.isEmpty()) ? -1 : Integer.parseInt(minP));
+                                System.out.println("maximum price");
+                                String maxP = scanner.next();
+                                maxPrice = ((maxP.isEmpty()) ? -1 : Integer.parseInt(maxP));
+                                System.out.println("owner");
+                                owner = scanner.next();
+                                System.out.println("name");
+                                name = scanner.next();
+                                System.out.println("city");
+                                city = scanner.next();
+                                System.out.println("state");
+                                state = scanner.next();
+                                System.out.println("enter keywords separated by a space");
+                                keywords = new LinkedList<>();
+                                String words = scanner.next();
+                                if (!words.isEmpty())
+                                    keywords.addAll(Arrays.asList(words.split(" ")));
+                                System.out.println("category");
+                                category = scanner.next();
 
-                            System.out.println("choose an order:");
-                            System.out.println("" +
-                                    "1) descending price\n" +
-                                    "2) ascending price\n" +
-                                    "3) descending average feedback rating\n" +
-                                    "4) ascending average feedback rating\n" +
-                                    "5) descending average feedback rating by trusted users\n" +
-                                    "6) ascending average feedback rating by trusted users");
-                            input = scanner.next();
+                                System.out.println("choose an order:");
+                                System.out.println("" +
+                                        "1) descending price\n" +
+                                        "2) ascending price\n" +
+                                        "3) descending average feedback rating\n" +
+                                        "4) ascending average feedback rating\n" +
+                                        "5) descending average feedback rating by trusted users\n" +
+                                        "6) ascending average feedback rating by trusted users");
+                                input = scanner.next();
+                            } else {
+                                minPrice =  maxPrice = -1;
+                                owner = name = city = state = category = "";
+                                keywords = new LinkedList<>();
+                                input = "1";
+                            }
 
                             thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category, Integer.valueOf((String) input));
 
@@ -136,7 +148,7 @@ public class Main {
                                     Th currentTh = thManager.properties.get(i);
                                     int lowestPrice = currentTh.lowestPrice;
 
-                                    System.out.format("%d\t|%30s\t|%30s\t|%30d\t|%30s\n", currentTh.tid, currentTh.name, currentTh.owner,
+                                    System.out.format("%d\t|%30s\t|%30s\t|%30d\t| %30s\n", currentTh.tid, currentTh.name, currentTh.owner,
                                             lowestPrice, currentTh.address);
                                 }
                             }

@@ -46,18 +46,21 @@ public class ThManager {
             whereStatement += " AND t.address LIKE '%" + city + "%'";
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
+
         if  (!keywords.isEmpty())
-            for (int i = 0; i < keywords.size(); ++i)
-                whereStatement += " AND k.word='" + keywords.get(i) + "'";
+            whereStatement += " AND k.word='" + keywords.get(0) + "'";
+            // TODO should every keyword match, or just one?
+            for (int i = 1; i < keywords.size(); ++i)
+                whereStatement += " OR k.word='" + keywords.get(i) + "'";
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "' ";
 
         // ordering
         String orderStatement = "";
         if (order == ASCENDING_PRICE) {
-            orderStatement = " ORDER BY min_price DESC";
-        } else if (order == DESCENDING_PRICE) {
             orderStatement = " ORDER BY min_price ASC";
+        } else if (order == DESCENDING_PRICE) {
+            orderStatement = " ORDER BY min_price DESC";
         } else if (order == DESCENDING_RATING) {
             orderStatement = " ORDER BY f.score DESC";
         } else if (order == ASCENDING_RATING) {
