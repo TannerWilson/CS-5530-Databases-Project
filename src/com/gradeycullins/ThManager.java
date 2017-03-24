@@ -152,4 +152,37 @@ public class ThManager {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<String> getSuggestedProperties(ArrayList<Reservation> reservations, User user){
+
+        ArrayList<String> results = new ArrayList<>();
+
+        for(Reservation r : reservations) {
+
+            String housesToSuggest = "SELECT t.name\n" +
+                    "FROM 5530db58.th t\n" +
+                    "WHERE t.tid IN (\n" +
+                    "SELECT v.tid\n" +
+                    "FROM 5530db58.visit v\n" +
+                    "WHERE v.tid <> "+r.tid+" AND v.login IN (\n" +
+                    "SELECT v1.login\n" +
+                    "FROM 5530db58.visit v1\n" +
+                    "WHERE v1.login <> '" + user.login + "' AND v1.tid = "+r.tid+"));";
+
+            ResultSet resultSet;
+            try {
+                resultSet = Connector.getInstance().statement.executeQuery(housesToSuggest);
+
+                while(resultSet.next()){
+                    String houseName = resultSet.getString("name");
+                    results.add(houseName);
+                }
+
+            }catch (SQLException e){
+                System.out.println("Failed to get Suggestions");
+
+            }
+        }
+        return results;
+    }
 }

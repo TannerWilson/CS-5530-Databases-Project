@@ -2,7 +2,9 @@ package com.gradeycullins;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -25,6 +27,7 @@ public class User {
     protected boolean isAuthenticated = false;
     ArrayList<Reservation> pendingReservations = new ArrayList<>();
     ArrayList<Visit> pendingVisits = new ArrayList<>();
+    ArrayList<Reservation> currentReservations = new ArrayList<>();
 
     public User() {}
 
@@ -187,7 +190,7 @@ public class User {
 
         // User has no reservations. Return
         if(pendingReservations.size() == 0){
-            System.out.print("You have no reservations to confirm.");
+            System.out.println("You have no reservations to confirm.");
             return;
         }
 
@@ -199,14 +202,25 @@ public class User {
             for (int i = 0; i < pendingReservations.size(); i++) {
                 Reservation r = pendingReservations.get(i);
                 System.out.println((i + 1) + "\tProperty: " + r.houseName + ", Check in: " + r.from.toString() +
-                        ", Check out: " + r.to.toString() + ", Total cost: " + r.cost);
+                        ", Check out: " + r.to.toString() + ", Total cost: $" + r.cost);
             }
 
             int choice = loopForIntInput();
             if (choice == 0) { // Insert all reservations
                 for(Reservation res : pendingReservations)
                     res.insert();
-                System.out.println("Your reservations have been confirmed");
+                System.out.println("Your reservations have been confirmed.");
+
+                // Get suggested properties to print
+                // TODO: Sort by popularity
+                ThManager manager = new ThManager();
+                ArrayList<String> suggestedProperties = manager.getSuggestedProperties(pendingReservations, this);
+
+                System.out.println("You may also enjoy a stay at the folowing properties:");
+                for(String property : suggestedProperties)
+                    System.out.println("--  "+property);
+                System.out.println("Try searching for these to get more information!");
+
                 pendingReservations.clear();
                 // TODO: remove all available periods that coinside with these reservations
                 break;
@@ -214,6 +228,45 @@ public class User {
             else { // Remove selected reservation and continue loop
                 pendingReservations.remove(choice - 1);
                 System.out.println("Reservation removed. Current reservations:");
+            }
+        }
+    }
+
+    /**
+     * Prints out the users current pending visits and allows them to
+     * confirm or deny them before committing to the database.
+     */
+    public void commitVisits() {
+        Scanner scan = new Scanner(System.in);
+
+        // User has no reservations. Return
+        if(pendingVisits.size() == 0){
+            System.out.println("You have no visits to confirm.");
+            return;
+        }
+
+        System.out.println("Enter the number next to a visit to remove it from your cart.\n" +
+                "0) to confirm\n");
+
+        while(true) {
+            // Print pending visits
+            for (int i = 0; i < pendingVisits.size(); i++) {
+                Visit v = pendingVisits.get(i);
+                System.out.println((i + 1) + "\tCheck in: " + v.from.toString() +
+                        ", Check out: " + v.to.toString());
+            }
+
+            int choice = loopForIntInput();
+            if (choice == 0) { // Insert all reservations
+                for(Visit visit : pendingVisits)
+                    visit.insert();
+                System.out.println("Your visits have been confirmed.");
+                pendingVisits.clear();
+                break;
+            }
+            else { // Remove selected reservation and continue loop
+                pendingVisits.remove(choice - 1);
+                System.out.println("Visit removed. Current visits:");
             }
         }
     }
@@ -238,4 +291,64 @@ public class User {
         return choice;
     }
 
+    /**
+     * Get all the periods associated with this th
+     * @return
+     */
+    public void getReservations() {
+        String query = "SELECT * FROM `5530db58`.`reservation` WHERE login='"+login+"';";
+
+        ResultSet resultSet;
+
+        try {
+            resultSet = Connector.getInstance().statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String login = resultSet.getString("login");
+                int tid = resultSet.getInt("tid");
+                int pid = resultSet.getInt("pid");
+                String from = resultSet.getString("from");
+                String to = resultSet.getString("to");
+                Date fromDate = Period.sdf.parse(from);
+                Date toDate = Period.sdf.parse(to);
+                float cost = resultSet.getFloat("cost");
+
+                Reservation r = new Reservation(login, pid, tid, fromDate, toDate, cost);
+                currentReservations.add(r);
+            }
+        } catch (SQLException e) {
+            System.out.println("Could not retrieve reservations.");
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("Could not parse date.");
+        }
+
+        // Populate house names in reservations we just grabbed for UI convience
+        for(Reservation r : currentReservations) {
+            String nameQuery = "SELECT name FROM `5530db58`.`th` WHERE tid="+r.tid+";";
+
+            try{
+                resultSet = Connector.getInstance().statement.executeQuery(nameQuery);
+                if(resultSet.next()){
+                    r.houseName = resultSet.getString("name");
+                }
+            }catch(SQLException e){}
+        }
+    }
+
+    /**
+     * Update this user's favorite
+     */
+    public void setFavorite(Th th){
+        String update = "UPDATE `5530db58`.`user` SET `favorite`='"+th.name+"' WHERE `login`='"+login+"';";
+
+        try{
+            int result = Connector.getInstance().statement.executeUpdate(update);
+
+        }catch (SQLException e){
+            System.err.println("Unable to execute update");
+            System.err.println(e.getMessage());
+        }
+
+    }
 }

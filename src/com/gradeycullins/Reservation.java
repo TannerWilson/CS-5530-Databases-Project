@@ -38,6 +38,15 @@ public class Reservation {
         cost = computeCost();
     }
 
+    public Reservation(String login, int tid, int pid, Date from, Date to, float cost) {
+        this.login = login;
+        this.tid = tid;
+        this.pid = pid;
+        this.from = from;
+        this.to = to;
+        this.cost = cost;
+    }
+
     /**
      * Inserts this reservation into the database
      * @return success of insert
@@ -57,10 +66,13 @@ public class Reservation {
         }
     }
 
+    /**
+     * Coputes the total cost of the reservation
+     */
     public float computeCost(){
         long diff = getDateDiff(from, to, TimeUnit.DAYS);
-        long days = TimeUnit.MILLISECONDS.toDays(diff);
-        return days * pricePerNight;
+//        long days = TimeUnit.MILLISECONDS.toDays(diff);
+        return diff * pricePerNight;
     }
 
     /**

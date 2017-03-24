@@ -69,7 +69,8 @@ public class Main {
                     }
                 }
             } else { // user is authenticated
-                System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users");
+                System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users" +
+                        "\n5) Show my reservations");
                 Object input = scanner.next();
 
                 try {
@@ -80,8 +81,8 @@ public class Main {
 
                 if (input.equals(1)) { // filter selection of th
 
-                    /* Loop for the visit/reservation/feedback/favorite menu.
-                       Users can add multiple reservations/visits at once.
+                    /* Loop for the reservation/feedback/favorite menu.
+                       Users can add multiple reservations at once.
                        Break loop and commit data changes after user confirmation
                      */
 
@@ -189,12 +190,13 @@ public class Main {
                                 // Get visits reservations this user has for this TH
 
                             } else if (in == 3) { // Make property favorite
-
+                                user.setFavorite(selected);
+                                System.out.println(selected.name + " is now your favorite!");
+                                System.out.println("You will be taken back to the property search screen.");
                             }
                         } else { // User is finished making reservations
                             user.commitReservations();
                         }
-
                     }
                 } else if (input.equals(2)) {
                     System.out.println("Lets register you a new property to manage.");
@@ -263,14 +265,12 @@ public class Main {
                         Period newPeriod = new Period(selected.tid, from, to, price);
                         newPeriod.insert(); // Insert new period into database
 
-                    } else if (input2 == 3) { // View reservations of selected TH
-                        // Pull reservations to this TH TODO
+                    } else if(input2 == 3){ // View reservations of selected TH
+                        // TODO Pull reservations to this TH
 
                     } else if(input2 == 3){ // View Stays of selected TH
-                        // Pull the visits on TH TODO
+                        // TODO Pull the visits on TH
                     }
-
-
 
                 }else if (input.equals(4)){ // List other users
                     System.out.println("Enter index to rate user.");
@@ -303,8 +303,33 @@ public class Main {
                         System.out.print("Sorry, that's not a valid entry.");
                     }
 
-                } else {
-                    System.out.print("Sorry, that's not a valid entry.");
+                } else if(input.equals(5)) {
+                    System.out.println("Enter the number of the reservation to record a visit for that property.\n" +
+                            "When you're finished press 0 to confirm your visits.");
+                    System.out.println("Your current and past reservations:");
+
+                    user.getReservations(); // Pull all reservations this user has made
+
+                    for (int i = 0; i < user.currentReservations.size(); i++) {
+                        Reservation r = user.currentReservations.get(i);
+                        System.out.println((i + 1) + "\tProperty: " + r.houseName + ", Check in: " + r.from.toString() +
+                                ", Check out: " + r.to.toString() + ", Total cost: " + r.cost);
+                    }
+
+                    // Loop to allow user to enter multiple visits
+                    while(true) {
+                        int resChoice = loopForIntInput();
+
+                        if (resChoice == 0){ // Confirm visits
+                            user.commitVisits();
+                            break;
+                        }
+                        Reservation selected = user.currentReservations.get(resChoice-1);
+                        Visit visit = new Visit(user.login, selected.tid, selected.pid, selected.from, selected.to);
+                        user.pendingVisits.add(visit);
+                        System.out.println("Visit at "+ selected.houseName + " during the selected reservation has been\n" +
+                                "added to your cart. Select another reservation to record a visit or enter 0 to confirm and exit.");
+                    }
                 }
             }
         }

@@ -4,6 +4,9 @@ import com.sun.org.apache.bcel.internal.generic.Select;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -23,6 +26,8 @@ public class Th {
     LinkedList<Period> periods = new LinkedList<>();
     protected int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing
     protected int averageScore = -1; // average feedback score. -1 means no recording score
+
+    protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Th(int tid, String owner, String name, String category, String phoneNum,
               String address, String url, int yearBuilt) {
@@ -112,15 +117,19 @@ public class Th {
             while (resultSet.next()) {
                 int pid = resultSet.getInt("pid");
                 int tid = resultSet.getInt("tid");
-                String from = resultSet.getDate("from").toString();
-                String to = resultSet.getDate("to").toString();
+                String from = resultSet.getString("from");
+                String to = resultSet.getString("to");
+                Date fromDate = Period.sdf.parse(from);
+                Date toDate = Period.sdf.parse(to);
                 int price = resultSet.getInt("price");
 
-                Period p = new Period(pid, tid, from, to, price);
+                Period p = new Period(pid, tid, fromDate, toDate, price);
                 periods.add(p);
             }
         } catch (SQLException e) {
             System.out.println("Could not retrieve available periods.");
+        } catch (ParseException e) {
+            System.out.println("Could not parse date.");
         }
     }
 }
