@@ -1,5 +1,6 @@
 package com.gradeycullins;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -23,20 +24,36 @@ public class Trust {
         String trusterLogin = truster.login;
         String trusteeLogin = trustee.login;
 
-        String insertTrust = "" +
-                "INSERT INTO " +
-                "trust(truster, trustee, is_trusted) " +
-                "values('" + trusterLogin + "', '" + trusteeLogin + "', " + is_trusted + ")";
-
+        String queryTrust = "" +
+                "SELECT * " +
+                "FROM trust t " +
+                "WHERE t.truster='" + trusterLogin + "' AND " +
+                "t.trustee='" + trusteeLogin + "'";
         try {
-            Connector.getInstance().statement.executeUpdate(insertTrust);
-            System.out.print("You marked " + trustee.firstName);
-            System.out.print(is_trusted == 1 ? " as a trusted user!" : " as an untrusted user!");
-            System.out.println();
+           ResultSet resultSet = Connector.getInstance().statement.executeQuery(queryTrust);
+           if (resultSet.next()) { // update, not insert
+               String updateQuery = "" +
+                       "UPDATE trust t " +
+                       "SET t.is_trusted=" + is_trusted + " " +
+                       "WHERE t.truster='" + trusterLogin + "' AND " + "t.trustee='" + trusteeLogin + "'";
+
+               Connector.getInstance().statement.executeUpdate(updateQuery);
+
+           } else { // no relationship exists, insert
+               String insertTrust = "" +
+                       "INSERT INTO " +
+                       "trust(truster, trustee, is_trusted) " +
+                       "values('" + trusterLogin + "', '" + trusteeLogin + "', " + is_trusted + ")";
+
+               Connector.getInstance().statement.executeUpdate(insertTrust);
+               System.out.print("You marked " + trustee.firstName);
+               System.out.print(is_trusted == 1 ? " as a trusted user!" : " as an untrusted user!");
+               System.out.println();
+           }
         } catch (SQLException e) {
-            System.out.println("Could not record trust relationship. Exiting . . .");
+            System.out.print("Encountered an error when attempting to lookup trust relationship between " +
+                    trusterLogin + " and " + trusteeLogin);
             e.printStackTrace();
-            System.exit(1);
         }
     }
 }
