@@ -46,12 +46,11 @@ public class ThManager {
             whereStatement += " AND t.address LIKE '%" + city + "%'";
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
-
         if  (!keywords.isEmpty())
-            whereStatement += " AND k.word='" + keywords.get(0) + "'";
-            // TODO should every keyword match, or just one?
-            for (int i = 1; i < keywords.size(); ++i)
-                whereStatement += " OR k.word='" + keywords.get(i) + "'";
+//            whereStatement += " AND k.word='" + keywords.get(0) + "'";
+//            // TODO should every keyword match, or just one?
+//            for (int i = 1; i < keywords.size(); ++i)
+//                whereStatement += " OR k.word='" + keywords.get(i) + "'";
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "' ";
 
@@ -106,12 +105,27 @@ public class ThManager {
                 newTh.lowestPrice = lowestPrice;
                 newTh.averageScore = averageScore;
 
-                // store the order in which THs were returned
-                this.properties.put(tid, newTh);
+                if (!keywords.isEmpty()) {
+                    // TODO query for keywords . . . this is unholy
+                    String keywordQuery = "" +
+                            "SELECT k.word " +
+                            "FROM keyword k " +
+                            "WHERE k.tid=" + tid;
 
-                // store the order of results based on user input in 'order'
-                if (!this.order.contains(tid))
-                    this.order.add(tid);
+                    resultSet = Connector.getInstance().statement.executeQuery(keywordQuery);
+                    while (resultSet.next())
+                        newTh.keywords.add(resultSet.getString("word"));
+                }
+
+                // only add th's with all matching keywords
+                if (newTh.keywords.containsAll(keywords)) {
+                    // store the order in which THs were returned
+                    this.properties.put(tid, newTh);
+
+                    // store the order of results based on user input in 'order'
+                    if (!this.order.contains(tid))
+                        this.order.add(tid);
+                }
             }
 
         } catch (SQLException e) {

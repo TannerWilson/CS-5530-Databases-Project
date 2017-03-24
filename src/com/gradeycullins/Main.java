@@ -139,7 +139,7 @@ public class Main {
 
                             thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category, Integer.valueOf((String) input));
 
-                            System.out.format("%s\t|%30s\t|%30s\t|%30s\t|%30s\t|%30s %n", "tid", "name", "owner",
+                            System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%50s\t|%20s %n", "tid", "name", "owner",
                                     "lowest price", "address", "average score");
 
                             if (thManager.properties.isEmpty()) {
@@ -149,7 +149,7 @@ public class Main {
                                     Th currentTh = thManager.properties.get(i);
                                     int lowestPrice = currentTh.lowestPrice;
 
-                                    System.out.format("%d\t|%30s\t|%30s\t|%30d\t| %30s\t| %30d\n", currentTh.tid, currentTh.name, currentTh.owner,
+                                    System.out.format("%d\t|%20s\t|%20s\t|%20d\t|%50s\t|%20d\n", currentTh.tid, currentTh.name, currentTh.owner,
                                             lowestPrice, currentTh.address, currentTh.averageScore);
                                 }
                             }
