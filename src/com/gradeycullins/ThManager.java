@@ -62,9 +62,9 @@ public class ThManager {
         } else if (order == DESCENDING_PRICE) {
             orderStatement = " ORDER BY min_price DESC";
         } else if (order == DESCENDING_RATING) {
-            orderStatement = " ORDER BY f.score DESC";
+            orderStatement = " ORDER BY avg_score DESC";
         } else if (order == ASCENDING_RATING) {
-            orderStatement = " ORDER BY ";
+            orderStatement = " ORDER BY avg_score ASC";
         } else if (order == DESCENDING_TRUSTED_RATING) {
             orderStatement = " ORDER BY ";
         } else if (order == ASCENDING_TRUSTED_RATING) {

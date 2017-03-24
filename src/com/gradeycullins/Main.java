@@ -139,8 +139,8 @@ public class Main {
 
                             thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category, Integer.valueOf((String) input));
 
-                            System.out.format("%s\t|%30s\t|%30s\t|%30s\t|%30s %n", "tid", "name", "owner",
-                                    "lowest price", "address");
+                            System.out.format("%s\t|%30s\t|%30s\t|%30s\t|%30s\t|%30s %n", "tid", "name", "owner",
+                                    "lowest price", "address", "average score");
 
                             if (thManager.properties.isEmpty()) {
                                 System.out.println("No housing exists that matches your query");
@@ -149,8 +149,8 @@ public class Main {
                                     Th currentTh = thManager.properties.get(i);
                                     int lowestPrice = currentTh.lowestPrice;
 
-                                    System.out.format("%d\t|%30s\t|%30s\t|%30d\t| %30s\n", currentTh.tid, currentTh.name, currentTh.owner,
-                                            lowestPrice, currentTh.address);
+                                    System.out.format("%d\t|%30s\t|%30s\t|%30d\t| %30s\t| %30d\n", currentTh.tid, currentTh.name, currentTh.owner,
+                                            lowestPrice, currentTh.address, currentTh.averageScore);
                                 }
                             }
 
@@ -293,7 +293,7 @@ public class Main {
                         System.out.println("User selected:");
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
                                 index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
-                        System.out.println("0) Mark as un-trusted\n1) Mark as trusted");
+                        System.out.println("\n0) Mark as un-trusted\n1) Mark as trusted");
 
                         int choice2 = loopForIntInput(); // Get entry
 

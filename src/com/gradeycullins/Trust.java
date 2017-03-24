@@ -38,6 +38,9 @@ public class Trust {
                        "WHERE t.truster='" + trusterLogin + "' AND " + "t.trustee='" + trusteeLogin + "'";
 
                Connector.getInstance().statement.executeUpdate(updateQuery);
+               System.out.print("You updated " + trustee.firstName);
+               System.out.print(is_trusted == 1 ? " as a trusted user!" : " as an untrusted user!");
+               System.out.println();
 
            } else { // no relationship exists, insert
                String insertTrust = "" +
