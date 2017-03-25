@@ -110,17 +110,20 @@ public class ThManager {
                     resultSet = Connector.getInstance().statement.executeQuery(keywordQuery);
                     while (resultSet.next())
                         newTh.keywords.add(resultSet.getString("word"));
-                }
 
-                // only add th's with all matching keywords
-                if (newTh.keywords.containsAll(keywords)) {
-                    // store the order in which THs were returned
+                    // only add th's with all matching keywords
+                    if (newTh.keywords.containsAll(keywords)) {
+                        // store the order in which THs were returned
+                        this.properties.put(tid, newTh);
+
+                        // store the order of results based on user input in 'order'
+                        if (!this.order.contains(tid))
+                            this.order.add(tid);
+                    }
+                } else {
                     this.properties.put(tid, newTh);
-
-                    // store the order of results based on user input in 'order'
-                    if (!this.order.contains(tid))
-                        this.order.add(tid);
                 }
+
             }
 
         } catch (SQLException e) {
