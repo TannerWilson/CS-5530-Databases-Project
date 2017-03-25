@@ -60,7 +60,7 @@ public class UserManager {
 
         // Grab and sum the trusted values for each user
         for(User user : allUsers){
-            String getTrusts = "SELECT is_trusted FROM 5530db58.trust" +
+            String getTrusts = "SELECT is_trusted FROM 5530db58.trust " +
                                 "WHERE trustee ='"+user.login+"';";
 
             ResultSet resultSet;
