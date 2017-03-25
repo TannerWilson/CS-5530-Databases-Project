@@ -101,15 +101,14 @@ public class ThManager {
                 newTh.averageScore = averageScore;
 
                 if (!keywords.isEmpty()) {
-                    // TODO query for keywords . . . this is unholy
                     String keywordQuery = "" +
                             "SELECT k.word " +
                             "FROM keyword k " +
                             "WHERE k.tid=" + tid;
 
-                    resultSet = Connector.getInstance().statement.executeQuery(keywordQuery);
-                    while (resultSet.next())
-                        newTh.keywords.add(resultSet.getString("word"));
+                    ResultSet keywordResultSet = Connector.getInstance().statement.executeQuery(keywordQuery);
+                    while (keywordResultSet.next())
+                        newTh.keywords.add(keywordResultSet.getString("word"));
 
                     // only add th's with all matching keywords
                     if (newTh.keywords.containsAll(keywords)) {
@@ -121,11 +120,13 @@ public class ThManager {
                             this.order.add(tid);
                     }
                 } else {
+                    // store the order of results based on user input in 'order'
+                    if (!this.order.contains(tid))
+                        this.order.add(tid);
+
                     this.properties.put(tid, newTh);
                 }
-
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("exiting . . .");
