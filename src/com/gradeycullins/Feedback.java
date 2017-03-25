@@ -1,6 +1,7 @@
 package com.gradeycullins;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by Tanner on 3/13/2017.
@@ -33,11 +34,14 @@ public class Feedback {
      * @return success of insert
      */
     public boolean insert() {
-        String insert = "INSERT INTO `5530db58`.`feedback` (`login`, `score`, `description`, `usefulness`) " +
-                "VALUES ('" + login + "', '" + score + "', '" + description + "', '" + usefulness + "');";
+        String insertString = "" +
+                "INSERT INTO " + Connector.DATABASE + ".feedback " + "(login, score, description, tid) " +
+                "VALUES ('" + this.login + "', " + this.score + ", '" + this.description + "', " + this.tid + ");";
 
         try {
-            Connector.getInstance().statement.execute(insert);
+            Statement insertStatement = Connector.getInstance().connection.createStatement();
+            insertStatement.executeUpdate(insertString);
+
             return true;
         } catch (SQLException e) {
             System.out.println("Insert failed");

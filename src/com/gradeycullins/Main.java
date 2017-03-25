@@ -189,7 +189,15 @@ public class Main {
                                         "Continue browsing if you wish to record more reservations or visits.\n");
 
                             } else if (in == 2) { // Record Feedback
-                                // Get visits reservations this user has for this TH
+                                System.out.print("score [0-10]\n");
+                                int score = loopForIntInput();
+                                System.out.print("description\n");
+                                String description = scanner.next();
+                                // TODO insert feedback
+                                Feedback newFeedback = new Feedback(user.login, score, description, 0, thChosen);
+                                newFeedback.insert();
+                                while (true) {}
+
 
                             } else if (in == 3) { // Make property favorite
                                 user.setFavorite(selected);
