@@ -44,6 +44,7 @@ public class Main {
                         user = tempUser;
                         System.out.println("Welcome back, " + user.firstName);
                         user.isAuthenticated = true;
+                        thManager.user = user;
                     }
                 } else if (input.equals(2)) {
                     System.out.println("Choose a login");
@@ -66,6 +67,7 @@ public class Main {
                     if (newUser.register()) {
                         System.out.println("You have successfully created an account and are now logged in!");
                         user = newUser;
+                        thManager.user = user;
                     }
                 }
             } else { // user is authenticated
@@ -131,7 +133,7 @@ public class Main {
                                         "6) ascending average feedback rating by trusted users");
                                 input = scanner.next();
                             } else {
-                                minPrice =  maxPrice = -1;
+                                minPrice = maxPrice = -1;
                                 owner = name = city = state = category = "";
                                 keywords = new LinkedList<>();
                                 input = "1";
@@ -145,11 +147,11 @@ public class Main {
                             if (thManager.properties.isEmpty()) {
                                 System.out.println("No housing exists that matches your query");
                             } else {
-                                for (Integer i: thManager.order) {
+                                for (Integer i : thManager.order) {
                                     Th currentTh = thManager.properties.get(i);
                                     int lowestPrice = currentTh.lowestPrice;
 
-                                    System.out.format("%d\t|%20s\t|%20s\t|%20d\t|%50s\t|%20d\n", currentTh.tid, currentTh.name, currentTh.owner,
+                                    System.out.format("%d\t|%20s\t|%20s\t|%20d\t|%50s\t|%20f\n", currentTh.tid, currentTh.name, currentTh.owner,
                                             lowestPrice, currentTh.address, currentTh.averageScore);
                                 }
                             }
@@ -200,8 +202,13 @@ public class Main {
 
 
                             } else if (in == 2) { // Record Feedback
-                                // Get visits reservations this user has for this TH
+                                System.out.print("score [0-10]\n");
+                                int score = loopForIntInput();
+                                System.out.print("description\n");
+                                String description = scanner.next();
 
+                                Feedback newFeedback = new Feedback(user.login, score, description, 0, thChosen);
+                                newFeedback.insert();
                             } else if (in == 3) { // Make property favorite
                                 user.setFavorite(selected);
                                 System.out.println(selected.name + " is now your favorite!");
@@ -282,14 +289,14 @@ public class Main {
                         Period newPeriod = new Period(selected.tid, from, to, price);
                         newPeriod.insert(); // Insert new period into database
 
-                    } else if(input2 == 3){ // View reservations of selected TH
+                    } else if (input2 == 3) { // View reservations of selected TH
                         // TODO Pull reservations to this TH
 
-                    } else if(input2 == 3){ // View Stays of selected TH
+                    } else if (input2 == 3) { // View Stays of selected TH
                         // TODO Pull the visits on TH
                     }
 
-                }else if (input.equals(4)){ // List other users
+                } else if (input.equals(4)) { // List other users
                     System.out.println("Enter index to rate user.");
                     System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
                             "uid", "login", "first name", "middle name", "last name", "gender", "favorite th");
@@ -320,7 +327,7 @@ public class Main {
                         System.out.print("Sorry, that's not a valid entry.");
                     }
 
-                } else if(input.equals(5)) {
+                } else if (input.equals(5)) {
                     System.out.println("Enter the number of the reservation to record a visit for that property.\n" +
                             "When you're finished press 0 to confirm your visits.");
                     System.out.println("Your current and past reservations:");
@@ -334,17 +341,17 @@ public class Main {
                     }
 
                     // Loop to allow user to enter multiple visits
-                    while(true) {
+                    while (true) {
                         int resChoice = loopForIntInput();
 
-                        if (resChoice == 0){ // Confirm visits
+                        if (resChoice == 0) { // Confirm visits
                             user.commitVisits();
                             break;
                         }
-                        Reservation selected = user.currentReservations.get(resChoice-1);
+                        Reservation selected = user.currentReservations.get(resChoice - 1);
                         Visit visit = new Visit(user.login, selected.tid, selected.pid, selected.from, selected.to);
                         user.pendingVisits.add(visit);
-                        System.out.println("Visit at "+ selected.houseName + " during the selected reservation has been\n" +
+                        System.out.println("Visit at " + selected.houseName + " during the selected reservation has been\n" +
                                 "added to your cart. Select another reservation to record a visit or enter 0 to confirm and exit.");
                     }
                 }
@@ -354,9 +361,10 @@ public class Main {
 
     /**
      * Loops to ensure the user entered a number.
+     *
      * @return number entered
      */
-    public static int loopForIntInput(){
+    public static int loopForIntInput() {
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("\n");
         int choice;
@@ -376,13 +384,13 @@ public class Main {
     /**
      * Formats the user string into desired format and returns a date
      */
-    public static Date getInputDate(String input){
+    public static Date getInputDate(String input) {
         String[] entries = input.split("-");
         int year = Integer.parseInt(entries[0]);
         int month = Integer.parseInt(entries[1]);
         int day = Integer.parseInt(entries[2]);
         int hour = Integer.parseInt(entries[3]);
-        Date date = new Date(year, month, day, hour,0, 0);
+        Date date = new Date(year, month, day, hour, 0, 0);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(date);
         return date;

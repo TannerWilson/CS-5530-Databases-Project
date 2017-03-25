@@ -23,6 +23,7 @@ public class ThManager {
 
     protected Map<Integer, Th> properties; // most recently user-queried properties
     protected LinkedList<Integer> order; // stores the order of th's returned by user ordering
+    protected User user;
 
     public ThManager() {
         properties = new HashMap<>();
@@ -49,6 +50,9 @@ public class ThManager {
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "' ";
 
+        boolean onlyTrustedRatings = false;
+        String trustedRatingCondition = " ";
+
         // ordering
         String orderStatement = "";
         if (order == ASCENDING_PRICE) {
@@ -59,10 +63,16 @@ public class ThManager {
             orderStatement = " ORDER BY avg_score DESC";
         } else if (order == ASCENDING_RATING) {
             orderStatement = " ORDER BY avg_score ASC";
-        } else if (order == DESCENDING_TRUSTED_RATING) {
-            orderStatement = " ORDER BY ";
-        } else if (order == ASCENDING_TRUSTED_RATING) {
-            orderStatement = " ORDER BY ";
+        } else if (order == DESCENDING_TRUSTED_RATING || order == ASCENDING_TRUSTED_RATING) {
+            onlyTrustedRatings = true;
+            trustedRatingCondition = "" +
+                    " AND f.login = ANY " +
+                    "(" +
+                    "SELECT f1.login " +
+                    "FROM feedback f1, trust t1 " +
+                    "WHERE f1.login=t1.trustee " +
+                    "AND t1.truster='" + this.user.login + "' " +
+                    ") ";
         }
 
         String selectQuery =
@@ -74,7 +84,7 @@ public class ThManager {
                 "LEFT OUTER JOIN " + Connector.DATABASE + ".keyword k " +
                 "ON t.tid=k.tid " +
                 "LEFT OUTER JOIN " + Connector.DATABASE + ".feedback f " +
-                "ON f.tid=t.tid " +
+                "ON f.tid=t.tid " + trustedRatingCondition +
                 whereStatement + " GROUP BY t.tid " + orderStatement;
 
         try {
@@ -92,7 +102,14 @@ public class ThManager {
 
                 // joined columns
                 int lowestPrice = resultSet.getInt("min_price");
-                int averageScore = resultSet.getInt("avg_score");
+
+                // filter non-trusted user feedbacks
+                if (order == ASCENDING_TRUSTED_RATING || order == DESCENDING_TRUSTED_RATING) {
+                    String sqlOrder = (order == ASCENDING_TRUSTED_RATING) ? "ASC" : "DESC";
+
+                }
+
+                float averageScore = resultSet.getFloat("avg_score");
 
                 // store the th from query result
                 Th newTh = new Th(tid, owner, name, category, phoneNum, address, url, yearBuilt);
@@ -106,7 +123,11 @@ public class ThManager {
                             "FROM keyword k " +
                             "WHERE k.tid=" + tid;
 
-                    ResultSet keywordResultSet = Connector.getInstance().statement.executeQuery(keywordQuery);
+                    // create a new mysql statement to avoid overwriting TH query results
+                    Statement keywordStatement = Connector.getInstance().connection.createStatement();
+
+                    ResultSet keywordResultSet = keywordStatement.executeQuery(keywordQuery);
+
                     while (keywordResultSet.next())
                         newTh.keywords.add(keywordResultSet.getString("word"));
 
