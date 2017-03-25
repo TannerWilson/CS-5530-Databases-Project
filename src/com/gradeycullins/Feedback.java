@@ -4,6 +4,10 @@ import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Tanner on 3/13/2017.
@@ -15,6 +19,15 @@ public class Feedback {
     String description;
     float usefulness;
     int tid;
+
+    public Feedback(int fid, String login, int score, String description, float usefulness, int tid) {
+        this.fid = fid;
+        this.login = login;
+        this.score = score;
+        this.description = description;
+        this.usefulness = usefulness;
+        this.tid = tid;
+    }
 
     public Feedback(String login, int score, String description, float usefulness, int tid) {
         this.login = login;
@@ -62,6 +75,43 @@ public class Feedback {
             System.out.println("Insert failed");
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Retrieve a list of all feedbacks for th
+     * @param th the feedback to query
+     * @return list of feedback
+     */
+    public static Map<Integer, Feedback> getThFeedback(Th th) {
+        try {
+            Map<Integer, Feedback> feedbacks = new HashMap<>();
+
+            Statement queryStatement = Connector.getInstance().connection.createStatement();
+            String queryString = "" +
+                    "SELECT f.fid, f.login, f.score, f.description, f.usefulness, f.tid " +
+                    "FROM th t, feedback f " +
+                    "WHERE t.tid=f.tid AND t.tid=" + th.tid;
+
+            ResultSet resultSet = queryStatement.executeQuery(queryString);
+
+            while (resultSet.next()) {
+                int fid = resultSet.getInt("fid");
+                String login = resultSet.getString("login");
+                int score = resultSet.getInt("score");
+                String description = resultSet.getString("description");
+                float usefulness = resultSet.getFloat("usefulness");
+                int tid = resultSet.getInt("tid");
+
+                Feedback feedback = new Feedback(fid, login, score, description, usefulness, tid);
+                feedbacks.put(fid, feedback);
+            }
+
+            return feedbacks;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new HashMap<>();
         }
     }
 }

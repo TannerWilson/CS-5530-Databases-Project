@@ -162,7 +162,7 @@ public class Main {
                             Th selected = thManager.properties.get(thChosen);
 
                             System.out.println("You Selected: " + selected.name);
-                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Mark property as favorite");
+                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Mark property as favorite\n4) View feedback for this property");
                             int in = loopForIntInput();
                             if (in == 1) { // Reservation menu
                                 System.out.println("Enter the number next to the period you wish to check availability.");
@@ -215,6 +215,23 @@ public class Main {
                                 user.setFavorite(selected);
                                 System.out.println(selected.name + " is now your favorite!");
                                 System.out.println("You will be taken back to the property search screen.");
+                            } else if (in == 4) {
+                                System.out.format("%s\t|%20s\t|%20s\t|%50s\t|%20s %n",
+                                        "fid", "author", "score", "description", "usefulness");
+                                Map<Integer, Feedback> feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
+                                for (Feedback f : feedbacks.values()) {
+                                    System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
+                                            f.fid, f.login, f.score, f.description, f.usefulness);
+                                }
+
+                                int selectedFeedback = loopForIntInput();
+                                Feedback f = feedbacks.get(selectedFeedback);
+                                System.out.print("You selected:\n");
+                                System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
+                                        f.fid, f.login, f.score, f.description, f.usefulness);
+                                System.out.print("Mark feedback as:\n0) useless\n1) useful\n2) very useful\n");
+                                int usefulRating = loopForIntInput();
+                                FeedbackRating.insertFeedbackRating(user.login, selectedFeedback, usefulRating);
                             }
                         } else { // User is finished making reservations
                             user.commitReservations();
