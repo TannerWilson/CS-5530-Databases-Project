@@ -46,11 +46,6 @@ public class ThManager {
             whereStatement += " AND t.address LIKE '%" + city + "%'";
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
-        if  (!keywords.isEmpty())
-//            whereStatement += " AND k.word='" + keywords.get(0) + "'";
-//            // TODO should every keyword match, or just one?
-//            for (int i = 1; i < keywords.size(); ++i)
-//                whereStatement += " OR k.word='" + keywords.get(i) + "'";
         if (!_category.isEmpty())
             whereStatement += "t.category='" + _category + "' ";
 
