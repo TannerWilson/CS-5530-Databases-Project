@@ -73,6 +73,8 @@ public class Main {
             } else { // user is authenticated
                 System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users" +
                         "\n5) Show my reservations");
+                if(user.login.equals("admin"))
+                    System.out.println("6) Administrative activities");
                 Object input = scanner.next();
 
                 try {
@@ -302,8 +304,10 @@ public class Main {
                             "uid", "login", "first name", "middle name", "last name", "gender", "favorite th");
 
                     UserManager userMan = new UserManager();
+                    ArrayList<User> users = userMan.getAllUsers();
+
                     int index = 0;
-                    for (User use : userMan.users) {
+                    for (User use : users) {
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
                                 index, use.login, use.firstName, use.middleName, use.lastName, use.gender, use.favorite);
                         index++;
@@ -353,6 +357,30 @@ public class Main {
                         user.pendingVisits.add(visit);
                         System.out.println("Visit at " + selected.houseName + " during the selected reservation has been\n" +
                                 "added to your cart. Select another reservation to record a visit or enter 0 to confirm and exit.");
+                    }
+                }
+                else if (input.equals(6)) {
+                    UserManager manager = new UserManager();
+                    System.out.println("1) Find most trusted users\n2) Find most useful users");
+                    int choice = loopForIntInput();
+
+                    if(choice == 1){
+                        System.out.println("How many users do you want to limit the search to?");
+                        int n = loopForIntInput();
+
+                        ArrayList<String> topTrusted =  manager.getMostTrustedUsers(n);
+
+                        System.out.println("Enter the number next to the user to award them");
+                        for(String login : topTrusted)
+                            System.out.println(login);
+
+
+                    }
+                    else if(choice == 2){
+                        System.out.println("How many users do you want to limit the search to?");
+                        int n = loopForIntInput();
+
+
                     }
                 }
             }
