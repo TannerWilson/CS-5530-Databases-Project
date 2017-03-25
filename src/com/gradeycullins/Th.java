@@ -25,7 +25,7 @@ public class Th {
 
     LinkedList<Period> periods = new LinkedList<>();
     protected int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing
-    protected int averageScore = -1; // average feedback score. -1 means no recording score
+    protected float averageScore = -1; // average feedback score. -1 means no recording score
     protected LinkedList<String> keywords = new LinkedList<>();
 
     protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

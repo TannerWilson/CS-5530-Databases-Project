@@ -44,6 +44,7 @@ public class Main {
                         user = tempUser;
                         System.out.println("Welcome back, " + user.firstName);
                         user.isAuthenticated = true;
+                        thManager.user = user;
                     }
                 } else if (input.equals(2)) {
                     System.out.println("Choose a login");
@@ -66,6 +67,7 @@ public class Main {
                     if (newUser.register()) {
                         System.out.println("You have successfully created an account and are now logged in!");
                         user = newUser;
+                        thManager.user = user;
                     }
                 }
             } else { // user is authenticated
@@ -149,7 +151,7 @@ public class Main {
                                     Th currentTh = thManager.properties.get(i);
                                     int lowestPrice = currentTh.lowestPrice;
 
-                                    System.out.format("%d\t|%20s\t|%20s\t|%20d\t|%50s\t|%20d\n", currentTh.tid, currentTh.name, currentTh.owner,
+                                    System.out.format("%d\t|%20s\t|%20s\t|%20d\t|%50s\t|%20f\n", currentTh.tid, currentTh.name, currentTh.owner,
                                             lowestPrice, currentTh.address, currentTh.averageScore);
                                 }
                             }
