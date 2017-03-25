@@ -86,4 +86,5 @@ public class Reservation {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
+
 }

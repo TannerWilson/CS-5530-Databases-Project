@@ -167,11 +167,11 @@ public class ThManager {
 
     public ArrayList<String> getSuggestedProperties(ArrayList<Reservation> reservations, User user){
 
-        ArrayList<String> results = new ArrayList<>();
+        HashMap<String, Integer> initial = new HashMap<>();
 
         for(Reservation r : reservations) {
 
-            String housesToSuggest = "SELECT t.name\n" +
+            String housesToSuggest = "SELECT t.name, t.tid\n" +
                     "FROM 5530db58.th t\n" +
                     "WHERE t.tid IN (\n" +
                     "SELECT v.tid\n" +
@@ -187,7 +187,8 @@ public class ThManager {
 
                 while(resultSet.next()){
                     String houseName = resultSet.getString("name");
-                    results.add(houseName);
+                    int tid = resultSet.getInt("tid");
+                    initial.put(houseName, tid);
                 }
 
             }catch (SQLException e){
@@ -195,6 +196,32 @@ public class ThManager {
 
             }
         }
-        return results;
+        return sortSuggestions(initial);
+    }
+
+    public ArrayList<String> sortSuggestions(HashMap<String, Integer> suggestions){
+
+        TreeMap<Integer, String> visitCounts = new TreeMap<Integer, String>();
+
+        for(Map.Entry<String, Integer> entry : suggestions.entrySet()){
+            String select = "SELECT count(v.tid) AS count\n" +
+                    "FROM 5530db58.th t, 5530db58.visit v\n" +
+                    "WHERE t.tid = v.tid AND t.tid = "+entry.getValue()+";";
+
+            ResultSet resultSet;
+            try {
+                resultSet = Connector.getInstance().statement.executeQuery(select);
+
+                if(resultSet.next()){
+                    int count = resultSet.getInt("count");
+                    visitCounts.put(count, entry.getKey());
+                }
+
+            }catch (SQLException e){
+                System.out.println("Failed to get visit count");
+            }
+        }
+
+        return new ArrayList<String>(visitCounts.values());
     }
 }

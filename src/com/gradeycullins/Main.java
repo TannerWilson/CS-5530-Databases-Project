@@ -178,10 +178,17 @@ public class Main {
 
                                 // Make reservation from selected period
                                 Period selectedPeriod = selected.periods.get(periodChoice - 1);
-//                            System.out.println("Time Window: ");
-                                // TODO: Let user select dates within window of period or take whole period
+
+                                System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from)+
+                                        " and "+ selectedPeriod.sdf.format(selectedPeriod.to));
+                                System.out.println("Enter your desired checkin date. Format: YYYY-MM-DD-HH");
+                                Date from = getInputDate(scanner.next());
+                                System.out.println("Enter your desired check out date. Format: YYYY-MM-DD-HH");
+                                Date to = getInputDate(scanner.next());
+
                                 Reservation res = new Reservation(user.login, selected.tid, selectedPeriod.pid,
                                         selectedPeriod.from, selectedPeriod.to, selectedPeriod.price, selected.name);
+
                                 user.pendingReservations.add(res); // Add to cart
                                 System.out.println("A reservation for this available period has been created and added to you cart.\n" +
                                         "Continue browsing if you wish to record more reservations or visits.\n");
@@ -239,20 +246,24 @@ public class Main {
                     int input2 = loopForIntInput();
 
                     if (input2 == 1) {// Edit property info
-                        System.out.println("1) Edit name\n2) Edit property type\n3) Edit address");
+                        System.out.println("1) Edit name\n2) Edit property category\n3) Edit address\n Edit Phone Number");
                         int input3 = loopForIntInput();
                         if (input3 == 1) {
                             System.out.println("Enter new property name.");
                             String newName = scanner.next();
                             selected.updateField("name", newName, selected.tid);
                         } else if (input3 == 2) {
-                            System.out.println("Enter new property type.");
+                            System.out.println("Enter new property category.");
                             String newType = scanner.next();
                             selected.updateField("category", newType, selected.tid);
                         } else if (input3 == 3) {
                             System.out.println("Enter new address.");
                             String newAddress = scanner.next();
                             selected.updateField("address", newAddress, selected.tid);
+                        } else if (input3 == 4) {
+                            System.out.println("Enter new phone number.");
+                            String newNum = scanner.next();
+                            selected.updateField("phone_num", newNum, selected.tid);
                         }
                     } else if (input2 == 2) { // Add new period to selected property
                         System.out.println("Enter start date. Format: YYYY-MM-DD-HH");
