@@ -202,7 +202,7 @@ public class ThManager {
 
     public ArrayList<String> sortSuggestions(HashMap<String, Integer> suggestions){
 
-        TreeMap<Integer, String> visitCounts = new TreeMap<Integer, String>();
+        TreeMap<Integer, String> visitCounts = new TreeMap<Integer, String>(Collections.reverseOrder());
 
         for(Map.Entry<String, Integer> entry : suggestions.entrySet()){
             String select = "SELECT count(v.tid) AS count\n" +

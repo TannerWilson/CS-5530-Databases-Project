@@ -212,13 +212,12 @@ public class User {
                 System.out.println("Your reservations have been confirmed.");
 
                 // Get suggested properties to print
-                // TODO: Sort by popularity
                 ThManager manager = new ThManager();
                 ArrayList<String> suggestedProperties = manager.getSuggestedProperties(pendingReservations, this);
 
                 System.out.println("You may also enjoy a stay at the folowing properties:");
                 for(String property : suggestedProperties)
-                    System.out.println("--  "+property);
+                    System.out.println("-  "+property);
                 System.out.println("Try searching for these to get more information!");
 
                 pendingReservations.clear();

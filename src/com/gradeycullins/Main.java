@@ -161,7 +161,7 @@ public class Main {
                             System.out.println("1) Make reservation\n2) Leave Feedback\n3) Mark property as favorite");
                             int in = loopForIntInput();
                             if (in == 1) { // Reservation menu
-                                System.out.println("Enter the number next to the period you wish to make a reservation for.");
+                                System.out.println("Enter the number next to the period you wish to check availability.");
                                 System.out.println("Enter 0 to go back to property search\n");
                                 System.out.println("Here are the available periods for this property:");
                                 selected.getAvailPeriods();
@@ -180,18 +180,24 @@ public class Main {
                                 Period selectedPeriod = selected.periods.get(periodChoice - 1);
 
                                 System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from)+
-                                        " and "+ selectedPeriod.sdf.format(selectedPeriod.to));
+                                        " and "+ selectedPeriod.sdf.format(selectedPeriod.to) +"\nEnter dates within this range.");
                                 System.out.println("Enter your desired checkin date. Format: YYYY-MM-DD-HH");
                                 Date from = getInputDate(scanner.next());
                                 System.out.println("Enter your desired check out date. Format: YYYY-MM-DD-HH");
                                 Date to = getInputDate(scanner.next());
 
                                 Reservation res = new Reservation(user.login, selected.tid, selectedPeriod.pid,
-                                        selectedPeriod.from, selectedPeriod.to, selectedPeriod.price, selected.name);
+                                        from, to, selectedPeriod.price, selected.name);
 
-                                user.pendingReservations.add(res); // Add to cart
-                                System.out.println("A reservation for this available period has been created and added to you cart.\n" +
-                                        "Continue browsing if you wish to record more reservations or visits.\n");
+                                if(selectedPeriod.checkReservations(res)){
+                                    user.pendingReservations.add(res); // Add to cart
+                                    System.out.println("A reservation for this available period has been created and added to you cart.\n" +
+                                            "Continue browsing if you wish to record more reservations or visits.\n");
+                                }else{
+                                    System.out.println("Sorry there is a reservation on this period that collides with your" +
+                                            " check in or check out date. Please try again.");
+                                }
+
 
                             } else if (in == 2) { // Record Feedback
                                 // Get visits reservations this user has for this TH
