@@ -252,34 +252,95 @@ public class ThManager {
      * Returns the most popular THs
      * @param resultCount
      */
-    public ArrayList<String> getMostPopular(int resultCount) {
+    public ArrayList<String> getMostPopular(String category, int resultCount) {
 
         ArrayList<String>  results = new ArrayList<>();
+        String query = "SELECT t.name\n" +
+                "FROM 5530db58.th t, 5530db58.visit v\n" +
+                "WHERE t.tid = v.tid AND t.category = '"+category+"'\n" +
+                "GROUP BY (t.tid)\n" +
+                "ORDER BY (COUNT(v.tid)) DESC\n" +
+                "LIMIT "+resultCount+";";
 
+        ResultSet resultSet;
+        try {
+            resultSet = Connector.getInstance().statement.executeQuery(query);
 
+            while(resultSet.next()){
+                String name = resultSet.getString("name");
+                results.add(name);
+            }
+
+        }catch (SQLException e){
+            System.out.println("Failed to get most popular TH");
+        }
         return results;
     }
 
     /**
      * Returns the most expensive THs
+     * Adds the average cost of each TH into the
+     * averages parameter to be returned to the main as well
      * @param resultCount
      */
-    public ArrayList<String> getMostExpensive(int resultCount) {
-
+    public ArrayList<String> getMostExpensive(String category, int resultCount, ArrayList<Float> averages) {
+        averages.clear(); // Ensure averages is empty to conserve order
         ArrayList<String>  results = new ArrayList<>();
+        String query = "SELECT t.name, avg(r.cost) AS average\n" +
+                "FROM 5530db58.th t, 5530db58.visit v, 5530db58.reservation r \n" +
+                "WHERE t.tid = v.tid AND v.pid = r.pid AND t.category = '"+category+"'\n" +
+                "GROUP BY (t.tid)\n" +
+                "ORDER BY (avg(r.cost)) DESC\n" +
+                "LIMIT "+resultCount+";";
 
+        ResultSet resultSet;
+        try {
+            resultSet = Connector.getInstance().statement.executeQuery(query);
+
+            while(resultSet.next()){
+                String name = resultSet.getString("name");
+                Float avg = resultSet.getFloat("average");
+                results.add(name);
+                averages.add(avg);
+            }
+
+        }catch (SQLException e){
+            System.out.println("Failed to get most expensive TH");
+        }
 
         return results;
     }
 
     /**
      * Returns the most highly reated THs
+     * Adds the average cost of each TH into the
+     * averages parameter to be returned to the main as well
      * @param resultCount
      */
-    public ArrayList<String> getHighRated(int resultCount) {
-
+    public ArrayList<String> getHighRated(String category, int resultCount, ArrayList<Float> averages) {
+        averages.clear(); // Ensure averages is empty to maintain ordering
         ArrayList<String>  results = new ArrayList<>();
+        String query = "SELECT t.name, avg(f.score) AS average\n" +
+                "FROM 5530db58.th t, 5530db58.feedback f\n" +
+                "WHERE t.tid = f.tid AND t.category = '"+category+"'\n" +
+                "GROUP BY (t.tid)\n" +
+                "ORDER BY (avg(f.score)) DESC\n" +
+                "LIMIT "+resultCount+";";
 
+        ResultSet resultSet;
+        try {
+            resultSet = Connector.getInstance().statement.executeQuery(query);
+
+            while(resultSet.next()){
+                String name = resultSet.getString("name");
+                Float avg = resultSet.getFloat("average");
+                results.add(name);
+                averages.add(avg);
+            }
+
+        }catch (SQLException e){
+            System.out.println("Failed to get highly rated THs");
+        }
 
         return results;
     }

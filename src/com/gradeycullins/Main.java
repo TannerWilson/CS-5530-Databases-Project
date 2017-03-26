@@ -403,18 +403,45 @@ public class Main {
                     System.out.println("1) Most popular properties\n2) Most expensive properties\n3) Most highly rated properties");
                     int choice = loopForIntInput();
                     if(choice == 1){
+                        System.out.println("Enter a category of property");
+                        String category = scanner.next();
                         System.out.println("How many results would you like to see?");
                         int resultCount = loopForIntInput();
-                        ArrayList<String> popularTHs = thManager.getMostPopular(resultCount);
+                        ArrayList<String> popularTHs = thManager.getMostPopular(category, resultCount);
 
+                        System.out.println("Most popular properties:");
+                        for(String s : popularTHs)
+                            System.out.println(s);
+                        System.out.println();
                     }else if(choice == 2){
+                        System.out.println("Enter a category of property");
+                        String category = scanner.next();
                         System.out.println("How many results would you like to see?");
                         int resultCount = loopForIntInput();
-                        ArrayList<String> popularTHs = thManager.getMostExpensive(resultCount);
+                        ArrayList<Float> averages = new ArrayList<>();
+                        ArrayList<String> popularTHs = thManager.getMostExpensive(category, resultCount, averages);
+
+                        System.out.println("Most Expensive properties:");
+                        System.out.format("%20s\t|%20s %n", "Property name", "Average Cost");
+                        for(int i = 0; i < popularTHs.size(); i++ )
+                            System.out.format("%20s\t|%20f %n", popularTHs.get(i), averages.get(i));
+//                            System.out.println("Property: " + popularTHs.get(i) + "\t Average Cost: " + averages.get(i));
+                        System.out.println();
+
                     }else if(choice == 3){
+                        System.out.println("Enter a category of property");
+                        String category = scanner.next();
                         System.out.println("How many results would you like to see?");
                         int resultCount = loopForIntInput();
-                        ArrayList<String> popularTHs = thManager.getHighRated(resultCount);
+                        ArrayList<Float> averages = new ArrayList<>();
+                        ArrayList<String> highRated = thManager.getHighRated(category, resultCount, averages);
+
+                        System.out.println("Properties with highest rating:");
+                        System.out.format("%20s\t|%20s %n", "Property name", "Average Rating");
+                        for(int i = 0; i < highRated.size(); i++ )
+                            System.out.format("%20s\t|%20f %n", highRated.get(i), averages.get(i));
+//                            System.out.println("Property: " + highRated.get(i) + "\t Average Rating: " + averages.get(i));
+                        System.out.println();
                     }
                 } else if (input.equals(7)) { // Admin Menu
                     UserManager manager = new UserManager();
@@ -429,6 +456,7 @@ public class Main {
                         System.out.println("The most trusted users are:");
                         for (String login : topTrusted)
                             System.out.println(login);
+                        System.out.println();
 
                     } else if (choice == 2) {
                         System.out.println("How many users do you want to limit the search to?");
@@ -438,6 +466,7 @@ public class Main {
                         System.out.println("The most useful users are:");
                         for (String login : topUsefull)
                             System.out.println(login);
+                        System.out.println();
                     }
                 }
             }
