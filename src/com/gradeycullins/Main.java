@@ -72,9 +72,9 @@ public class Main {
                 }
             } else { // user is authenticated
                 System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users" +
-                        "\n5) Show my reservations");
+                        "\n5) Show my reservations\n6) TH statistics");
                 if (user.login.equals("admin"))
-                    System.out.println("6) Administrative activities");
+                    System.out.println("7) Administrative activities");
                 Object input = scanner.next();
 
                 try {
@@ -399,7 +399,24 @@ public class Main {
                         System.out.println("Visit at " + selected.houseName + " during the selected reservation has been\n" +
                                 "added to your cart. Select another reservation to record a visit or enter 0 to confirm and exit.");
                     }
-                } else if (input.equals(6)) {
+                }  else if (input.equals(6)){ // TH Statistics menu
+                    System.out.println("1) Most popular properties\n2) Most expensive properties\n3) Most highly rated properties");
+                    int choice = loopForIntInput();
+                    if(choice == 1){
+                        System.out.println("How many results would you like to see?");
+                        int resultCount = loopForIntInput();
+                        ArrayList<String> popularTHs = thManager.getMostPopular(resultCount);
+
+                    }else if(choice == 2){
+                        System.out.println("How many results would you like to see?");
+                        int resultCount = loopForIntInput();
+                        ArrayList<String> popularTHs = thManager.getMostExpensive(resultCount);
+                    }else if(choice == 3){
+                        System.out.println("How many results would you like to see?");
+                        int resultCount = loopForIntInput();
+                        ArrayList<String> popularTHs = thManager.getHighRated(resultCount);
+                    }
+                } else if (input.equals(7)) { // Admin Menu
                     UserManager manager = new UserManager();
                     System.out.println("1) Find most trusted users\n2) Find most useful users");
                     int choice = loopForIntInput();
@@ -409,19 +426,18 @@ public class Main {
                         int n = loopForIntInput();
 
                         ArrayList<String> topTrusted = manager.getMostTrustedUsers(n);
-
-                        System.out.println("Enter the number next to the user to award them");
+                        System.out.println("The most trusted users are:");
                         for (String login : topTrusted)
                             System.out.println(login);
-
 
                     } else if (choice == 2) {
                         System.out.println("How many users do you want to limit the search to?");
                         int n = loopForIntInput();
 
-                        ArrayList<String> topTrusted =  manager.getMostUsefulUsers(n);
-
-
+                        ArrayList<String> topUsefull =  manager.getMostUsefulUsers(n);
+                        System.out.println("The most useful users are:");
+                        for (String login : topUsefull)
+                            System.out.println(login);
                     }
                 }
             }

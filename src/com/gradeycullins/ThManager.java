@@ -246,4 +246,41 @@ public class ThManager {
 
         return new ArrayList<String>(visitCounts.values());
     }
+
+
+    /**
+     * Returns the most popular THs
+     * @param resultCount
+     */
+    public ArrayList<String> getMostPopular(int resultCount) {
+
+        ArrayList<String>  results = new ArrayList<>();
+
+
+        return results;
+    }
+
+    /**
+     * Returns the most expensive THs
+     * @param resultCount
+     */
+    public ArrayList<String> getMostExpensive(int resultCount) {
+
+        ArrayList<String>  results = new ArrayList<>();
+
+
+        return results;
+    }
+
+    /**
+     * Returns the most highly reated THs
+     * @param resultCount
+     */
+    public ArrayList<String> getHighRated(int resultCount) {
+
+        ArrayList<String>  results = new ArrayList<>();
+
+
+        return results;
+    }
 }

@@ -96,40 +96,41 @@ public class UserManager {
         return result;
     }
 
+    /**
+     * Returns a list of the top n most "useful" users based on their feedback
+     * usefulness ratings.
+     * @param n
+     * @return
+     */
     public ArrayList<String> getMostUsefulUsers(int n){
 
         ArrayList<User> allUsers = getAllUsers();
-        TreeMap<Integer, String> sortedResults = new TreeMap<>(Collections.reverseOrder());
+        TreeMap<Float, String> sortedResults = new TreeMap<>(Collections.reverseOrder());
 
-        // Grab and sum the trusted values for each user
         for(User user : allUsers){
             String getTrusts = "SELECT u.login, avg(score) \n" +
                     "FROM 5530db58.feedback f, 5530db58.user u\n" +
                     "WHERE f.login=u.login \n" +
                     "GROUP BY (u.login)\n" +
+                    "ORDER BY (avg(score)) DESC\n" +
                     "LIMIT "+n+";";
 
             ResultSet resultSet;
             try {
                 resultSet = Connector.getInstance().statement.executeQuery(getTrusts);
-                int trustScore = 0;
                 while (resultSet.next()) {
-                    int score = resultSet.getInt("is_trusted");
-                    if(score == 0)
-                        score = -1;
-                    trustScore += score;
+                    float score = resultSet.getFloat("avg(score)");
+                    String login = resultSet.getString("login");
+                    sortedResults.put(score, user.login);
                 }
-                sortedResults.put(trustScore, user.login);
             } catch (SQLException e) {
-                System.out.println("An error occurred while attempting to get the trust values for " + user.login);
+                System.out.println("An error occurred while attempting to get the usefulness values");
                 e.printStackTrace();
             }
         }
 
 
-        ArrayList<String> result = new ArrayList<>();
-
-
+        ArrayList<String> result = new ArrayList<>(sortedResults.values());
         return result;
     }
 }
