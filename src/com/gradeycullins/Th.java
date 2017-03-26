@@ -4,6 +4,7 @@ import com.sun.org.apache.bcel.internal.generic.Select;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,16 +67,18 @@ public class Th {
      * Add new Th into the database.
      * Save the user login as owner.
      */
-    public boolean insert()
-    {
-        String insert = "INSERT INTO `5530db58`.`th` (`name`, `owner`, category, `phone_num`, `address`, `year_built`) " +
-                "VALUES ('"+name+"', '"+owner+"', '"+category+"', '"+phoneNum+"', '"+address+"', '"+yearBuilt+"');";
+    public boolean insert() {
+
+        String insertString = "" +
+                "INSERT INTO " + Connector.DATABASE + ".th (owner, name, category, phone_num, address, url, year_built) " +
+                "VALUES ('" + owner + "', '" + name + "', '" + category + "', '" + phoneNum + "', '" + address + "', '" + url + "', " + yearBuilt + ")";
 
         try {
-            Connector.getInstance().statement.execute(insert);
-            Connector.getInstance().closeConnection();
+            Statement insertStatement = Connector.getInstance().connection.createStatement();
+            insertStatement.executeUpdate(insertString);
+            insertStatement.close();
             return true;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Insert failed");
             System.out.println(e.getMessage());
             return false;
@@ -84,19 +87,20 @@ public class Th {
 
     /**
      * Edits information in regarding the current TH
+     *
      * @param feildName: what column is being changed
      * @param newValue
      * @return
      */
-    public boolean updateField(String feildName, String newValue, int tid){
+    public boolean updateField(String feildName, String newValue, int tid) {
 
-       String update = "UPDATE `5530db58`.`th` SET `"+ feildName +"`='"+ newValue +"' WHERE `tid`='"+tid+"';";
+        String update = "UPDATE `5530db58`.`th` SET `" + feildName + "`='" + newValue + "' WHERE `tid`='" + tid + "';";
 
         try {
             Connector.getInstance().statement.execute(update);
             Connector.getInstance().closeConnection();
             return true;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Update failed");
             System.out.println(e.getMessage());
             return false;
@@ -105,10 +109,11 @@ public class Th {
 
     /**
      * Get all the periods associated with this th
+     *
      * @return
      */
     public void getAvailPeriods() {
-        String query = "SELECT * FROM `5530db58`.`period` WHERE tid="+tid+";";
+        String query = "SELECT * FROM `5530db58`.`period` WHERE tid=" + tid + ";";
 
         ResultSet resultSet;
 

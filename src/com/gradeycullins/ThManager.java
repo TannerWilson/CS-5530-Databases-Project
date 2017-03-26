@@ -88,7 +88,8 @@ public class ThManager {
                 whereStatement + " GROUP BY t.tid " + orderStatement;
 
         try {
-            ResultSet resultSet = Connector.getInstance().statement.executeQuery(selectQuery);
+            Statement queryStatement = Connector.getInstance().connection.createStatement();
+            ResultSet resultSet = queryStatement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 // retrieve th columns for later storage
                 int tid = resultSet.getInt("tid");
