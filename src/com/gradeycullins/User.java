@@ -351,19 +351,4 @@ public class User {
         }
 
     }
-
-    /**
-     * Determine whether two users are 1 or 2 degrees of separation
-     * apart in regards to their commonly favorited Ths
-     * @param u1
-     * @param u2
-     * @return degree of separation
-     */
-    public static int degreesOfSeparation(User u1, User u2) {
-
-
-
-
-        return 0;
-    }
 }

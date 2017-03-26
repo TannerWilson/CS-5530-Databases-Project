@@ -73,7 +73,7 @@ public class Main {
             } else { // user is authenticated
                 System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users" +
                         "\n5) Show my reservations");
-                if(user.login.equals("admin"))
+                if (user.login.equals("admin"))
                     System.out.println("6) Administrative activities");
                 Object input = scanner.next();
 
@@ -183,8 +183,8 @@ public class Main {
                                 // Make reservation from selected period
                                 Period selectedPeriod = selected.periods.get(periodChoice - 1);
 
-                                System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from)+
-                                        " and "+ selectedPeriod.sdf.format(selectedPeriod.to) +"\nEnter dates within this range.");
+                                System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from) +
+                                        " and " + selectedPeriod.sdf.format(selectedPeriod.to) + "\nEnter dates within this range.");
                                 System.out.println("Enter your desired checkin date. Format: YYYY-MM-DD-HH");
                                 Date from = getInputDate(scanner.next());
                                 System.out.println("Enter your desired check out date. Format: YYYY-MM-DD-HH");
@@ -193,11 +193,11 @@ public class Main {
                                 Reservation res = new Reservation(user.login, selected.tid, selectedPeriod.pid,
                                         from, to, selectedPeriod.price, selected.name);
 
-                                if(selectedPeriod.checkReservations(res)){
+                                if (selectedPeriod.checkReservations(res)) {
                                     user.pendingReservations.add(res); // Add to cart
                                     System.out.println("A reservation for this available period has been created and added to you cart.\n" +
                                             "Continue browsing if you wish to record more reservations or visits.\n");
-                                }else{
+                                } else {
                                     System.out.println("Sorry there is a reservation on this period that collides with your" +
                                             " check in or check out date. Please try again.");
                                 }
@@ -353,7 +353,7 @@ public class Main {
                         System.out.println("User selected:");
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
                                 index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
-                        System.out.println("\n0) Mark as un-trusted\n1) Mark as trusted\n3) Show degrees of separation");
+                        System.out.println("0) Mark as un-trusted\n1) Mark as trusted\n3) Show degrees of separation");
 
                         int choice2 = loopForIntInput(); // Get entry
 
@@ -361,7 +361,12 @@ public class Main {
                         if (choice2 == 0 || choice2 == 1) {
                             Trust.addTrustRelationship(user, selected, choice2);
                         } else {
-                            // TODO find degrees of separation
+                            if (user.login.equals(selected.login)) {
+                                System.out.print("You selected yourself. You are 0 degrees of separation from yourself, obviously xD\n");
+                            } else {
+                                int degree = Favorite.degreesOfSeparation(user, selected);
+                                System.out.print("degrees of separation between yourself (" + user.login + "), and " + selected.login + ": " + degree + "\n");
+                            }
                         }
                     } else {
                         System.out.print("Sorry, that's not a valid entry.");
@@ -394,25 +399,23 @@ public class Main {
                         System.out.println("Visit at " + selected.houseName + " during the selected reservation has been\n" +
                                 "added to your cart. Select another reservation to record a visit or enter 0 to confirm and exit.");
                     }
-                }
-                else if (input.equals(6)) {
+                } else if (input.equals(6)) {
                     UserManager manager = new UserManager();
                     System.out.println("1) Find most trusted users\n2) Find most useful users");
                     int choice = loopForIntInput();
 
-                    if(choice == 1){
+                    if (choice == 1) {
                         System.out.println("How many users do you want to limit the search to?");
                         int n = loopForIntInput();
 
-                        ArrayList<String> topTrusted =  manager.getMostTrustedUsers(n);
+                        ArrayList<String> topTrusted = manager.getMostTrustedUsers(n);
 
                         System.out.println("Enter the number next to the user to award them");
-                        for(String login : topTrusted)
+                        for (String login : topTrusted)
                             System.out.println(login);
 
 
-                    }
-                    else if(choice == 2){
+                    } else if (choice == 2) {
                         System.out.println("How many users do you want to limit the search to?");
                         int n = loopForIntInput();
 
