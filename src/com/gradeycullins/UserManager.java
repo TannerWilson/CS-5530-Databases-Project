@@ -95,4 +95,41 @@ public class UserManager {
 
         return result;
     }
+
+    public ArrayList<String> getMostUsefulUsers(int n){
+
+        ArrayList<User> allUsers = getAllUsers();
+        TreeMap<Integer, String> sortedResults = new TreeMap<>(Collections.reverseOrder());
+
+        // Grab and sum the trusted values for each user
+        for(User user : allUsers){
+            String getTrusts = "SELECT u.login, avg(score) \n" +
+                    "FROM 5530db58.feedback f, 5530db58.user u\n" +
+                    "WHERE f.login=u.login \n" +
+                    "GROUP BY (u.login)\n" +
+                    "LIMIT "+n+";";
+
+            ResultSet resultSet;
+            try {
+                resultSet = Connector.getInstance().statement.executeQuery(getTrusts);
+                int trustScore = 0;
+                while (resultSet.next()) {
+                    int score = resultSet.getInt("is_trusted");
+                    if(score == 0)
+                        score = -1;
+                    trustScore += score;
+                }
+                sortedResults.put(trustScore, user.login);
+            } catch (SQLException e) {
+                System.out.println("An error occurred while attempting to get the trust values for " + user.login);
+                e.printStackTrace();
+            }
+        }
+
+
+        ArrayList<String> result = new ArrayList<>();
+
+
+        return result;
+    }
 }

@@ -380,6 +380,8 @@ public class Main {
                         System.out.println("How many users do you want to limit the search to?");
                         int n = loopForIntInput();
 
+                        ArrayList<String> topTrusted =  manager.getMostUsefulUsers(n);
+
 
                     }
                 }
