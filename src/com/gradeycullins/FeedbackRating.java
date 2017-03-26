@@ -21,14 +21,21 @@ public class FeedbackRating {
     public static void insertFeedbackRating(String login, int fid, int rating) {
         try {
             Statement queryStatement = Connector.getInstance().connection.createStatement();
+
             String queryString = "" +
-                    "SELECT * " +
-                    "FROM feedback_rating fr " +
-                    "WHERE fr.login='" + login + "' AND fr.fid=" + fid;
+                    "SELECT fr.login AS fr_login, f.login AS feedback_author " +
+                    "FROM feedback_rating fr, feedback f " +
+                    "WHERE fr.login='" + login + "' AND fr.fid=" + fid + " AND f.fid=fr.fid";
 
             ResultSet resultSet = queryStatement.executeQuery(queryString);
 
             if (resultSet.next()) { // update, not insert
+                // don't let a user rate their own feedback
+                if (resultSet.getString("feedback_author").equals(login)) {
+                    System.out.print("You can't rate your own feedback.\n");
+                    return;
+                }
+
                 Statement updateStatement = Connector.getInstance().connection.createStatement();
                 String updateString = "" +
                         "UPDATE feedback_rating fr " +
