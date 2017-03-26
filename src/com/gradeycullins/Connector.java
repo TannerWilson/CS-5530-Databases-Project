@@ -52,19 +52,4 @@ public class Connector {
             e.printStackTrace();
         }
     }
-
-    public static Connector getConnector() {
-        Connector connector;
-        int i = 0;
-        while (i++ < 1000) { // attempt to connect 1000 times
-            try {
-                connector = new Connector();
-                return connector;
-            } catch (Exception e) {
-                System.out.println("attempt to connect to DB failed. Exiting. . .");
-                System.exit(0);
-            }
-        }
-        return null;
-    }
 }

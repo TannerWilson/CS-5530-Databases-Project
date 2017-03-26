@@ -162,7 +162,7 @@ public class Main {
                             Th selected = thManager.properties.get(thChosen);
 
                             System.out.println("You Selected: " + selected.name);
-                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Mark property as favorite\n4) View feedback for this property");
+                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Favorite this property\n4) View feedback for this property");
                             int in = loopForIntInput();
                             if (in == 1) { // Reservation menu
                                 System.out.println("Enter the number next to the period you wish to check availability.");
@@ -212,8 +212,7 @@ public class Main {
                                 Feedback newFeedback = new Feedback(user.login, score, description, 0, thChosen);
                                 newFeedback.insert();
                             } else if (in == 3) { // Make property favorite
-                                user.setFavorite(selected);
-                                System.out.println(selected.name + " is now your favorite!");
+                                Favorite.insertFavorite(user.login, thChosen);
                                 System.out.println("You will be taken back to the property search screen.");
                             } else if (in == 4) {
                                 Map<Integer, Feedback> feedbacks = new LinkedHashMap<>();
@@ -350,16 +349,20 @@ public class Main {
                     // Ensure the number entered is in the range
                     if (choice >= 0 && choice < index) {
                         // Get user chosen
-                        User selected = userMan.users.get(choice);
+                        User selected = users.get(choice);
                         System.out.println("User selected:");
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
                                 index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
-                        System.out.println("\n0) Mark as un-trusted\n1) Mark as trusted");
+                        System.out.println("\n0) Mark as un-trusted\n1) Mark as trusted\n3) Show degrees of separation");
 
                         int choice2 = loopForIntInput(); // Get entry
 
                         // insert a new trust relationship
-                        Trust.addTrustRelationship(user, selected, choice2);
+                        if (choice2 == 0 || choice2 == 1) {
+                            Trust.addTrustRelationship(user, selected, choice2);
+                        } else {
+                            // TODO find degrees of separation
+                        }
                     } else {
                         System.out.print("Sorry, that's not a valid entry.");
                     }

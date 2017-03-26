@@ -326,12 +326,13 @@ public class User {
         for(Reservation r : currentReservations) {
             String nameQuery = "SELECT name FROM `5530db58`.`th` WHERE tid="+r.tid+";";
 
-            try{
+            try {
                 resultSet = Connector.getInstance().statement.executeQuery(nameQuery);
-                if(resultSet.next()){
+                if (resultSet.next()) {
                     r.houseName = resultSet.getString("name");
                 }
-            }catch(SQLException e){}
+            } catch (SQLException e) {
+            }
         }
     }
 
@@ -349,5 +350,20 @@ public class User {
             System.err.println(e.getMessage());
         }
 
+    }
+
+    /**
+     * Determine whether two users are 1 or 2 degrees of separation
+     * apart in regards to their commonly favorited Ths
+     * @param u1
+     * @param u2
+     * @return degree of separation
+     */
+    public static int degreesOfSeparation(User u1, User u2) {
+
+
+
+
+        return 0;
     }
 }
