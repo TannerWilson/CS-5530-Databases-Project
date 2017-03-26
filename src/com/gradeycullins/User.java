@@ -326,12 +326,13 @@ public class User {
         for(Reservation r : currentReservations) {
             String nameQuery = "SELECT name FROM `5530db58`.`th` WHERE tid="+r.tid+";";
 
-            try{
+            try {
                 resultSet = Connector.getInstance().statement.executeQuery(nameQuery);
-                if(resultSet.next()){
+                if (resultSet.next()) {
                     r.houseName = resultSet.getString("name");
                 }
-            }catch(SQLException e){}
+            } catch (SQLException e) {
+            }
         }
     }
 

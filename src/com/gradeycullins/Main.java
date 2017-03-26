@@ -73,7 +73,7 @@ public class Main {
             } else { // user is authenticated
                 System.out.println("1) Search properties\n2) Add property\n3) Show my listed properties\n4) List users" +
                         "\n5) Show my reservations");
-                if(user.login.equals("admin"))
+                if (user.login.equals("admin"))
                     System.out.println("6) Administrative activities");
                 Object input = scanner.next();
 
@@ -162,7 +162,7 @@ public class Main {
                             Th selected = thManager.properties.get(thChosen);
 
                             System.out.println("You Selected: " + selected.name);
-                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Mark property as favorite");
+                            System.out.println("1) Make reservation\n2) Leave Feedback\n3) Favorite this property\n4) View feedback for this property");
                             int in = loopForIntInput();
                             if (in == 1) { // Reservation menu
                                 System.out.println("Enter the number next to the period you wish to check availability.");
@@ -183,8 +183,8 @@ public class Main {
                                 // Make reservation from selected period
                                 Period selectedPeriod = selected.periods.get(periodChoice - 1);
 
-                                System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from)+
-                                        " and "+ selectedPeriod.sdf.format(selectedPeriod.to) +"\nEnter dates within this range.");
+                                System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from) +
+                                        " and " + selectedPeriod.sdf.format(selectedPeriod.to) + "\nEnter dates within this range.");
                                 System.out.println("Enter your desired checkin date. Format: YYYY-MM-DD-HH");
                                 Date from = getInputDate(scanner.next());
                                 System.out.println("Enter your desired check out date. Format: YYYY-MM-DD-HH");
@@ -193,11 +193,11 @@ public class Main {
                                 Reservation res = new Reservation(user.login, selected.tid, selectedPeriod.pid,
                                         from, to, selectedPeriod.price, selected.name);
 
-                                if(selectedPeriod.checkReservations(res)){
+                                if (selectedPeriod.checkReservations(res)) {
                                     user.pendingReservations.add(res); // Add to cart
                                     System.out.println("A reservation for this available period has been created and added to you cart.\n" +
                                             "Continue browsing if you wish to record more reservations or visits.\n");
-                                }else{
+                                } else {
                                     System.out.println("Sorry there is a reservation on this period that collides with your" +
                                             " check in or check out date. Please try again.");
                                 }
@@ -212,9 +212,41 @@ public class Main {
                                 Feedback newFeedback = new Feedback(user.login, score, description, 0, thChosen);
                                 newFeedback.insert();
                             } else if (in == 3) { // Make property favorite
-                                user.setFavorite(selected);
-                                System.out.println(selected.name + " is now your favorite!");
+                                Favorite.insertFavorite(user.login, thChosen);
                                 System.out.println("You will be taken back to the property search screen.");
+                            } else if (in == 4) {
+                                Map<Integer, Feedback> feedbacks = new LinkedHashMap<>();
+                                System.out.print("Enter a number n for the top n most useful feedbacks or enter a blank line to see all feedbacks\n");
+                                String feedbackChoice = scanner.next();
+                                try {
+                                    int n = Integer.parseInt(feedbackChoice);
+                                    System.out.format("%s\t|%20s\t|%20s\t|%50s\t|%20s %n",
+                                            "fid", "author", "score", "description", "average usefulness");
+                                    feedbacks = Feedback.getNMostUsefulFeedbacks(thChosen, n);
+                                    for (Feedback f : feedbacks.values()) {
+                                        System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
+                                                f.fid, f.login, f.score, f.description, f.averageUsefulness);
+                                    }
+
+                                } catch (NumberFormatException e) { // user wants all feedbacks
+                                    feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
+                                    System.out.format("%s\t|%20s\t|%20s\t|%50s\t %n",
+                                            "fid", "author", "score", "description");
+                                    for (Feedback f : feedbacks.values()) {
+                                        System.out.format("%d\t|%20s\t|%20d\t|%50s\t %n",
+                                                f.fid, f.login, f.score, f.description);
+                                    }
+
+                                } finally {
+                                    int selectedFeedback = loopForIntInput();
+                                    Feedback f = feedbacks.get(selectedFeedback);
+                                    System.out.print("You selected:\n");
+                                    System.out.format("%d\t|%20s\t|%20d\t|%50s\t %n",
+                                            f.fid, f.login, f.score, f.description);
+                                    System.out.print("Mark feedback as:\n0) useless\n1) useful\n2) very useful\n");
+                                    int usefulRating = loopForIntInput();
+                                    FeedbackRating.insertFeedbackRating(user.login, selectedFeedback, usefulRating);
+                                }
                             }
                         } else { // User is finished making reservations
                             user.commitReservations();
@@ -317,16 +349,25 @@ public class Main {
                     // Ensure the number entered is in the range
                     if (choice >= 0 && choice < index) {
                         // Get user chosen
-                        User selected = userMan.users.get(choice);
+                        User selected = users.get(choice);
                         System.out.println("User selected:");
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
                                 index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
-                        System.out.println("\n0) Mark as un-trusted\n1) Mark as trusted");
+                        System.out.println("0) Mark as un-trusted\n1) Mark as trusted\n3) Show degrees of separation");
 
                         int choice2 = loopForIntInput(); // Get entry
 
                         // insert a new trust relationship
-                        Trust.addTrustRelationship(user, selected, choice2);
+                        if (choice2 == 0 || choice2 == 1) {
+                            Trust.addTrustRelationship(user, selected, choice2);
+                        } else {
+                            if (user.login.equals(selected.login)) {
+                                System.out.print("You selected yourself. You are 0 degrees of separation from yourself, obviously xD\n");
+                            } else {
+                                int degree = Favorite.degreesOfSeparation(user, selected);
+                                System.out.print("degrees of separation between yourself (" + user.login + "), and " + selected.login + ": " + degree + "\n");
+                            }
+                        }
                     } else {
                         System.out.print("Sorry, that's not a valid entry.");
                     }
@@ -358,25 +399,23 @@ public class Main {
                         System.out.println("Visit at " + selected.houseName + " during the selected reservation has been\n" +
                                 "added to your cart. Select another reservation to record a visit or enter 0 to confirm and exit.");
                     }
-                }
-                else if (input.equals(6)) {
+                } else if (input.equals(6)) {
                     UserManager manager = new UserManager();
                     System.out.println("1) Find most trusted users\n2) Find most useful users");
                     int choice = loopForIntInput();
 
-                    if(choice == 1){
+                    if (choice == 1) {
                         System.out.println("How many users do you want to limit the search to?");
                         int n = loopForIntInput();
 
-                        ArrayList<String> topTrusted =  manager.getMostTrustedUsers(n);
+                        ArrayList<String> topTrusted = manager.getMostTrustedUsers(n);
 
                         System.out.println("Enter the number next to the user to award them");
-                        for(String login : topTrusted)
+                        for (String login : topTrusted)
                             System.out.println(login);
 
 
-                    }
-                    else if(choice == 2){
+                    } else if (choice == 2) {
                         System.out.println("How many users do you want to limit the search to?");
                         int n = loopForIntInput();
 
