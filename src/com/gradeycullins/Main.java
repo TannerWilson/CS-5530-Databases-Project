@@ -220,14 +220,18 @@ public class Main {
                                 String feedbackChoice = scanner.next();
                                 try {
                                     int n = Integer.parseInt(feedbackChoice);
-                                    System.out.format("%s\t|%20s\t|%20s\t|%50s\t|%20s %n",
-                                            "fid", "author", "score", "description", "average usefulness");
                                     feedbacks = Feedback.getNMostUsefulFeedbacks(thChosen, n);
-                                    for (Feedback f : feedbacks.values()) {
-                                        System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
-                                                f.fid, f.login, f.score, f.description, f.averageUsefulness);
+                                    if (feedbacks.size() == 0) {
+                                        System.out.print("There are no recorded feedbacks for this TH. Exiting . . .\n");
+                                        System.exit(0);
+                                    } else {
+                                        System.out.format("%s\t|%20s\t|%20s\t|%50s\t|%20s %n",
+                                                "fid", "author", "score", "description", "average usefulness");
+                                        for (Feedback f : feedbacks.values()) {
+                                            System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
+                                                    f.fid, f.login, f.score, f.description, f.averageUsefulness);
+                                        }
                                     }
-
                                 } catch (NumberFormatException e) { // user wants all feedbacks
                                     feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
                                     System.out.format("%s\t|%20s\t|%20s\t|%50s\t %n",

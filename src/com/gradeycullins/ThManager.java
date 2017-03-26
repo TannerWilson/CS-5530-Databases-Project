@@ -78,14 +78,14 @@ public class ThManager {
         String selectQuery =
                 "SELECT DISTINCT t.tid, t.owner, t.name, t.category, t.phone_num, t.address, t.url, t.year_built, " +
                         "MIN(p.price) as min_price, AVG(f.score) as avg_score " +
-                "FROM " + Connector.DATABASE + ".th t " +
-                "LEFT OUTER JOIN " + Connector.DATABASE + ".period p " +
-                "ON t.tid=p.tid " +
-                "LEFT OUTER JOIN " + Connector.DATABASE + ".keyword k " +
-                "ON t.tid=k.tid " +
-                "LEFT OUTER JOIN " + Connector.DATABASE + ".feedback f " +
-                "ON f.tid=t.tid " + trustedRatingCondition +
-                whereStatement + " GROUP BY t.tid " + orderStatement;
+                        "FROM " + Connector.DATABASE + ".th t " +
+                        "LEFT OUTER JOIN " + Connector.DATABASE + ".period p " +
+                        "ON t.tid=p.tid " +
+                        "LEFT OUTER JOIN " + Connector.DATABASE + ".keyword k " +
+                        "ON t.tid=k.tid " +
+                        "LEFT OUTER JOIN " + Connector.DATABASE + ".feedback f " +
+                        "ON f.tid=t.tid " + trustedRatingCondition +
+                        whereStatement + " GROUP BY t.tid " + orderStatement;
 
         try {
             Statement queryStatement = Connector.getInstance().connection.createStatement();
@@ -159,17 +159,16 @@ public class ThManager {
 
     /**
      * Pulls all TH's owned by a given user.
+     *
      * @param login
      */
-    public void getUserProperties(String login){
-        String query = "SELECT * FROM `5530db58`.`th` where owner='"+login+"';";
-
-
-        ResultSet resultSet;
+    public void getUserProperties(String login) {
+        String queryString = "SELECT * FROM `5530db58`.`th` where owner='" + login + "';";
         properties = new HashMap<>();
 
         try {
-            resultSet = Connector.getInstance().statement.executeQuery(query);
+            Statement queryStatement = Connector.getInstance().connection.createStatement();
+            ResultSet resultSet = queryStatement.executeQuery(queryString);
             while (resultSet.next()) {
                 int tid = resultSet.getInt("tid");
                 String owner = resultSet.getString("owner");
@@ -182,39 +181,40 @@ public class ThManager {
                 Th newTh = new Th(tid, owner, name, category, phoneNum, address, url, yearBuilt);
                 properties.put(tid, newTh);
             }
+//            queryStatement.close();
         } catch (SQLException e) {
             System.out.println("An error occurred while attempting to retrieve the listing of temporary housings.");
             e.printStackTrace();
         }
     }
 
-    public ArrayList<String> getSuggestedProperties(ArrayList<Reservation> reservations, User user){
+    public ArrayList<String> getSuggestedProperties(ArrayList<Reservation> reservations, User user) {
 
         HashMap<String, Integer> initial = new HashMap<>();
 
-        for(Reservation r : reservations) {
+        for (Reservation r : reservations) {
 
             String housesToSuggest = "SELECT t.name, t.tid\n" +
                     "FROM 5530db58.th t\n" +
                     "WHERE t.tid IN (\n" +
                     "SELECT v.tid\n" +
                     "FROM 5530db58.visit v\n" +
-                    "WHERE v.tid <> "+r.tid+" AND v.login IN (\n" +
+                    "WHERE v.tid <> " + r.tid + " AND v.login IN (\n" +
                     "SELECT v1.login\n" +
                     "FROM 5530db58.visit v1\n" +
-                    "WHERE v1.login <> '" + user.login + "' AND v1.tid = "+r.tid+"));";
+                    "WHERE v1.login <> '" + user.login + "' AND v1.tid = " + r.tid + "));";
 
             ResultSet resultSet;
             try {
                 resultSet = Connector.getInstance().statement.executeQuery(housesToSuggest);
 
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     String houseName = resultSet.getString("name");
                     int tid = resultSet.getInt("tid");
                     initial.put(houseName, tid);
                 }
 
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Failed to get Suggestions");
 
             }
@@ -222,25 +222,25 @@ public class ThManager {
         return sortSuggestions(initial);
     }
 
-    public ArrayList<String> sortSuggestions(HashMap<String, Integer> suggestions){
+    public ArrayList<String> sortSuggestions(HashMap<String, Integer> suggestions) {
 
         TreeMap<Integer, String> visitCounts = new TreeMap<Integer, String>(Collections.reverseOrder());
 
-        for(Map.Entry<String, Integer> entry : suggestions.entrySet()){
+        for (Map.Entry<String, Integer> entry : suggestions.entrySet()) {
             String select = "SELECT count(v.tid) AS count\n" +
                     "FROM 5530db58.th t, 5530db58.visit v\n" +
-                    "WHERE t.tid = v.tid AND t.tid = "+entry.getValue()+";";
+                    "WHERE t.tid = v.tid AND t.tid = " + entry.getValue() + ";";
 
             ResultSet resultSet;
             try {
                 resultSet = Connector.getInstance().statement.executeQuery(select);
 
-                if(resultSet.next()){
+                if (resultSet.next()) {
                     int count = resultSet.getInt("count");
                     visitCounts.put(count, entry.getKey());
                 }
 
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Failed to get visit count");
             }
         }

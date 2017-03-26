@@ -76,7 +76,7 @@ public class Th {
         try {
             Statement insertStatement = Connector.getInstance().connection.createStatement();
             insertStatement.executeUpdate(insertString);
-            insertStatement.close();
+//            insertStatement.close();
             return true;
         } catch (SQLException e) {
             System.out.println("Insert failed");
@@ -98,7 +98,6 @@ public class Th {
 
         try {
             Connector.getInstance().statement.execute(update);
-            Connector.getInstance().closeConnection();
             return true;
         } catch (SQLException e) {
             System.out.println("Update failed");
