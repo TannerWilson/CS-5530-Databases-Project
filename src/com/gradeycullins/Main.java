@@ -216,22 +216,38 @@ public class Main {
                                 System.out.println(selected.name + " is now your favorite!");
                                 System.out.println("You will be taken back to the property search screen.");
                             } else if (in == 4) {
-                                System.out.format("%s\t|%20s\t|%20s\t|%50s\t|%20s %n",
-                                        "fid", "author", "score", "description", "usefulness");
-                                Map<Integer, Feedback> feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
-                                for (Feedback f : feedbacks.values()) {
-                                    System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
-                                            f.fid, f.login, f.score, f.description, f.usefulness);
-                                }
+                                Map<Integer, Feedback> feedbacks = new LinkedHashMap<>();
+                                System.out.print("Enter a number n for the top n most useful feedbacks or enter a blank line to see all feedbacks\n");
+                                String feedbackChoice = scanner.next();
+                                try {
+                                    int n = Integer.parseInt(feedbackChoice);
+                                    System.out.format("%s\t|%20s\t|%20s\t|%50s\t|%20s %n",
+                                            "fid", "author", "score", "description", "average usefulness");
+                                    feedbacks = Feedback.getNMostUsefulFeedbacks(thChosen, n);
+                                    for (Feedback f : feedbacks.values()) {
+                                        System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
+                                                f.fid, f.login, f.score, f.description, f.averageUsefulness);
+                                    }
 
-                                int selectedFeedback = loopForIntInput();
-                                Feedback f = feedbacks.get(selectedFeedback);
-                                System.out.print("You selected:\n");
-                                System.out.format("%d\t|%20s\t|%20d\t|%50s\t|%20f %n",
-                                        f.fid, f.login, f.score, f.description, f.usefulness);
-                                System.out.print("Mark feedback as:\n0) useless\n1) useful\n2) very useful\n");
-                                int usefulRating = loopForIntInput();
-                                FeedbackRating.insertFeedbackRating(user.login, selectedFeedback, usefulRating);
+                                } catch (NumberFormatException e) { // user wants all feedbacks
+                                    feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
+                                    System.out.format("%s\t|%20s\t|%20s\t|%50s\t %n",
+                                            "fid", "author", "score", "description");
+                                    for (Feedback f : feedbacks.values()) {
+                                        System.out.format("%d\t|%20s\t|%20d\t|%50s\t %n",
+                                                f.fid, f.login, f.score, f.description);
+                                    }
+
+                                } finally {
+                                    int selectedFeedback = loopForIntInput();
+                                    Feedback f = feedbacks.get(selectedFeedback);
+                                    System.out.print("You selected:\n");
+                                    System.out.format("%d\t|%20s\t|%20d\t|%50s\t %n",
+                                            f.fid, f.login, f.score, f.description);
+                                    System.out.print("Mark feedback as:\n0) useless\n1) useful\n2) very useful\n");
+                                    int usefulRating = loopForIntInput();
+                                    FeedbackRating.insertFeedbackRating(user.login, selectedFeedback, usefulRating);
+                                }
                             }
                         } else { // User is finished making reservations
                             user.commitReservations();
