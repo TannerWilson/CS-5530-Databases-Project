@@ -332,9 +332,9 @@ public class Main {
                     }
 
                 } else if (input.equals(4)) { // List other users
-                    System.out.println("Enter index to rate user.");
+                    System.out.println("Enter uid to rate user.");
                     System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
-                            "uid", "login", "first name", "middle name", "last name", "gender", "favorite th");
+                            "index", "login", "first name", "middle name", "last name", "gender", "favorite th");
 
                     UserManager userMan = new UserManager();
                     ArrayList<User> users = userMan.getAllUsers();
@@ -353,7 +353,7 @@ public class Main {
                         User selected = users.get(choice);
                         System.out.println("User selected:");
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
-                                index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
+                                choice, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
                         System.out.println("0) Mark as un-trusted\n1) Mark as trusted\n3) Show degrees of separation");
 
                         int choice2 = loopForIntInput(); // Get entry
