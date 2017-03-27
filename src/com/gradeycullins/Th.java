@@ -86,7 +86,6 @@ public class Th {
 
     /**
      * Edits information in regarding the current TH
-     *
      * @param feildName: what column is being changed
      * @param newValue
      * @return
@@ -107,7 +106,6 @@ public class Th {
 
     /**
      * Get all the periods associated with this th
-     *
      * @return
      */
     public void getAvailPeriods() {
