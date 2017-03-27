@@ -2,6 +2,7 @@ package com.gradeycullins;
 
 import javax.sound.midi.SysexMessage;
 import java.awt.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -183,7 +184,7 @@ public class Main {
                                 // Make reservation from selected period
                                 Period selectedPeriod = selected.periods.get(periodChoice - 1);
 
-                                System.out.println("Select available period: " + selectedPeriod.sdf.format(selectedPeriod.from) +
+                                System.out.println("Selected available period: " + selectedPeriod.sdf.format(selectedPeriod.from) +
                                         " and " + selectedPeriod.sdf.format(selectedPeriod.to) + "\nEnter dates within this range.");
                                 System.out.println("Enter your desired checkin date. Format: YYYY-MM-DD-HH");
                                 Date from = getInputDate(scanner.next());
@@ -335,9 +336,9 @@ public class Main {
                     }
 
                 } else if (input.equals(4)) { // List other users
-                    System.out.println("Enter index to rate user.");
+                    System.out.println("Enter uid to rate user.");
                     System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
-                            "uid", "login", "first name", "middle name", "last name", "gender", "favorite th");
+                            "index", "login", "first name", "middle name", "last name", "gender", "favorite th");
 
                     UserManager userMan = new UserManager();
                     ArrayList<User> users = userMan.getAllUsers();
@@ -356,7 +357,7 @@ public class Main {
                         User selected = users.get(choice);
                         System.out.println("User selected:");
                         System.out.format("%d\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s\t|%20s %n",
-                                index, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
+                                choice, selected.login, selected.firstName, selected.middleName, selected.lastName, selected.gender, selected.favorite);
                         System.out.println("0) Mark as un-trusted\n1) Mark as trusted\n3) Show degrees of separation");
 
                         int choice2 = loopForIntInput(); // Get entry
@@ -503,14 +504,35 @@ public class Main {
      * Formats the user string into desired format and returns a date
      */
     public static Date getInputDate(String input) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String[] entries = input.split("-");
         int year = Integer.parseInt(entries[0]);
         int month = Integer.parseInt(entries[1]);
         int day = Integer.parseInt(entries[2]);
         int hour = Integer.parseInt(entries[3]);
-        Date date = new Date(year, month, day, hour, 0, 0);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(date);
+
+        String dayString = "" + day;
+        String monthString = "" + month;
+        String hourString = "" + hour;
+
+        if(month < 10)
+            monthString = "0"+month;
+        if(day < 10)
+            dayString = "0"+day;
+        if(hour < 10)
+            hourString = "0"+hour;
+
+
+        String dateString = year + "-" + monthString + "-" + dayString + " " + hourString + ":00:00";
+
+
+        Date date = null;
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return date;
     }
 

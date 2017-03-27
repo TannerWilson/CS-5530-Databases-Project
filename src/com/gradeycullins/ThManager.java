@@ -34,7 +34,7 @@ public class ThManager {
                       String state, List<String> keywords, String _category, int order) {
 
         // where conditional(s)
-        String whereStatement = "WHERE 1=1";
+        String whereStatement = "WHERE 1=1 ";
         if (minPrice != -1)
             whereStatement += " AND p.price >= " + minPrice;
         if (maxPrice != -1)
