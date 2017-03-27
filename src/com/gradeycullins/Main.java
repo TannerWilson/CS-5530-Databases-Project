@@ -290,11 +290,11 @@ public class Main {
                     int input1 = loopForIntInput();
                     Th selected = thManager.properties.get(input1);
                     System.out.println("You selected: " + selected.name);
-                    System.out.println("1) Edit property info\n2) Add available period\n3) View reservations\n4) View visits");
+                    System.out.println("1) Edit property info\n2) Add available period");
                     int input2 = loopForIntInput();
 
                     if (input2 == 1) {// Edit property info
-                        System.out.println("1) Edit name\n2) Edit property category\n3) Edit address\n Edit Phone Number");
+                        System.out.println("1) Edit name\n2) Edit property category\n3) Edit address\n4) Edit Phone Number");
                         int input3 = loopForIntInput();
                         if (input3 == 1) {
                             System.out.println("Enter new property name.");
