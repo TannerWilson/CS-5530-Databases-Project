@@ -144,12 +144,11 @@ public class Main {
 
                             thManager.getTh(minPrice, maxPrice, owner, name, city, state, keywords, category, Integer.valueOf((String) input));
 
-                            System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%50s\t|%20s %n", "tid", "name", "owner",
-                                    "lowest price", "address", "average score");
-
                             if (thManager.properties.isEmpty()) {
                                 System.out.println("No housing exists that matches your query");
                             } else {
+                                System.out.format("%s\t|%20s\t|%20s\t|%20s\t|%50s\t|%20s %n", "tid", "name", "owner",
+                                        "lowest price", "address", "average score");
                                 for (Integer i : thManager.order) {
                                     Th currentTh = thManager.properties.get(i);
                                     int lowestPrice = currentTh.lowestPrice;

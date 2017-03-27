@@ -48,7 +48,7 @@ public class ThManager {
         if (!state.isEmpty())
             whereStatement += " AND t.address LIKE '%" + state + "%'";
         if (!_category.isEmpty())
-            whereStatement += "t.category='" + _category + "' ";
+            whereStatement += " AND t.category='" + _category + "'";
 
         boolean onlyTrustedRatings = false;
         String trustedRatingCondition = " ";
