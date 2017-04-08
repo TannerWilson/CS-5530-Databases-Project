@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="com.gradeycullins.*" %>
 <html>
 <head>
 <title>Uotel</title>
@@ -8,18 +8,31 @@
 <body>
 
 <%
-  String searchAttribute = request.getParameter("login");
-  if( searchAttribute == null )
+    String login = request.getParameter("login");
+    String password = request.getParameter("password");
+
+    if( login == null && password == null ){
 %>
 <form>
-  Login:
-  <input type="text"  name="login" method=get onsubmit="check_all_fields(this)"/>
-  <br>
-Password:
- <input  type="password" name="password" method=get onsubmit="return check_all_fields(this)" action="mainmenu.jsp"/>
-  <br>
-  <input type=submit>
-</form>
+    Login:
+    <input type="text"  name="login" method=get onsubmit="check_all_fields(this)"/>
+    <br>
+    Password:
+    <input  type="password" name="password" method=get onsubmit="return check_all_fields(this)" action="mainmenu.jsp"/>
+    <br>
+    <input type=submit>
+    </form>
+
+<%
+    }else {
+        User tempUser = new User(login, password);
+        if (!tempUser.login(login, password))
+            System.out.println("Login failed. Incorrect username or password");
+        else {
+            // Go to menu page
+        }
+    }
+%>
 
 
 <a href="register.jsp">Register</a><br>
