@@ -30,11 +30,8 @@
             System.out.println("Login failed. Incorrect username or password");
         else {
             // Go to menu page
-//            String redirectURL = "http://localhost:8080/mainmenu.jsp";
-//            response.sendRedirect(redirectURL);
-            response.setStatus(301);
-            response.setHeader("Location", "http://localhost:8080/mainmenu.jsp/");
-            response.setHeader("Connection", "close");
+            String redirectURL = "http://localhost:8080/mainmenu.jsp";
+            response.sendRedirect(redirectURL);
         }
     }
 %>
