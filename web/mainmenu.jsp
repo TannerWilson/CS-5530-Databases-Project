@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>User Menu</title>
+    <title>Main Menu</title>
 </head>
 <body>
-Top level menu (from Main)
+Top level menu should go here (from Main)
 </body>
 </html>

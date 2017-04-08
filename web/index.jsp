@@ -15,10 +15,10 @@
 %>
 <form>
     Login:
-    <input type="text"  name="login" method=get onsubmit="check_all_fields(this)"/>
+    <input type=text  name="login"  />
     <br>
     Password:
-    <input  type="password" name="password" method=get onsubmit="return check_all_fields(this)" action="mainmenu.jsp"/>
+    <input  type=password name="password" />
     <br>
     <input type=submit>
     </form>
@@ -30,6 +30,11 @@
             System.out.println("Login failed. Incorrect username or password");
         else {
             // Go to menu page
+//            String redirectURL = "http://localhost:8080/mainmenu.jsp";
+//            response.sendRedirect(redirectURL);
+            response.setStatus(301);
+            response.setHeader("Location", "http://localhost:8080/mainmenu.jsp/");
+            response.setHeader("Connection", "close");
         }
     }
 %>
