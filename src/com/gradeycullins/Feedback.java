@@ -4,10 +4,7 @@ import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Tanner on 3/13/2017.
@@ -19,6 +16,8 @@ public class Feedback {
     String description;
     float usefulness;
     int tid;
+
+    float averageUsefulness;
 
     public Feedback(int fid, String login, int score, String description, float usefulness, int tid) {
         this.fid = fid;
@@ -113,5 +112,49 @@ public class Feedback {
             e.printStackTrace();
             return new HashMap<>();
         }
+    }
+
+    /**
+     * Retreive a mapping of the n most useful feedbacks with feedback id's as keys
+     * @param n upper bound on number of useful feedbacks
+     * @return
+     */
+    public static Map<Integer, Feedback> getNMostUsefulFeedbacks(int chosenTh, int n) {
+        Map<Integer, Feedback> feedbacks = new LinkedHashMap<>();
+
+        try {
+            Statement feedbackStatement = Connector.getInstance().connection.createStatement();
+            String feedbackString = "" +
+                    "SELECT f.fid, f.login as author, f.score, f.description, f.tid, AVG(fr.rating) avg_usefulness " +
+                    "FROM feedback f " +
+                    "LEFT OUTER JOIN feedback_rating fr " +
+                    "ON f.fid=fr.fid " +
+                    "WHERE f.tid=" + chosenTh + " " +
+                    "GROUP BY f.fid " +
+                    "ORDER BY avg_usefulness " +
+                    "LIMIT " + n;
+
+            ResultSet resultSet = feedbackStatement.executeQuery(feedbackString);
+
+            while (resultSet.next()) {
+                int fid = resultSet.getInt("fid");
+                String author = resultSet.getString("author");
+                int score = resultSet.getInt("score");
+                String description = resultSet.getString("description");
+                int tid = resultSet.getInt("tid");
+                float avg_usefulness = resultSet.getFloat("avg_usefulness");
+
+                Feedback feedback = new Feedback(fid, author, score, description, 0, tid);
+                feedback.averageUsefulness = avg_usefulness;
+                feedbacks.put(fid, feedback);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+        return feedbacks;
+
     }
 }
