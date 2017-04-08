@@ -1,19 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Tanner
-  Date: 4/7/2017
-  Time: 5:22 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <title>Uotel</title>
-  </head>
-  <body>
-  Welcome to Uotel
-  <br>
-  <!--<a href="Login">login.jsp</a><br>
-  <a href="Register Account">register.jsp</a> -->
-  </body>
+<head>
+<title>JSP Example</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body>
+<a href="orders.sql">orders.sql</a><br>
+<a href="orders.jsp">orders.jsp</a><br>
+
+</body>
 </html>
