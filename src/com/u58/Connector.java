@@ -1,4 +1,4 @@
-package com.gradeycullins;
+package com.u58;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

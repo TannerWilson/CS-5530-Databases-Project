@@ -1,4 +1,4 @@
-<%@ page import="com.gradeycullins.User" %><%--
+<%@ page import="com.u58.User" %><%--
   Created by IntelliJ IDEA.
   User: Tanner
   Date: 4/7/2017
@@ -11,13 +11,12 @@
     <title>Main Menu</title>
 </head>
 <body>
-<div>
-    <p>
-        Welcome to Uotel!
-    </p>
-</div>
+<p>
+    Homepage
+</p>
 <%
     String type = request.getParameter("type");
+    User user = new User();
 
     if (type.equals("login")) {
         String login = request.getParameter("login");
@@ -28,9 +27,9 @@
         if (!tempUser.login(login, password)) {
             response.sendRedirect("/");
         } else {
-            out.print("Login successful! Welcome back, " + tempUser.firstName);
+            user = tempUser;
+            out.print("<p>Login successful!</p><p>Welcome back, " + tempUser.firstName + "</p>");
         }
-
     } else if (type.equals("register")) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
@@ -43,6 +42,7 @@
         User tempUser = new User(login, password, first_name, middle_name, last_name, gender, address);
 
         if (tempUser.register()) { // successful reg
+            user = tempUser;
             out.print("<p>Register successful!</p>");
         } else { // failed reg
             response.sendRedirect(response.encodeRedirectURL("/"));
@@ -50,5 +50,28 @@
         }
     }
 %>
+<!-- main menu -->
+<div>
+    <p>
+        <a href="search.jsp">Search properties</a>
+    </p>
+    <p>
+        <a href="create_th.jsp">Add property</a>
+    </p>
+    <p>
+        <a href="user_listings.jsp">Show my listed properties</a>
+    </p>
+    <p>
+        <a href="list_users.jsp">List users</a>
+    </p>
+    <p>
+        <a href="reservations.jsp">Show my reservations</a>
+    </p>
+    <%
+        if (user.login.equals("admin")) {
+            out.print("<p><a href=\"admin.jsp\">Admin control panel</a></p>");
+        }
+    %>
+</div>
 </body>
 </html>
