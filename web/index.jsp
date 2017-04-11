@@ -1,41 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" import="com.gradeycullins.*" %>
 <html>
 <head>
-<title>Uotel</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Uotel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
 <body>
-
-<%
-    String login = request.getParameter("login");
-    String password = request.getParameter("password");
-
-    if( login == null && password == null ){
-%>
-<form>
-    Login:
-    <input type=text  name="login"  />
+<form action="mainmenu.jsp">
+    <label>
+        Login:
+        <input type=text name="login"/>
+    </label>
     <br>
-    Password:
-    <input  type=password name="password" />
+    <label>
+        Password:
+        <input type=password name="password"/>
+    </label>
+    <label>
+        <input name="type" value="login" hidden>
+    </label>
     <br>
-    <input type=submit>
-    </form>
-
-<%
-    }else {
-        User tempUser = new User(login, password);
-        if (!tempUser.login(login, password))
-            System.out.println("Login failed. Incorrect username or password");
-        else {
-            // Go to menu page
-            String redirectURL = "http://localhost:8080/mainmenu.jsp";
-            response.sendRedirect(redirectURL);
-        }
-    }
-%>
-
+    <input type=submit value="Login">
+</form>
 
 <a href="register.jsp">Register</a><br>
 

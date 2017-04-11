@@ -13,15 +13,15 @@ import java.util.Scanner;
 public class User {
 
     /* relational db column mappings */
-    protected String login;
-    protected String password;
-    protected String firstName;
-    protected String middleName;
-    protected String lastName;
-    protected String gender;
-    protected float isTrusted = 0;
-    protected String favorite = null;
-    protected String address;
+    public String login;
+    public String password;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public String gender;
+    public float isTrusted = 0;
+    public String favorite = null;
+    public String address;
     /* end db column mappings */
 
     protected boolean isAuthenticated = false;
