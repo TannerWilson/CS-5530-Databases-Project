@@ -26,6 +26,7 @@
 
         if (!tempUser.login(login, password)) {
             response.sendRedirect("/");
+            return;
         } else {
             user = tempUser;
             out.print("<p>Login successful!</p><p>Welcome back, " + tempUser.firstName + "</p>");
