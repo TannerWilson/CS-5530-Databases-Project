@@ -50,6 +50,7 @@
             out.print("<p>Register failed. Try again.</p>");
         }
     }
+    session.setAttribute("login", user.login); // Save user login to session
 %>
 <!-- main menu -->
 <div>
