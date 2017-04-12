@@ -17,9 +17,9 @@ public class ThManager {
     protected final int DESCENDING_TRUSTED_RATING = 5;
     protected final int ASCENDING_TRUSTED_RATING = 6;
 
-    protected Map<Integer, Th> properties; // most recently user-queried properties
-    protected LinkedList<Integer> order; // stores the order of th's returned by user ordering
-    protected User user;
+    public Map<Integer, Th> properties; // most recently user-queried properties
+    public LinkedList<Integer> order; // stores the order of th's returned by user ordering
+    public User user;
 
     public ThManager() {
         properties = new HashMap<>();

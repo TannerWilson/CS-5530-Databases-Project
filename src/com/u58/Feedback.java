@@ -9,14 +9,14 @@ import java.util.*;
  * Created by Tanner on 3/13/2017.
  */
 public class Feedback {
-    int fid;
-    String login;
-    int score;
-    String description;
-    float usefulness;
-    int tid;
+    public int fid;
+    public String login;
+    public int score;
+    public String description;
+    public float usefulness;
+    public int tid;
 
-    float averageUsefulness;
+    public float averageUsefulness;
 
     public Feedback(int fid, String login, int score, String description, float usefulness, int tid) {
         this.fid = fid;

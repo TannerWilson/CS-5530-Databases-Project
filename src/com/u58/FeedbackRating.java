@@ -8,9 +8,9 @@ import java.sql.Statement;
  * Created by Gradey Cullins on 3/25/17.
  */
 public class FeedbackRating {
-    protected String login;
-    protected int fid;
-    protected int rating;
+    public String login;
+    public int fid;
+    public int rating;
 
     public FeedbackRating(String login, int fid, int rating) {
         this.login = login;

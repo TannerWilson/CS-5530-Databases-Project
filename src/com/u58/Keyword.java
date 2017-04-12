@@ -4,10 +4,10 @@ package com.u58;
  * Created by Gradey Cullins on 3/15/17.
  */
 public class Keyword {
-    protected int kid; // primary key
-    protected int tid; // foreign key -> th
-    protected String word;
-    protected String language;
+    public int kid; // primary key
+    public int tid; // foreign key -> th
+    public String word;
+    public String language;
 
     public Keyword(int kid, int tid, String word, String language) {
         this.kid = kid;

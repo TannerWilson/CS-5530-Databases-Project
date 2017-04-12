@@ -9,15 +9,15 @@ import java.util.concurrent.TimeUnit;
  * Created by Tanner on 3/13/2017.
  */
 public class Reservation {
-    String login;
-    int tid;
-    int pid;
-    Date from;
-    Date to;
-    float cost;
-    int pricePerNight;
-    String houseName;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public String login;
+    public int tid;
+    public int pid;
+    public Date from;
+    public Date to;
+    public float cost;
+    public int pricePerNight;
+    public String houseName;
+    public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Reservation(String login, int tid, int pid) {
         this.login = login;

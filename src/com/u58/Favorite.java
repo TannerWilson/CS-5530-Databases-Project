@@ -8,8 +8,8 @@ import java.sql.Statement;
  * Created by Gradey Cullins on 3/25/17.
  */
 public class Favorite {
-    protected String login;
-    protected int tid;
+    public String login;
+    public int tid;
 
     public Favorite(String login, int tid) {
         this.login = login;

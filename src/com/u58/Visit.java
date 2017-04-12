@@ -8,12 +8,12 @@ import java.util.Date;
  * Created by Tanner on 3/13/2017.
  */
 public class Visit {
-    String login;
-    int tid;
-    int pid;
-    Date to;
-    Date from;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public String login;
+    public int tid;
+    public int pid;
+    public Date to;
+    public Date from;
+    public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Visit(String login, int tid, int pid) {
         this.login = login;

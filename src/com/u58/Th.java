@@ -13,14 +13,14 @@ import java.util.LinkedList;
  */
 public class Th {
 
-    int tid; // Primary key
-    String owner;
-    String name;
-    String category;
-    String phoneNum;
-    String address;
-    String url;
-    int yearBuilt;
+    public int tid; // Primary key
+    public String owner;
+    public String name;
+    public String category;
+    public String phoneNum;
+    public String address;
+    public String url;
+    public int yearBuilt;
 
     LinkedList<Period> periods = new LinkedList<>();
     protected int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing

@@ -12,11 +12,11 @@ import java.util.concurrent.TimeUnit;
  * Created by Gradey Cullins on 3/14/17.
  */
 public class Period {
-    protected int pid;
-    protected int tid;
-    protected Date from;
-    protected Date to;
-    protected int price;
+    public int pid;
+    public int tid;
+    public Date from;
+    public Date to;
+    public int price;
 
     // globally access date format
     protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

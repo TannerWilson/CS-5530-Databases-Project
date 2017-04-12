@@ -30,9 +30,16 @@
             } else {
                 out.print("<p>Something went wrong. Unable to register property.</p>");
             }
-
+%>
+<p>
+    <a href="create_th.jsp">Add another property</a>
+</p>
+<p>
+    <a href="mainmenu.jsp">Main Menu</a>
+</p>
+<%
         }else {
-            %>
+%>
 Lets register you a new property to manage. <br/>
 <form action="create_th.jsp">
     <label>
@@ -40,7 +47,7 @@ Lets register you a new property to manage. <br/>
         <input name="name" type="text">
     </label><br>
     <label>
-        Property Type
+        Property Type/Categoty
         <input name="propType" type="text">
     </label><br>
     <label>
@@ -65,7 +72,7 @@ Lets register you a new property to manage. <br/>
     <input type="submit" value="Insert">
 </form>
 
-<%} // end of else%>
+<%} // end of else %>
 
 </body>
 </html>
