@@ -40,6 +40,10 @@
         background-color: mediumseagreen;
     }
 </style>
+<%
+    ThManager thManager = new ThManager();
+    thManager.getUserProperties((String)session.getAttribute("login"));
+%>
 <table id="t01">
     <tr>
         <th>ID</th>
@@ -51,13 +55,10 @@
         <th>URL</th>
         <th>Year Built</th>
     </tr>
-
     <%
-        ThManager thManager = new ThManager();
-        thManager.getUserProperties((String)session.getAttribute("login"));
-        for (Th th : thManager.properties.values()) {
+            for (Th th : thManager.properties.values()) {
             out.print("<tr>");
-            out.print("<td><a href=\"#\">" + th.tid + "</a></td>");
+            out.print("<td><a href=\"?selection="+th.tid+"\">" + th.tid + "</a></td>");
             out.print("<td>" + th.name + "</td>");
             out.print("<td>" + th.address + "</td>");
             out.print("<td>" + th.owner + "</td>");
@@ -69,7 +70,41 @@
         }
     %>
 </table>
+<%
+    String id = request.getParameter("selection");
+    String name = request.getParameter("newName");
 
+    if(id != null) {
+        Th selected = thManager.properties.get(Integer.parseInt(id));
+%>
+<br> Edit Property information
+<br> Selected Property:
+<%
+        out.print(selected.name + "<br>");
+        out.print("<form>");
+        out.print(" <label>\n" +
+                "        New Name\n" +
+                "        <input name=\"newName\" type=\"text\">\n" +
+                "    </label><br>");
+        out.print(" <label>\n" +
+                "        New Category:\n" +
+                "        <input name=\"newCat\" type=\"text\">\n" +
+                "    </label><br>");
+        out.print(" <label>\n" +
+                "        New Address:\n" +
+                "        <input name=\"newAdd\" type=\"text\">\n" +
+                "    </label><br>");
+        out.print(" <label>\n" +
+                "        New Phone Number:\n" +
+                "        <input name=\"newPhone\" type=\"text\">\n" +
+                "    </label><br>");
+        out.print("</form>");
+
+        session.setAttribute("selectedTid", selected.tid); // Store selected tid for if t user uses this link
+        out.print("<p><a href=\"add_period.jsp\">Add Avaliable period for this property</a></p>");
+
+    }
+%>
 <p>
     <a href="mainmenu.jsp">Main Menu</a>
 </p>

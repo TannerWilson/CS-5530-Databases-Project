@@ -18,7 +18,7 @@
     String type = request.getParameter("type");
     User user = new User();
 
-    if (type.equals("login")) {
+    if (type != null && type.equals("login")) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
@@ -31,7 +31,7 @@
             user = tempUser;
             out.print("<p>Login successful!</p><p>Welcome back, " + tempUser.firstName + "</p>");
         }
-    } else if (type.equals("register")) {
+    } else if (type != null && type.equals("register")) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String first_name = request.getParameter("first_name");
@@ -50,7 +50,7 @@
             out.print("<p>Register failed. Try again.</p>");
         }
     }
-    session.setAttribute("login", user.login); // Save user login to session
+    session.setAttribute("login", user.login);// Save user login to session
 %>
 <!-- main menu -->
 <div>
@@ -70,7 +70,7 @@
         <a href="reservations.jsp">Show my reservations</a>
     </p>
     <%
-        if (user.login.equals("admin")) {
+        if (((String)session.getAttribute("login")).equals("admin")) {
             out.print("<p><a href=\"admin.jsp\">Admin control panel</a></p>");
         }
     %>
