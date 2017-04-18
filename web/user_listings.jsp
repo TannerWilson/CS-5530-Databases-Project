@@ -8,38 +8,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<link href="css/table.css" rel="stylesheet" type="text/css">
 <head>
     <title>My Properties</title>
 </head>
 <body>
-<style>
-    table#t01 {
-        width: 75%;
-        background-color: #f1f1c1;
-    }
-
-    table, th, td {
-    }
-
-    table {
-        border-spacing: 5px;
-    }
-
-    th, td {
-        padding: 15px;
-    }
-
-    table#t01 tr:nth-child(even) {
-        background-color: gainsboro;
-    }
-    table#t01 tr:nth-child(odd) {
-        background-color: lightgreen;
-    }
-    table#t01 th {
-        color: white;
-        background-color: mediumseagreen;
-    }
-</style>
 <%
     ThManager thManager = new ThManager();
     thManager.getUserProperties((String)session.getAttribute("login"));

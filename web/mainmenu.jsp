@@ -11,49 +11,61 @@
     <title>Main Menu</title>
 </head>
 <body>
-<p>
-    Homepage
-</p>
+<h1>Homepage</h1>
 <%
-    String type = request.getParameter("type");
-    User user = new User();
+    if (session.getAttribute("user") != null) { // user is logged in for a session
+        User user = (User) session.getAttribute("user");
+        out.print("<p>Login successful!</p><p>Welcome back, " + user.firstName + "</p>");
+    } else { // user needs to login or register
+        // register or login
+        String type = request.getParameter("type");
 
-    if (type != null && type.equals("login")) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        // session object
+        User user = new User();
 
-        User tempUser = new User(login, password);
+        if (type != null && type.equals("login")) { // user is logging in
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
 
-        if (!tempUser.login(login, password)) {
-            response.sendRedirect("/");
-            return;
-        } else {
-            user = tempUser;
-            out.print("<p>Login successful!</p><p>Welcome back, " + tempUser.firstName + "</p>");
+            User tempUser = new User(login, password);
+
+            if (!tempUser.login(login, password)) {
+                response.sendRedirect("/");
+                return;
+            } else {
+                user = tempUser;
+                out.print("<p>Login successful!</p><p>Welcome back, " + user.firstName + "</p>");
+            }
+        } else if (type != null && type.equals("register")) { // user is registering
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
+            String first_name = request.getParameter("first_name");
+            String middle_name = request.getParameter("middle_name");
+            String last_name = request.getParameter("last_name");
+            String gender = request.getParameter("gender");
+            String address = request.getParameter("address");
+
+            User tempUser = new User(login, password, first_name, middle_name, last_name, gender, address);
+
+            if (tempUser.register()) { // successful reg
+                user = tempUser;
+                out.print("<p>Register successful!</p>");
+            } else { // failed reg
+                response.sendRedirect(response.encodeRedirectURL("/"));
+                out.print("<p>Register failed. Try again.</p>");
+            }
         }
-    } else if (type != null && type.equals("register")) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String first_name = request.getParameter("first_name");
-        String middle_name = request.getParameter("middle_name");
-        String last_name = request.getParameter("last_name");
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
 
-        User tempUser = new User(login, password, first_name, middle_name, last_name, gender, address);
-
-        if (tempUser.register()) { // successful reg
-            user = tempUser;
-            out.print("<p>Register successful!</p>");
-        } else { // failed reg
-            response.sendRedirect(response.encodeRedirectURL("/"));
-            out.print("<p>Register failed. Try again.</p>");
-        }
+        // after login / register, store the session object
+        session.setAttribute("user", user);
+        session.setAttribute("login", user.login);// Save user login to session
     }
-    session.setAttribute("login", user.login);// Save user login to session
 %>
 <!-- main menu -->
 <div>
+    <%
+        out.print("<a href=\"logout.jsp\">logout</a>");
+    %>
     <p>
         <a href="search.jsp">Search properties</a>
     </p>
@@ -70,7 +82,7 @@
         <a href="reservations.jsp">Show my reservations</a>
     </p>
     <%
-        if (((String)session.getAttribute("login")).equals("admin")) {
+        if (session.getAttribute("user") != null && ((String) session.getAttribute("login")).equals("admin")) {
             out.print("<p><a href=\"admin.jsp\">Admin control panel</a></p>");
         }
     %>

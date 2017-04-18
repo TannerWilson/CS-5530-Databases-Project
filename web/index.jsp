@@ -6,6 +6,11 @@
 </head>
 
 <body>
+<%
+    if (session.getAttribute("user") != null) {
+        out.print("<a href=\"logout.jsp\">logout</a>");
+    } else {
+%>
 <form action="mainmenu.jsp">
     <label>
         Login:
@@ -22,8 +27,10 @@
     <br>
     <input type=submit value="Login">
 </form>
-
 <a href="register.jsp">Register</a><br>
+<%
+    }
+%>
 
 </body>
 </html>
