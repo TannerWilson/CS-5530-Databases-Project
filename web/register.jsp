@@ -11,7 +11,7 @@
     <title>Register</title>
 </head>
 <body>
-<form action="mainmenu.jsp">
+<form action="mainmenu.jsp" method="post">
     <label>
         login
         <input name="login" type="text">

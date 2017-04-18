@@ -11,7 +11,7 @@
         out.print("<a href=\"logout.jsp\">logout</a>");
     } else {
 %>
-<form action="mainmenu.jsp">
+<form action="mainmenu.jsp" method="post">
     <label>
         Login:
         <input type=text name="login"/>
