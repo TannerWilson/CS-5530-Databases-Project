@@ -1,0 +1,26 @@
+table#t01 {
+    width: 75%;
+    border: solid gray 2px;
+}
+
+table, th, td {
+}
+
+table {
+    border-spacing: 0;
+}
+
+th, td {
+    padding: 5px;
+}
+
+table#t01 tr:nth-child(even) {
+    background-color: lightgray;
+}
+table#t01 tr:nth-child(odd) {
+    background-color: white;
+}
+table#t01 th {
+    color: white;
+    background-color: mediumseagreen;
+}
