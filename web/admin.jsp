@@ -51,7 +51,6 @@ Select the number of users you wish to limit the search to and press the corresp
             for (String login : topUsefull)
                 out.print("<tr><td>"+login+"</td></tr>");
         }
-
 %>
 </table>
 <%
