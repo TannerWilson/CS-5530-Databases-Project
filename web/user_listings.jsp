@@ -17,7 +17,7 @@
     ThManager thManager = new ThManager();
     thManager.getUserProperties((String)session.getAttribute("login"));
 %>
-<table id="t01">
+<table class="t01">
     <tr>
         <th>ID</th>
         <th>Property Name</th>

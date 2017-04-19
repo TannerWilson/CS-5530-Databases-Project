@@ -23,11 +23,11 @@ public class Th {
     public int yearBuilt;
 
     LinkedList<Period> periods = new LinkedList<>();
-    protected int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing
-    protected float averageScore = -1; // average feedback score. -1 means no recording score
-    protected LinkedList<String> keywords = new LinkedList<>();
+    public int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing
+    public float averageScore = -1; // average feedback score. -1 means no recording score
+    public LinkedList<String> keywords = new LinkedList<>();
 
-    protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Th(int tid, String owner, String name, String category, String phoneNum,
               String address, String url, int yearBuilt) {
