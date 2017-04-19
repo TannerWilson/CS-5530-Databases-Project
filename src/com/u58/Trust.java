@@ -49,7 +49,7 @@ public class Trust {
                        "values('" + trusterLogin + "', '" + trusteeLogin + "', " + is_trusted + ")";
 
                Connector.getInstance().statement.executeUpdate(insertTrust);
-               System.out.print("You marked " + trustee.firstName);
+               System.out.print("You marked " + trustee.login);
                System.out.print(is_trusted == 1 ? " as a trusted user!" : " as an untrusted user!");
                System.out.println();
            }
