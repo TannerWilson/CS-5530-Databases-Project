@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>admin</title>
+    <title>Amin</title>
 </head>
 <body>
-admin control panel
+
 </body>
 </html>
