@@ -45,16 +45,15 @@
 </table>
 <%
     String id = request.getParameter("selection");
-    String name = request.getParameter("newName");
-
+    Th selected;
     if(id != null) {
-        Th selected = thManager.properties.get(Integer.parseInt(id));
+        selected = thManager.properties.get(Integer.parseInt(id));
 %>
 <br> Edit Property information
 <br> Selected Property:
 <%
         out.print(selected.name + "<br>");
-        out.print("<form>");
+        out.print("<form method=\"post\">");
         out.print(" <label>\n" +
                 "        New Name\n" +
                 "        <input name=\"newName\" type=\"text\">\n" +
@@ -71,11 +70,29 @@
                 "        New Phone Number:\n" +
                 "        <input name=\"newPhone\" type=\"text\">\n" +
                 "    </label><br>");
+        out.print("<input type=submit value=\"Update\">");
         out.print("</form>");
 
         session.setAttribute("selectedTid", selected.tid); // Store selected tid for if t user uses this link
         out.print("<p><a href=\"add_period.jsp\">Add Avaliable period for this property</a></p>");
 
+        String name = request.getParameter("newName");
+        String category = request.getParameter("newCat");
+        String address = request.getParameter("newAdd");
+        String phone = request.getParameter("newPhone");
+
+        // User has subitted an update
+        if(name != null || category != null || address != null || phone != null){
+            if(name != null && !name.equals(""))
+                selected.updateField("name", name, selected.tid);
+            if(category != null && !category.equals(""))
+                selected.updateField("category", category, selected.tid);
+            if(address != null && !address.equals(""))
+                selected.updateField("address", address, selected.tid);
+            if(phone != null && !phone.equals(""))
+                selected.updateField("phone_num", phone, selected.tid);
+         out.print("<br>Update Sucessful!");
+        }
     }
 %>
 <p>
