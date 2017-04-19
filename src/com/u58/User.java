@@ -1,5 +1,6 @@
 package com.u58;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 /**
  * Created by Tanner on 3/11/2017.
  */
-public class User {
+public class User implements Serializable {
 
     /* relational db column mappings */
     public String login;
@@ -58,6 +59,22 @@ public class User {
         this.isTrusted = isTrusted;
         this.favorite = favorite;
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", isTrusted=" + isTrusted +
+                ", favorite='" + favorite + '\'' +
+                ", address='" + address + '\'' +
+                ", isAuthenticated=" + isAuthenticated +
+                '}';
     }
 
     /**

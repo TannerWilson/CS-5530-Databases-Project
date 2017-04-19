@@ -25,6 +25,7 @@
         <th>favorite th</th>
     </tr>
     <%
+        User user = (User) session.getAttribute("user");
         UserManager userMan = new UserManager();
         ArrayList<User> users = userMan.getAllUsers();
         int index = 1;
