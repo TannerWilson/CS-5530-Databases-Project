@@ -3,14 +3,13 @@ table.t01 {
     border: solid gray 2px;
 }
 
-table, th, td {
-}
-
 table {
     border-spacing: 0;
 }
 
 th, td {
+    align-content: center;
+    align-items: center;
     padding: 5px;
 }
 

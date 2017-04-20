@@ -1,5 +1,6 @@
 package com.u58;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +12,7 @@ import java.util.LinkedList;
 /**
  * Class to represent Temporary Housing objects in the database
  */
-public class Th {
+public class Th implements Serializable {
 
     public int tid; // Primary key
     public String owner;

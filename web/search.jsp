@@ -11,43 +11,41 @@
     <title>Search for TH</title>
 </head>
 <body>
-    <form action="./search_results.jsp" method="get">
+    <form action="${pageContext.request.contextPath}/search_results.jsp" method="get">
         <label>
             min price
-            <input type="checkbox" name="min_price_filter">
+            <%--<input type="checkbox" name="min_price_filter">--%>
             <input type="number" name="min_price" min="0" max="10000">
         </label><br>
         <label>
             max price
-            <input type="checkbox" name="max_price_filter">
+            <%--<input type="checkbox" name="max_price_filter">--%>
             <input type="number" name="max_price" min="0" max="10000">
         </label><br>
         <label>
             city
-            <input type="checkbox" name="city_filter">
+            <%--<input type="checkbox" name="city_filter">--%>
             <input type="text" name="city">
         </label><br>
         <label>
             state
-            <input type="checkbox" name="state_filter">
+            <%--<input type="checkbox" name="state_filter">--%>
             <input type="text" name="state">
         </label><br>
         <label>
             keywords
-            <input type="checkbox" name="keywords_filter">
-            <%--TODO --%>
-            <%--will need to split keywords by ' ' delimiter--%>
+            <%--<input type="checkbox" name="keywords_filter">--%>
             <input type="text" name="keywords">
         </label><br>
         <label>
             category
-            <input type="checkbox" name="category_filter">
+            <%--<input type="checkbox" name="category_filter">--%>
             <input type="text" name="category">
         </label><br>
 
         <%--result orderings --%>
         <label>
-            <input type="radio" name="ordering" value="1">descending price<br>
+            <input type="radio" name="ordering" value="1" checked>descending price<br>
             <input type="radio" name="ordering" value="2">ascending price<br>
             <input type="radio" name="ordering" value="3">
             descending average feedback rating<br>
