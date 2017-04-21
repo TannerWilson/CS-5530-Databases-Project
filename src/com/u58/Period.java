@@ -19,7 +19,7 @@ public class Period {
     public int price;
 
     // globally access date format
-    protected static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Period(int pid, int tid, Date from, Date to, int price) {
         this.pid = pid;

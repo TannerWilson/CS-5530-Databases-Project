@@ -37,6 +37,8 @@
         out.print("<td>" + currentTh.address + "</td>");
         out.print("<td>" + currentTh.averageScore + "</td>");
         out.print("</tr>");
+
+        session.setAttribute("selectedTh", currentTh);
     %>
 </table>
 <p><a href="${pageContext.request.contextPath}/make_reservation.jsp?tid=<%= currentTh.tid %>">make reservation</a></p>

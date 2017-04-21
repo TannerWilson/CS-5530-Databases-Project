@@ -28,7 +28,7 @@ Select the number of users you wish to limit the search to and press the corresp
 
 <%
     String type = (String) request.getParameter("type");
-    if(!type.equals("")){
+    if(type != null && !type.equals("")){
 %>
 <br> Selected users: <br>
 <table id="t01">
@@ -36,7 +36,7 @@ Select the number of users you wish to limit the search to and press the corresp
         <th>Login</th>
     </tr>
 <%
-        int n = (Integer) request.getParameter("n");
+        int n = Integer.parseInt(request.getParameter("n"));
         UserManager manager = new UserManager();
 
         if(type.equals("trust")){
@@ -56,5 +56,9 @@ Select the number of users you wish to limit the search to and press the corresp
 <%
     } // Close of if
 %>
+
+<p>
+    <a href="mainmenu.jsp">Main Menu</a>
+</p>
 </body>
 </html>

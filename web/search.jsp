@@ -60,5 +60,9 @@
             <input type="submit" value="search">
         </label>
     </form>
+
+<form action="confirm_reservations.jsp">
+    <input type="submit" value="Commit Reservations">
+</form>
 </body>
 </html>

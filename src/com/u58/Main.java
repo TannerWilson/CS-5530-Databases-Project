@@ -182,7 +182,7 @@ public class Main {
                                 Period selectedPeriod = selected.periods.get(periodChoice - 1);
 
                                 System.out.println("Selected available period: " + selectedPeriod.sdf.format(selectedPeriod.from) +
-                                        " and " + selectedPeriod.sdf.format(selectedPeriod.to) + "\nEnter dates within this range.");
+                                        " to " + selectedPeriod.sdf.format(selectedPeriod.to) + "\nEnter dates within this range.");
                                 System.out.println("Enter your desired checkin date. Format: YYYY-MM-DD-HH");
                                 Date from = getInputDate(scanner.next());
                                 System.out.println("Enter your desired check out date. Format: YYYY-MM-DD-HH");

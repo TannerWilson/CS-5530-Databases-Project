@@ -50,7 +50,7 @@
     if(index != 0){
         Reservation selected =  user.currentReservations.get(index-1);
         out.print("<p>Record a visit on selected reservation</p>");
-        out.print("<p>Selected reservation: "+selected.from.toString()+" - "+ selected.to.toString()+"</p>");
+        out.print("<p>Selected reservation: "+selected.sdf.format(selected.from)+" - "+ selected.sdf.format(selected.to)+"</p>");
 
         Visit visit = new Visit(user.login, selected.tid, selected.pid, selected.from, selected.to);
         user.pendingVisits.add(visit);
@@ -109,22 +109,16 @@
         String commit = (String) request.getParameter("submit");
 
         if (commit != null && commit.equals("yes")) { // Insert all reservations
-            for(Reservation res : user.pendingReservations)
-                res.insert();
+            for(Visit visit : user.pendingVisits)
+                visit.insert();
             out.print("<p>Your reservations have been confirmed.</p>");
 
-            // Get suggested properties to print
-            ThManager manager = new ThManager();
-            ArrayList<String> suggestedProperties = manager.getSuggestedProperties(user.pendingReservations, user);
-
-            out.print("<br>You may also enjoy a stay at the folowing properties:<br>");
-            for(String property : suggestedProperties)
-                out.print("<p>"+property+"</p>");
-            out.print("Try searching for these to get more information!");
-
-            user.pendingReservations.clear();
+            user.pendingVisits.clear();
         }
     }
 %>
+<p>
+    <a href="mainmenu.jsp">Main Menu</a>
+</p>
 </body>
 </html>

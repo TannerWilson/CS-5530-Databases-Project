@@ -23,7 +23,7 @@ public class Th implements Serializable {
     public String url;
     public int yearBuilt;
 
-    LinkedList<Period> periods = new LinkedList<>();
+    public LinkedList<Period> periods = new LinkedList<>();
     public int lowestPrice = -1; // lowest priced available period. -1 means no recorded pricing
     public float averageScore = -1; // average feedback score. -1 means no recording score
     public LinkedList<String> keywords = new LinkedList<>();
