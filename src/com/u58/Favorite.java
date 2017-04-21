@@ -35,7 +35,7 @@ public class Favorite {
                     "VALUES ('" + login + "', " + tid + ")";
 
             Connector.getInstance().statement.executeUpdate(insertString);
-            System.out.print("Added to favorites!\n");
+//            System.out.print("Added to favorites!\n");
 
         } catch (SQLException e) {
             e.printStackTrace();
