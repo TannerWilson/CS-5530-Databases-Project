@@ -64,5 +64,6 @@
 <form action="confirm_reservations.jsp">
     <input type="submit" value="Commit Reservations">
 </form>
+<p><a href="mainmenu.jsp">Main Menu</a></p>
 </body>
 </html>

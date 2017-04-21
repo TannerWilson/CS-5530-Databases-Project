@@ -32,8 +32,6 @@
 
     for (int i = 0; i < selected.periods.size(); i++) {
         Period p = selected.periods.get(i);
-        System.out.println((i + 1) + " Arrive: " + p.formatFrom() + ", Depart: " + p.formatTo() +
-                ", Price per night: $" + p.price);
         out.print("<tr>");
         out.print("<td><a href=\"?index="+ (i+1) +"\">"+(i+1)+"</a></td>");
         out.print("<td>" + p.from.toString() + "</td>");
@@ -68,6 +66,9 @@
                 "    <input type=\"submit\" value=\"Add\">\n" +
                 "</form>");
     }
+    else {
+        selectedPeriod = null;
+    }
 
     String startDate = request.getParameter("start");
     String endDate = request.getParameter("end");
@@ -92,7 +93,7 @@
         if (selectedPeriod.checkReservations(res)) {
             user.pendingReservations.add(res); // Add to cart
             out.print("<p>A reservation for this available period has been created and added to you cart.<br>" +
-                    "Continue browsing if you wish to record more reservations or visits.</p>\n");
+                    "Continue browsing if you wish to record more reservations.</p>\n");
         } else {
             out.print("<p>Sorry there is a reservation on this period that collides with your" +
                     " check in or check out date. Please try again.</p>");
