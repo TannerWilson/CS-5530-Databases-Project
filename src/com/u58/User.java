@@ -26,9 +26,9 @@ public class User implements Serializable {
     /* end db column mappings */
 
     protected boolean isAuthenticated = false;
-    ArrayList<Reservation> pendingReservations = new ArrayList<>();
-    ArrayList<Visit> pendingVisits = new ArrayList<>();
-    ArrayList<Reservation> currentReservations = new ArrayList<>();
+    public ArrayList<Reservation> pendingReservations = new ArrayList<>();
+    public ArrayList<Visit> pendingVisits = new ArrayList<>();
+    public ArrayList<Reservation> currentReservations = new ArrayList<>();
 
     public User() {}
 

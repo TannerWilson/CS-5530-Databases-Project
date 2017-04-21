@@ -21,7 +21,7 @@ public class Visit {
         this.pid = pid;
     }
 
-    public Visit(String login, int tid, int pid, Date to, Date from) {
+    public Visit(String login, int tid, int pid, Date from, Date to) {
         this.login = login;
         this.tid = tid;
         this.pid = pid;
