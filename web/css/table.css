@@ -1,9 +1,6 @@
-table#t01 {
+table.t01 {
     width: 75%;
     border: solid gray 2px;
-}
-
-table, th, td {
 }
 
 table {
@@ -11,16 +8,18 @@ table {
 }
 
 th, td {
+    align-content: center;
+    align-items: center;
     padding: 5px;
 }
 
-table#t01 tr:nth-child(even) {
+table.t01 tr:nth-child(even) {
     background-color: lightgray;
 }
-table#t01 tr:nth-child(odd) {
+table.t01 tr:nth-child(odd) {
     background-color: white;
 }
-table#t01 th {
+table.t01 th {
     color: white;
     background-color: mediumseagreen;
 }

@@ -69,6 +69,8 @@ public class ThManager {
                     "WHERE f1.login=t1.trustee " +
                     "AND t1.truster='" + this.user.login + "' " +
                     ") ";
+        } else if (order == 0) {
+            orderStatement = " ";
         }
 
         String selectQuery =
