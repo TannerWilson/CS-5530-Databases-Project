@@ -16,7 +16,7 @@
 <body>
 <%
     if (request.getParameter("login") == null)
-        response.sendRedirect("/mainmenu.jsp");
+        response.sendRedirect("mainmenu.jsp");
 
     User selectedUser = new User();
 

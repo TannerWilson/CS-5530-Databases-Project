@@ -81,7 +81,7 @@
                 Th currentTh = thManager.properties.get(i);
                 int lowestPrice = currentTh.lowestPrice;
                 out.print("<tr>");
-                out.print("<td><a href=\"/view_th.jsp?tid=" + currentTh.tid + "\">" + currentTh.tid + "</a></td>");
+                out.print("<td><a href=\"view_th.jsp?tid=" + currentTh.tid + "\">" + currentTh.tid + "</a></td>");
                 out.print("<td>" + currentTh.name + "</td>");
                 out.print("<td>" + currentTh.owner + "</td>");
                 out.print("<td>" + currentTh.lowestPrice + "</td>");

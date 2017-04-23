@@ -31,7 +31,7 @@
         int index = 1;
         for (User u : users) {
             out.print("<tr>");
-            out.print("<td><a href=\"/view_user.jsp?login=" + u.login + "\">" + index++ + "</a></td>");
+            out.print("<td><a href=\"view_user.jsp?login=" + u.login + "\">" + index++ + "</a></td>");
             out.print("<td>" + u.login + "</td>");
             out.print("<td>" + u.firstName + "</td>");
             out.print("<td>" + u.middleName + "</td>");

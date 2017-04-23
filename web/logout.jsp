@@ -14,7 +14,7 @@
 <%
     session.removeAttribute("user");
     session.invalidate();
-    response.sendRedirect("/");
+    response.sendRedirect("index.jsp");
 %>
 </body>
 </html>
