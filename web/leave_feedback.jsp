@@ -1,6 +1,6 @@
-<%@ page import="com.u58.Feedback" %>
-<%@ page import="com.u58.User" %>
-<%@ page import="com.u58.Th" %><%--
+<%@ page import="u58.Feedback" %>
+<%@ page import="u58.User" %>
+<%@ page import="u58.Th" %><%--
   Created by IntelliJ IDEA.
   User: Gradey Cullins
   Date: 4/20/17

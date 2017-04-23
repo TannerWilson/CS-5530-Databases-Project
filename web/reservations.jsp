@@ -1,7 +1,7 @@
-<%@ page import="com.u58.User" %>
-<%@ page import="com.u58.Reservation" %>
-<%@ page import="com.u58.Visit" %>
-<%@ page import="com.u58.ThManager" %>
+<%@ page import="u58.User" %>
+<%@ page import="u58.Reservation" %>
+<%@ page import="u58.Visit" %>
+<%@ page import="u58.ThManager" %>
 <%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: Gradey

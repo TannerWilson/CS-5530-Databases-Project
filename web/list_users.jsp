@@ -1,5 +1,5 @@
-<%@ page import="com.u58.UserManager" %>
-<%@ page import="com.u58.User" %>
+<%@ page import="u58.UserManager" %>
+<%@ page import="u58.User" %>
 <%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: Gradey

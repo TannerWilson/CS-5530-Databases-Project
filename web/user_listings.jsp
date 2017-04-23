@@ -1,5 +1,5 @@
-<%@ page import="com.u58.Th" %>
-<%@ page import="com.u58.ThManager" %><%--
+<%@ page import="u58.Th" %>
+<%@ page import="u58.ThManager" %><%--
   Created by IntelliJ IDEA.
   User: Gradey
   Date: 4/11/17

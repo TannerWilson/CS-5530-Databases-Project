@@ -1,4 +1,4 @@
-<%@ page import="com.u58.User" %><%--
+<%@ page import="u58.User" %><%--
   Created by IntelliJ IDEA.
   User: Tanner
   Date: 4/7/2017

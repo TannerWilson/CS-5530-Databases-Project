@@ -1,7 +1,7 @@
-<%@ page import="com.u58.User" %>
-<%@ page import="com.u58.UserManager" %>
+<%@ page import="u58.User" %>
+<%@ page import="u58.UserManager" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.u58.Trust" %><%--
+<%@ page import="u58.Trust" %><%--
   Created by IntelliJ IDEA.
   User: Gradey Cullins
   Date: 4/18/17

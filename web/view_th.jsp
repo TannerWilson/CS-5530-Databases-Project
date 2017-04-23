@@ -1,6 +1,6 @@
-<%@ page import="com.u58.ThManager" %>
+<%@ page import="u58.ThManager" %>
 <%@ page import="java.util.LinkedList" %>
-<%@ page import="com.u58.Th" %><%--
+<%@ page import="u58.Th" %><%--
   Created by IntelliJ IDEA.
   User: Gradey Cullins
   Date: 4/19/17

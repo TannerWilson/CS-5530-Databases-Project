@@ -1,10 +1,10 @@
-<%@ page import="com.u58.Period" %>
-<%@ page import="com.u58.Th" %>
+<%@ page import="u58.Period" %>
+<%@ page import="u58.Th" %>
 <%@ page import="java.text.ParseException" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="com.u58.Reservation" %>
-<%@ page import="com.u58.User" %><%--
+<%@ page import="u58.Reservation" %>
+<%@ page import="u58.User" %><%--
   Created by IntelliJ IDEA.
   User: Gradey Cullins
   Date: 4/20/17

@@ -1,4 +1,4 @@
-<%@ page import="com.u58.Th" %><%--
+<%@ page import="u58.Th" %><%--
   Created by IntelliJ IDEA.
   User: Gradey
   Date: 4/11/17

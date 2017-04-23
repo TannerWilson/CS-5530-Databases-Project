@@ -1,4 +1,4 @@
-<%@ page import="java.util.Enumeration, com.u58.*" %><%--
+<%@ page import="java.util.Enumeration, u58.*" %><%--
   Created by IntelliJ IDEA.
   User: Tanner
   Date: 4/7/2017

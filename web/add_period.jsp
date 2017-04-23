@@ -1,4 +1,4 @@
-<%@ page import="com.u58.Period" %>
+<%@ page import="u58.Period" %>
 <%@ page import="java.text.ParseException" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
