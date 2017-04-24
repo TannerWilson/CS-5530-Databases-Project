@@ -19,7 +19,8 @@
 <body>
 <%
     Th selected = (Th) session.getAttribute("selectedTh");
-    selected.getAvailPeriods();
+    if(selected.periods.isEmpty())
+        selected.getAvailPeriods();
     User user = (User) session.getAttribute("user");
 
     out.print("<table id=\"t01\">\n" +
