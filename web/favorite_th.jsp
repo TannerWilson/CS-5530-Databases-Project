@@ -14,7 +14,7 @@
 </head>
 <body>
 <%
-    Th selected = (Th) session.getAttribute("selectedTh");
+    Th selected = (Th) session.getAttribute("chosenTh");
     User user = (User) session.getAttribute("user");
     Favorite.insertFavorite(user.login, selected.tid);
     out.print("<p> The property: "+selected.name +" has been marked as your favorite.</p>");

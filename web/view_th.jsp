@@ -38,12 +38,22 @@
         out.print("<td>" + currentTh.averageScore + "</td>");
         out.print("</tr>");
 
-        session.setAttribute("selectedTh", currentTh);
+        session.setAttribute("selectedTh", currentTh.tid);
+        session.setAttribute("chosenTh", currentTh);
+        session.setAttribute("selectedThName", currentTh.name);
     %>
 </table>
 <p><a href="${pageContext.request.contextPath}/make_reservation.jsp?tid=<%= currentTh.tid %>">make reservation</a></p>
 <p><a href="${pageContext.request.contextPath}/leave_feedback.jsp?tid=<%= currentTh.tid %>">leave feedback</a></p>
 <p><a href="${pageContext.request.contextPath}/favorite_th.jsp?tid=<%= currentTh.tid %>">favorite this property</a></p>
-<p><a href="${pageContext.request.contextPath}/view_th_feedback.jsp?tid=<%= currentTh.tid %>">view feedback for this property</a></p>
+<form action="${pageContext.request.contextPath}/view_th_feedback.jsp">
+    <label>
+        view N most useful feedbacks (leave blank for all feedback)
+        <br><input type="number" name="n" min="0" max="1000">
+    </label>
+    <label>
+        <input type="submit" value="view feedbacks">
+    </label>
+</form>
 </body>
 </html>
