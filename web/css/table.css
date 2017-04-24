@@ -4,6 +4,7 @@ table.t01 {
 }
 
 table {
+    display:table-header-group;
     border-spacing: 0;
 }
 

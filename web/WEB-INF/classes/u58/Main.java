@@ -217,7 +217,8 @@ public class Main {
                                 String feedbackChoice = scanner.next();
                                 try {
                                     int n = Integer.parseInt(feedbackChoice);
-                                    feedbacks = Feedback.getNMostUsefulFeedbacks(thChosen, n);
+//                                    feedbacks = Feedback.getNMostUsefulFeedbacks(thChosen, n);
+                                    feedbacks = new HashMap<>();
                                     if (feedbacks.size() == 0) {
                                         System.out.print("There are no recorded feedbacks for this TH. Exiting . . .\n");
                                         System.exit(0);
@@ -230,7 +231,8 @@ public class Main {
                                         }
                                     }
                                 } catch (NumberFormatException e) { // user wants all feedbacks
-                                    feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
+//                                    feedbacks = Feedback.getThFeedback(thManager.properties.get(thChosen));
+                                    feedbacks = new HashMap<>();
                                     System.out.format("%s\t|%20s\t|%20s\t|%50s\t %n",
                                             "fid", "author", "score", "description");
                                     for (Feedback f : feedbacks.values()) {

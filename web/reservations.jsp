@@ -16,7 +16,7 @@
     <title>Reservations</title>
 </head>
 <body>
-<table id="t01">
+<table class="t01">
     <tr>
         <th>Index</th>
         <th>House Name</th>

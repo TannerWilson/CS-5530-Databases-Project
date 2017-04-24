@@ -16,14 +16,16 @@
 <head>
     <title>Make Reservation</title>
 </head>
+<link href="css/table.css" rel="stylesheet" type="text/css">
 <body>
 <%
+
     Th selected = (Th) session.getAttribute("selectedTh");
     if(selected.periods.isEmpty())
         selected.getAvailPeriods();
     User user = (User) session.getAttribute("user");
 
-    out.print("<table id=\"t01\">\n" +
+    out.print("<table class=\"t01\">\n" +
             "    <tr>\n" +
             "        <th>Index</th>\n" +
             "        <th>From</th>\n" +
@@ -40,8 +42,8 @@
         out.print("<td>" + p.price + "</td>");
         out.print("</tr>");
     }
+    out.print("</table>");
 %>
-</table>
 <%
     String indexString = (String) request.getParameter("index");
     int index = 0;
